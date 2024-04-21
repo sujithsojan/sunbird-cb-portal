@@ -108,7 +108,7 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
       this.enablePrev = false
       this.activeNav = 0
     }
-    if (elem.scrollWidth === elem.clientWidth + elem.scrollLeft) {
+    if (elem.scrollWidth === Math.round(elem.clientWidth + elem.scrollLeft)) {
       if (this.loadStatus === 'hasMore') {
         this.loadNext.emit()
       } else {

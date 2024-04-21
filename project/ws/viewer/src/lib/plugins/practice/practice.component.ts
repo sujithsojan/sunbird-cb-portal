@@ -44,6 +44,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() duration = 0
   @Input() collectionId = ''
   @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
+  @Input() quizData: any
   @Input() quizJson: NSQuiz.IQuiz = {
     timeLimit: 300,
     questions: [
@@ -1092,6 +1093,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     switch ($event) {
       case 'retake':
         // raise telemetry
+        this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
+        this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.quizData)
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
@@ -1248,6 +1251,33 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     newText += `</ul>`
     return this.sanitized.bypassSecurityTrustHtml(newText)
+  }
+
+
+  raiseEvent(state: WsEvents.EnumTelemetrySubType, data: NsContent.IContent) {
+    const event = {
+        eventType: WsEvents.WsEventType.Telemetry,
+        eventLogLevel: WsEvents.WsEventLogLevel.Info,
+        from: 'test',
+        to: '',
+        data: {
+            state,
+            type: WsEvents.WsTimeSpentType.Player,
+            mode: WsEvents.WsTimeSpentMode.Play,
+            content: data,
+            identifier: data ? data.identifier : null,
+            mimeType: NsContent.EMimeTypes.PDF,
+            url: data ? data.artifactUrl : null,
+            object: {
+                id: data ? data.identifier : null,
+                type: data ? data.primaryCategory : '',
+                rollup: {
+                    l1: this.activatedRoute.snapshot.queryParams.collectionId || '',
+                },
+            },
+        },
+    }
+    this.events.dispatchEvent(event)
   }
 
 }

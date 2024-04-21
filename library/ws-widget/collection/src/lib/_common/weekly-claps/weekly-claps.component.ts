@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/lib/services/multilingual-translations.service'
-
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 @Component({
   selector: 'ws-widget-weekly-claps',
   templateUrl: './weekly-claps.component.html',
@@ -15,7 +15,8 @@ export class WeeklyClapsComponent implements OnInit {
   @Input() weeklyData: any = ''
 
   constructor(private dialog: MatDialog, private translate: TranslateService,
-              private langtranslations: MultilingualTranslationsService) {
+              private langtranslations: MultilingualTranslationsService,
+              private eventService: EventService) {
 
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -35,6 +36,16 @@ export class WeeklyClapsComponent implements OnInit {
   }
 
   openInfo(myDialog: any) {
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        id: 'weekly-claps-info',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
     const confirmDialog = this.dialog.open(InfoDialogComponent, {
         width: '613px',
         panelClass: 'custom-info-dialog',

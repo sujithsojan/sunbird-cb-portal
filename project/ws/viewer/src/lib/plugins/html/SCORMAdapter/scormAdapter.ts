@@ -53,6 +53,9 @@ export class SCORMAdapterService {
 
   LMSInitialize() {
     this.store.contentKey = this.contentId
+    // tslint:disable-next-line: no-console
+    console.log('LMSInitialize function, this.store.contentKey', this.store.contentKey)
+
     // this.loadDataAsync().subscribe((response) => {
     //   const data = response.result.data
     //   const loadDatas: IScromData = {
@@ -85,11 +88,15 @@ export class SCORMAdapterService {
   }
 
   LMSGetValue(element: any) {
+     // tslint:disable-next-line: no-console
+     console.log('LMSGetValue function, element', element)
     if (!this._isInitialized()) {
       this._setError(301)
       return false
     }
     let value = this.store.getItem(element)
+    // tslint:disable-next-line: no-console
+    console.log('LMSGetValue function, value', value)
     if (!value) {
       this._setError(201)
       return ""
@@ -98,6 +105,10 @@ export class SCORMAdapterService {
   }
 
   LMSSetValue(element: any, value: any) {
+    // tslint:disable-next-line: no-console
+    console.log('LMSSetValue function, element', element)
+    // tslint:disable-next-line: no-console
+    console.log('LMSSetValue function, value', value)
     if (!this._isInitialized()) {
       this._setError(301)
       return false
@@ -108,6 +119,8 @@ export class SCORMAdapterService {
 
   LMSCommit() {
     let data = this.store.getAll()
+    // tslint:disable-next-line: no-console
+    console.log('LMSCommit function, data', data)
     if (data) {
       delete data['errors']
       // delete data['Initialized']
