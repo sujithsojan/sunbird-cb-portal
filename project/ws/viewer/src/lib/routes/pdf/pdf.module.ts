@@ -60,5 +60,8 @@ import { TranslateModule } from '@ngx-translate/core'
     PdfViewContainerModule,
     TranslateModule.forRoot(),
   ],
+  exports: [
+    PdfComponent,
+  ],
 })
 export class PdfModule { }

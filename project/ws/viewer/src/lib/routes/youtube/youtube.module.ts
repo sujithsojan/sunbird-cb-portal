@@ -61,5 +61,6 @@ import { YoutubeModule as YoutubeViewContainerModule } from '../../route-view-co
     BtnContentFeedbackV2Module,
     YoutubeViewContainerModule,
   ],
+  exports: [YoutubeComponent],
 })
 export class YoutubeModule { }

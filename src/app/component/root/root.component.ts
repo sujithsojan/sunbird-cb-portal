@@ -53,6 +53,8 @@ import { concat, interval, timer, of } from 'rxjs'
 })
 export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
+  hideHeaderAndFooter = false
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -74,6 +76,10 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private urlService: UrlService
     // private dialogRef: MatDialogRef<any>,
   ) {
+
+    if (window.location.pathname.includes('/public/privacy-policy')) {
+      this.hideHeaderAndFooter = true
+    }
     this.getHeaderFooterConfiguration().subscribe((sectionData: any) => {
       // console.log('headerFooterConfigData',sectionData)
       this.headerFooterConfigData = sectionData.data

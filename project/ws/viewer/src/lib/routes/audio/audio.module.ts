@@ -59,5 +59,8 @@ import { AudioModule as AudioViewContainerModule } from '../../route-view-contai
     BtnContentFeedbackV2Module,
     AudioViewContainerModule,
   ],
+  exports: [
+    AudioComponent,
+  ],
 })
 export class AudioModule { }

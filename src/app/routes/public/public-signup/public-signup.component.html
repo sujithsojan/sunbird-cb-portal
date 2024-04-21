@@ -476,14 +476,16 @@
               </div>
               <div class="input-wrapper margin-top-s">
                 <div class="flex flex-middle">
-                  <mat-checkbox aria-label="I agree to the IGOT karmayogi's Terms of Service." id="confirmTerms"
+                  <mat-checkbox aria-label="I agree to the IGOT karmayogi's Terms of Service & Privacy Policy." id="confirmTerms" 
                     [checked]="confirmTerms" (change)="confirmTermsChange()" i18n-aria-label
-                    aria-label="I agree to the IGOT karmayogi's Terms of Service. checkbox" required>
+                    aria-label="I agree to the IGOT karmayogi's Terms of Service & Privacy Policy. checkbox" required>
 
                   </mat-checkbox>
                   <label class="margin-remove-bottom mat-body-2 ws-mat-black60-text ml-3" i18n-aria-label
-                  aria-label="I agree to the IGOT karmayogi's Terms of Service. checkbox label">
-                  {{ 'publicsignup.agree' | translate }} <a class="ws-mat-accent-text terms-text" (click)="termsAndConditionClick()">{{ 'publicsignup.terms' | translate }}</a>
+                  aria-label="I agree to the IGOT karmayogi's Terms of Service & Privacy Policy. checkbox label">
+                  {{ 'publicsignup.agree' | translate }} <a class="ws-mat-accent-text terms-text" (click)="termsAndConditionClick()">{{ 'publicsignup.terms' | translate }}</a> & 
+                  <a class="ws-mat-accent-text terms-text" href="/public/privacy-policy" target="_blank">{{ 'publicsignup.privacyPolicy' | translate }}</a>
+                
                 </label>
                 </div>
               </div>

@@ -32,6 +32,7 @@ export class ShareTocComponent implements OnInit {
    showLoader = false
    @Input() rootOrgId: any
    @Input() content: any
+   @Input() contentLink: any = ''
    @ViewChild('userInput', { static: false }) userInput: ElementRef<HTMLInputElement> | undefined
    @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete | undefined
    @Output() resetEnableShare: any = new EventEmitter()
@@ -184,12 +185,14 @@ export class ShareTocComponent implements OnInit {
     let coursePosterImageUrl = ''
     let courseProvider = ''
     let primaryCategory = ''
+    let courseLink = ''
     if (this.content) {
         courseProvider = this.content.organisation[0] || this.content.source
         courseId = this.content.identifier,
         courseName = this.content.name,
         coursePosterImageUrl = this.content.posterImage || 'assets/instances/eagle/app_logos/KarmayogiBharat_Logo.svg',
-        primaryCategory = this.content.primaryCategory
+        primaryCategory = this.content.primaryCategory,
+        courseLink = this.contentLink || ''
     }
     const obj = {
       request: {
@@ -198,6 +201,7 @@ export class ShareTocComponent implements OnInit {
         coursePosterImageUrl,
         courseProvider,
         primaryCategory,
+        courseLink,
         recipients: '',
       },
     }

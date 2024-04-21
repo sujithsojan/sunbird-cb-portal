@@ -21,6 +21,8 @@
     <ng-container *ngSwitchCase="'card-portrait-click-skeleton'" [ngTemplateOutlet]="cardPortraitClickSkeleton"></ng-container>
     <ng-container *ngSwitchCase="'card-portrait-click'" [ngTemplateOutlet]="cardPortraitClick"></ng-container>
     <ng-container *ngSwitchCase="'card-standard-skeleton'" [ngTemplateOutlet]="cardStandardSkeleton"></ng-container>
+    <ng-container *ngSwitchCase="'card-resource'" [ngTemplateOutlet]="cardResource"></ng-container>
+    <ng-container *ngSwitchCase="'card-resource-skeleton'" [ngTemplateOutlet]="cardResourceSkeleton"></ng-container>
     <!-- cardPortraitSkeleton -->
     <ng-container *ngSwitchCase="'cardCuratedCollection'" [ngTemplateOutlet]="cardCuratedCollection"></ng-container>
   </ng-container>
@@ -1595,3 +1597,161 @@
     <p *ngIf="data.cbpData.planDuration === acbpConstants?.OVERDUE" class="cbp-danger">{{'cardcontentv2.overDue' | translate}}</p>
   </div>
 </ng-template>
+
+<ng-template #cardResource>
+  <mat-card class="card-resource-container mr-5 padding-remove cursor-pointer {{ widgetData?.cardCustomeClass}}"  [ngClass]="{
+      greyOut:
+        widgetData.deletedMode === 'greyOut' && !isLiveOrMarkForDeletion
+          ? true
+          : widgetData?.intranetMode === 'greyOut' && showIntranetContent    
+    }" (click)="(showIntranetContent || !isLiveOrMarkForDeletion) && showSnackbar()">
+    <div class="display-contents" [ngClass]="{
+        disableClick:
+          widgetData.deletedMode === 'greyOut' && !isLiveOrMarkForDeletion
+            ? true
+            : widgetData?.intranetMode === 'greyOut' && showIntranetContent
+      }">
+      <ng-container *ngIf="widgetData?.content">
+        <a (click)="raiseTelemetry();getRedirectUrlData(widgetData?.content,'resource'); $event.stopPropagation()" 
+            role="link" i18n-aria-label>
+      <ng-container *ngIf="!isCardFlipped">
+        <div class="status-danger" role="note" i18n-aria-label aria-label="Content expired or deleted" i18n-matTooltip
+          matTooltip="Content may be expired or deleted" *ngIf="!isLiveOrMarkForDeletion"></div>
+        <div class="status-danger" role="note" i18n-aria-label aria-label="Intranet content" i18n-matTooltip
+          matTooltip="Available only in Company's network"
+          *ngIf="widgetData?.intranetMode === 'greyOut' && showIntranetContent"></div>
+        <button *ngIf="showFlip" class="detail-button ws-mat-primary-lite-background-op30" mat-icon-button
+          (click)="isCardFlipped = true" aria-label="Details" i18n-aria-label="Details | Click to see details">
+          <mat-icon>flip_to_back</mat-icon>
+        </button>
+        <mat-card-content class="min-top">
+          <div class="relative">
+            <div class="relative">
+              <ng-container *ngIf="widgetData?.content?.posterImage">
+                <img mat-card-image [src]="widgetData?.content?.posterImage | pipePublicURL" loading="lazy"
+                class="card-img ws-mat-primary-lite-background margin-remove" [wsUtilsDefaultThumbnail]="defaultThumbnail"
+                [alt]="widgetData?.content?.name" />
+              </ng-container>
+              <ng-container *ngIf="!widgetData?.content?.posterImage">
+                <ng-container *ngIf="widgetData?.content?.appIcon; else defaultImg">
+                  <img mat-card-image [src]="widgetData?.content?.appIcon | pipePublicURL" loading="lazy"
+                  class="card-img ws-mat-primary-lite-background margin-remove"  [wsUtilsDefaultThumbnail]="defaultThumbnail"
+                  [alt]="widgetData?.content?.name" />
+                </ng-container>
+                <ng-template #defaultImg>
+                  <img mat-card-image [src]="defaultThumbnail" loading="lazy"
+                  class="card-img ws-mat-primary-lite-background margin-remove"
+                  [alt]="widgetData?.content?.name" />
+                </ng-template>
+              </ng-container>
+              <div class="source-div" style="display: none;">
+                <img [src]="widgetData?.content?.creatorLogo" class="source-icon" [wsUtilsDefaultThumbnail]="defaultSLogo"
+                  [alt]="(widgetData?.content?.sourceName + '_' + widgetData?.content?.identifier)" />
+              </div>
+              <span class="absolute resourse-type uppercase">
+                <img class="stats-icon " height="16" src="{{widgetData?.content?.mimeType === nsContentConstants?.EMimeTypes?.PDF ?  '/assets/icons/home/pdf.svg' :'/assets/icons/home/play.svg'}}" width="16">
+                {{getMimeType}}
+              </span>
+            </div>
+            <ng-container *ngIf="widgetData?.content?.cbPlanEndDate">
+              <div class="cbp-mark">
+                <span>{{widgetData?.content?.cbPlanEndDate | date: 'd MMM, y'}}</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="cbPlanMapData && cbPlanMapData[widgetData?.content?.identifier]">
+              <ng-container [ngTemplateOutlet]="cbpPlan" [ngTemplateOutletContext]="{data: {
+                cbpData: cbPlanMapData[widgetData?.content?.identifier]
+              }}"></ng-container>
+            </ng-container>
+            <div class="duration-box right-corner" *ngIf="widgetData?.content?.duration > 0">
+              <mat-icon class="mat-icon main_icon mr-1">access_time</mat-icon>
+              <span class=" ws-mat-white-text duration">
+                {{ (widgetData?.content?.duration || 120)| pipeDurationTransform: 'hms' }}
+              </span>
+            </div>
+          </div>
+          <div class="padding-m">
+            <div class="course_widget flex margin-remove">
+              <div class="flex flex-end course_v2" *ngIf="widgetData?.content?.sectorName">
+                <mat-icon class="mat-icon main_icon ws-mat-default-text margin-right-xs">video_library</mat-icon>
+                <span  class="content-type-class font-normal mat-caption" >
+                  {{widgetData?.content?.sectorName}}</span>
+              </div>
+              <div class="flex ml-5 flex-end course_v2" *ngIf="widgetData?.content?.subSectorName">
+                <span  class="content-type-class font-normal mat-caption" >
+                  
+                {{widgetData?.content?.subSectorName}}</span>
+              </div>
+            </div>
+            <div [id]="'m-c-'+ widgetData?.content?.identifier"
+              class="mat-subheading-1 title-text ws-mat-text-block-fade-gradient">
+              {{ widgetData?.content?.name }}
+            </div>
+            <div [id]="'m-c-'+ widgetData?.content?.identifier"
+              class="mat-subheading-1 description-text  ws-mat-text-block-fade-gradient" [innerText]="widgetData?.content?.description"></div>
+            <div class="flex w-full flex-wrap flex-middle">
+              <div class="course_logo_box">
+                <img [src]="widgetData?.content?.creatorLogo | pipePublicURL " class="source-icon" [wsUtilsDefaultThumbnail]="defaultSLogo"
+                [alt]="(widgetData?.content?.sourceName + '_' + widgetData?.content?.identifier)" />
+              </div>
+              <span class="org-text">{{'cardcontentv2.by' | translate}} {{ (widgetData?.content?.organisation && widgetData?.content?.organisation[0]) ? widgetData?.content?.organisation[0] : 'Karmayogi Bharat' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </ng-container>
+      <ng-container *ngIf="isCardFlipped">
+        <div class="flex items-center">
+          <h2 class="mat-subheading-2 flex-1 min-w-0 margin-remove-bottom" i18n>{{'cardcontentv2.reason' | translate}}</h2>
+          <button mat-icon-button (click)="isCardFlipped = false">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <p class="text-justify mat-body-1">
+          {{ widgetData?.content?.reason }}
+        </p>
+      </ng-container>
+        </a>
+      </ng-container>
+    </div>
+  </mat-card>
+</ng-template>
+
+<ng-template #cardResourceSkeleton>
+  <mat-card class="card-resource-container mr-5 padding-remove  {{ widgetData?.cardCustomeClass}}" >
+    <div class="display-contents" >
+      <ng-container *ngIf="!isCardFlipped">
+        <mat-card-content class="min-top">
+          <div style="position: relative; z-index: 1;">
+            <ng-container>
+              <ws-widget-skeleton-loader [width]="widgetData?.cardCustomeClass ? '272px':'384px'" [height]="'217px'" [bindingClass]="'flex rounded card-img'"></ws-widget-skeleton-loader>
+            </ng-container>
+          </div>
+          <div class="padding-m">
+            <div class="course_widget flex margin-remove">
+              <div class="flex flex-end mb-4">
+                <ws-widget-skeleton-loader [width]="'65px'" [height]="'16px'" [bindingClass]="'flex rounded br-8 mr-4'"></ws-widget-skeleton-loader>
+                <ws-widget-skeleton-loader [width]="'65px'" [height]="'16px'" [bindingClass]="'flex rounded br-8'"></ws-widget-skeleton-loader>
+              </div>
+            </div>
+            <div class="mat-subheading-1 title-text ws-mat-text-block-fade-gradient  mb-4">
+              <ws-widget-skeleton-loader [width]="'100%'" [height]="'16px'" [bindingClass]="'flex rounded'"></ws-widget-skeleton-loader>
+              <ws-widget-skeleton-loader [width]="'111px'" [height]="'16px'" [bindingClass]="'flex rounded margin-top-s'"></ws-widget-skeleton-loader>
+            </div>
+
+            <div class="mat-subheading-1 title-text ws-mat-text-block-fade-gradient  mb-4">
+              <ws-widget-skeleton-loader [width]="'100%'" [height]="'16px'" [bindingClass]="'flex rounded'"></ws-widget-skeleton-loader>
+              <ws-widget-skeleton-loader [width]="'111px'" [height]="'16px'" [bindingClass]="'flex rounded margin-top-s'"></ws-widget-skeleton-loader>
+            </div>
+            <div class="flex w-full flex-wrap flex-middle margin-top-m">
+              <div class="">
+                <ws-widget-skeleton-loader [width]="'28px'" [height]="'28px'" [bindingClass]="'flex rounded'"></ws-widget-skeleton-loader>
+              </div>
+              <span class="org-text"> <ws-widget-skeleton-loader [width]="'111px'" [height]="'16px'" [bindingClass]="'flex rounded'"></ws-widget-skeleton-loader></span>
+            </div>
+          </div>
+        </mat-card-content>
+      </ng-container>
+    </div>
+  </mat-card>
+</ng-template>
+

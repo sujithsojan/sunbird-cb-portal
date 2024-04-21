@@ -782,6 +782,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       stripInfo: strip.info,
       stripTitle: strip.title,
       stripTitleLink: strip.stripTitleLink,
+      disableTranslate: strip.disableTranslate,
       sliderConfig: strip.sliderConfig,
       tabs: tabsResults ? tabsResults : strip.tabs,
       stripName: strip.name,

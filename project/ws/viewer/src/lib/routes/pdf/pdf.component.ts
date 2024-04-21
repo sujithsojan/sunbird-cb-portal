@@ -224,37 +224,45 @@ export class PdfComponent implements OnInit, OnDestroy {
       // this.activatedRoute.data.subscribe(data => {
       //   userId = data.profileData.data.userId
       // })
-      const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
-        this.activatedRoute.snapshot.queryParams.collectionId,
-        this.activatedRoute.snapshot.queryParams.batchId,
-        pdfId)
-      const req: NsContent.IContinueLearningDataReq = {
-        request: {
-          userId,
-          batchId: requestCourse.batchId,
-          courseId: requestCourse.courseId || '',
-          contentIds: [],
-          fields: ['progressdetails'],
-        },
-      }
-      this.contentSvc.fetchContentHistoryV2(req).subscribe(
-        data => {
-          if (data && data.result && data.result.contentList.length) {
-            for (const content of data.result.contentList) {
-              if (content.contentId === pdfId && content.progressdetails && content.progressdetails.current) {
-                if (content.progress === 100 || content.status === 2) {
-                  this.widgetResolverPdfData.widgetData.resumePage = 1
-                } else {
-                  this.widgetResolverPdfData.widgetData.resumePage = Number(content.progressdetails.current.pop())
+      if (this.activatedRoute.snapshot.queryParams.collectionId &&
+        this.activatedRoute.snapshot.queryParams.batchId &&
+        pdfId
+      ) {
+        const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+          this.activatedRoute.snapshot.queryParams.collectionId,
+          this.activatedRoute.snapshot.queryParams.batchId,
+          pdfId)
+        const req: NsContent.IContinueLearningDataReq = {
+          request: {
+            userId,
+            batchId: requestCourse.batchId,
+            courseId: requestCourse.courseId || '',
+            contentIds: [],
+            fields: ['progressdetails'],
+          },
+        }
+        this.contentSvc.fetchContentHistoryV2(req).subscribe(
+          data => {
+            if (data && data.result && data.result.contentList.length) {
+              for (const content of data.result.contentList) {
+                if (content.contentId === pdfId && content.progressdetails && content.progressdetails.current) {
+                  if (content.progress === 100 || content.status === 2) {
+                    this.widgetResolverPdfData.widgetData.resumePage = 1
+                  } else {
+                    this.widgetResolverPdfData.widgetData.resumePage = Number(content.progressdetails.current.pop())
+                  }
+                  this.pdfScormDataService.handlePdfMarkComplete.next(content)
                 }
-                this.pdfScormDataService.handlePdfMarkComplete.next(content)
               }
             }
-          }
-          resolve(true)
-        },
-        () => resolve(true),
-      )
+            resolve(true)
+          },
+          () => resolve(true),
+        )
+      } else {
+         resolve(true)
+      }
+
     })
   }
 

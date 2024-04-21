@@ -12,6 +12,7 @@ export namespace NsContentStripWithTabs {
     isChannelStrip?: boolean
   }
   export interface IContentStripUnit {
+    disableTranslate?: any
     key: string
     title: string
     customeClass?: string
