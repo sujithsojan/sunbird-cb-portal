@@ -124,11 +124,18 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       current: ['1'],
       max_size: 1,
     }
+    // tslint:disable-next-line: no-console
+    console.log('this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', this.store.getItem('Initialized'))
+    // tslint:disable-next-line: no-console
+    console.log('!this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', !this.store.getItem('Initialized'))
+    // call for both LMS and duration calculation content
+    this.fireRealTimeProgress(this.htmlContent)
+
     // this.fireRealTimeProgress()
-    if (!this.store.getItem('Initialized')) {
-      this.fireRealTimeProgress(this.htmlContent)
-      // this.store.clearAll()
-    }
+    // if (!this.store.getItem('Initialized')) {
+    //   this.fireRealTimeProgress(this.htmlContent)
+    //   // this.store.clearAll()
+    // }
     this.sub.unsubscribe()
   }
 
@@ -143,12 +150,27 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
       //   this.activatedRoute.snapshot.queryParams.batchId : ''
       const completionData = this.calculateCompletionStatus(htmlContent)
+
+      // tslint:disable-next-line: no-console
+      console.log('!this.store.getItem(\'Initialized\') in fireRealTimeProgress(htmlContent)', !this.store.getItem('Initialized'))
+      let progressData
+      if (this.store.getItem('Initialized')) {
+        progressData = { spentTime: (completionData && completionData.spentTime), ...this.store.getAll() || 0 }
+      } else {
+        progressData = { spentTime: (completionData && completionData.spentTime) || 0 }
+      }
+      // tslint:disable-next-line: no-console
+      console.log('progressDetails in fireRealTimeProgress(htmlContent)', progressData)
+
       const req = {
         ...this.realTimeProgressRequest,
         status: (completionData && completionData.status) || 0,
         completionPercentage: (completionData && completionData.completionPercentage) || 0,
-        progressDetails: { spentTime: (completionData && completionData.spentTime) || 0 },
+        progressDetails : progressData,
       }
+      // tslint:disable-next-line: no-console
+      console.log('progressDetails in req', req)
+
       this.scormAdapterService.addDataV3(req, htmlContent.identifier).subscribe((_res: any) => {
         this.loggerSvc.log('Progress updated successfully')
         // for updating the progress hashmap, for instant progress to be shown

@@ -114,17 +114,27 @@ export class SCORMAdapterService {
       // let newData = JSON.stringify(data)
       // data = Base64.encode(newData)
       let _return = false
-      this.addDataV2(data).subscribe((response) => {
-        // console.log(response)
-        if (response) {
-          _return = true
-        }
-      }, (error) => {
-        if (error) {
-          this._setError(101)
-          // console.log(error)
-        }
-      })
+
+      // tslint:disable-next-line: no-console
+      console.log("this.getStatus(data) in LMSCommit()",this.getStatus(data))
+      //only for complete and pass status, progress call should be done
+      if(this.getStatus(data) === 2){
+        // tslint:disable-next-line: no-console
+        console.log("enter loop with cond this.getStatus(data) in LMSCommit() excecuted")
+        this.addDataV2(data).subscribe((response) => {
+          // tslint:disable-next-line: no-console
+          console.log(response)
+          if (response) {
+            _return = true
+          }
+        }, (error) => {
+          if (error) {
+            this._setError(101)
+            // console.log(error)
+          }
+        })
+      }
+      
       return _return
     }
     return false
