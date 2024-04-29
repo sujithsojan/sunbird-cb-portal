@@ -1001,6 +1001,10 @@ const routes: Routes = [
     component: SurveyShikshaComponent,
   },
   {
+    path: 'mligot/mlsurvey/:id',
+    component: SurveyShikshaComponent
+  },
+  {
     path: '**',
     component: ErrorResolverComponent,
     data: {
