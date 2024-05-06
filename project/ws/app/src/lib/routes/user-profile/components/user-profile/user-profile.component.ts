@@ -887,7 +887,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line: max-line-length
         industryOther: this.unApprovedReq && this.unApprovedReq.industryOther ? this.unApprovedReq.industryOther : organisation ? organisation.industryOther : '',
         // tslint:disable-next-line: max-line-length
-        designation: this.unApprovedReq && this.unApprovedReq.designation ? this.unApprovedReq.designation : organisation ? organisation.designation : '',
+        designation: this.unApprovedReq && this.unApprovedReq.designation ? this.unApprovedReq.designation : organisation ? organisation.designation.toUpperCase() : '',
         // tslint:disable-next-line: max-line-length
         group: this.unApprovedReq && this.unApprovedReq.group ? this.unApprovedReq.group : organisation ? organisation.group : '',
         // tslint:disable-next-line: max-line-length
