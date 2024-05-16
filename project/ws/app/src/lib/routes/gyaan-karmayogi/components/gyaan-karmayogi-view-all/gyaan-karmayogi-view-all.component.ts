@@ -242,14 +242,17 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           const localFacetData: any = {
             sectorName: {
               name: gyaanConstants.sectors,
+              label: gyaanConstants.sectors,
               values: 'values',
             },
             subSectorName: {
               name: gyaanConstants.subSectors,
+              label: gyaanConstants.subSectors,
               values: 'values',
             },
             resourceCategory: {
               name: gyaanConstants.category,
+              label: gyaanConstants.singleCategory,
               values: 'values',
             },
           }

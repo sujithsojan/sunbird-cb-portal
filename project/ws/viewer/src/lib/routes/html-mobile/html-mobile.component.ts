@@ -11,7 +11,7 @@ import {
 } from '@sunbird-cb/utils'
 import { fromEvent, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { ViewerUtilService } from '../../viewer-util.service'
+// import { ViewerUtilService } from '../../viewer-util.service'
 import { environment } from 'src/environments/environment'
 @Component({
   selector: 'viewer-html-mobile',
@@ -47,7 +47,7 @@ export class HtmlMobileComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private contentSvc: WidgetContentService,
-    private viewerSvc: ViewerUtilService,
+    // private viewerSvc: ViewerUtilService,
     private respondSvc: SubapplicationRespondService,
     private eventSvc: EventService,
     private accessControlSvc: AccessControlService,
@@ -413,21 +413,21 @@ export class HtmlMobileComponent implements OnInit, OnDestroy {
       }
     }
     if (this.htmlData) {
-      this.realTimeProgressRequest.content_type = this.htmlData.contentType
-      this.realTimeProgressRequest.primaryCategory = this.htmlData.primaryCategory
+      // this.realTimeProgressRequest.content_type = this.htmlData.contentType
+      // this.realTimeProgressRequest.primaryCategory = this.htmlData.primaryCategory
 
-      const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
-        this.activatedRoute.snapshot.queryParams.collectionId : ''
+      // const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
+      //   this.activatedRoute.snapshot.queryParams.collectionId : ''
 
-      const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
-        this.activatedRoute.snapshot.queryParams.batchId : ''
+      // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
+      //   this.activatedRoute.snapshot.queryParams.batchId : ''
 
-      this.viewerSvc.realTimeProgressUpdate(
-        this.htmlData.identifier,
-        this.realTimeProgressRequest,
-        collectionId,
-        batchId
-      )
+      // this.viewerSvc.realTimeProgressUpdate(
+      //   this.htmlData.identifier,
+      //   this.realTimeProgressRequest,
+      //   collectionId,
+      //   batchId
+      // )
     }
     return
   }

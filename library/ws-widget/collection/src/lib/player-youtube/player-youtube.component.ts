@@ -221,7 +221,7 @@ export class PlayerYoutubeComponent extends WidgetBaseComponent
       //   this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier
       // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
       //   this.activatedRoute.snapshot.queryParams.batchId : this.widgetData.identifier
-      if (this.widgetData.identifier && identifier && data) {
+      if (this.widgetData.identifier && identifier && data && collectionId && batchId) {
         this.viewerSvc
           .realTimeProgressUpdate(identifier, data, collectionId, batchId)
       }

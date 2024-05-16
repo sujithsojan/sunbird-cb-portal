@@ -30,7 +30,7 @@
                 <div class="individual-block">
                     <p class="title mb-4">{{facet.value.name}}</p>
                     <div class="search-filter mb-2">
-                        <input type="text" (keyup)="getSearch($event?.target?.value, facet?.key)" placeholder="Search {{facet?.value?.name}}">
+                        <input type="text" (keyup)="getSearch($event?.target?.value, facet?.key)" placeholder="Search {{facet?.value?.label}}">
                         <mat-icon>search</mat-icon>
                     </div>
                     <div class="list mb-4">

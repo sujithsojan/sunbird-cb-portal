@@ -232,32 +232,38 @@ export class SurveyComponent implements OnInit, OnDestroy {
       // this.activatedRoute.data.subscribe(data => {
       //   userId = data.profileData.data.userId
       // })
-      const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
-        this.activatedRoute.snapshot.queryParams.collectionId,
-        this.activatedRoute.snapshot.queryParams.batchId,
-        surveyId)
-      const req: NsContent.IContinueLearningDataReq = {
-        request: {
-          userId,
-          batchId: requestCourse.batchId,
-          courseId: requestCourse.courseId || '',
-          contentIds: [],
-          fields: ['progressdetails'],
-        },
-      }
-      this.contentSvc.fetchContentHistoryV2(req).subscribe(
-        data => {
-          if (data && data.result && data.result.contentList.length) {
-            for (const content of data.result.contentList) {
-              if (content.contentId === surveyId) {
-                this.widgetResolverSurveyData.widgetData.progressStatus = content.status
+      if (this.activatedRoute.snapshot.queryParams.collectionId
+        && this.activatedRoute.snapshot.queryParams.batchId
+        && surveyId
+      ) {
+        const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+          this.activatedRoute.snapshot.queryParams.collectionId,
+          this.activatedRoute.snapshot.queryParams.batchId,
+          surveyId)
+        const req: NsContent.IContinueLearningDataReq = {
+          request: {
+            userId,
+            batchId: requestCourse.batchId,
+            courseId: requestCourse.courseId || '',
+            contentIds: [],
+            fields: ['progressdetails'],
+          },
+        }
+        this.contentSvc.fetchContentHistoryV2(req).subscribe(
+          data => {
+            if (data && data.result && data.result.contentList.length) {
+              for (const content of data.result.contentList) {
+                if (content.contentId === surveyId) {
+                  this.widgetResolverSurveyData.widgetData.progressStatus = content.status
+                }
               }
             }
-          }
-          resolve(true)
-        },
-        () => resolve(true),
-      )
+            resolve(true)
+          },
+          () => resolve(true),
+        )
+      }
+      resolve(true)
     })
   }
 

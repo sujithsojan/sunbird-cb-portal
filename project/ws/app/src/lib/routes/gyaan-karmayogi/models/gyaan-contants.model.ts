@@ -6,6 +6,7 @@ export const gyaanConstants = {
     sectors: 'Sectors',
     subSectors: 'Sub-sectors',
     category: 'Category',
+    singleCategory: 'Categories',
     subSectorName: 'subSectorName',
     resourceCategory: 'resourceCategory',
     timeOutDuration: 700,

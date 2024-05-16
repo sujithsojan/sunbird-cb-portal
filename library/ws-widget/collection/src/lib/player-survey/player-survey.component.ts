@@ -94,25 +94,29 @@ export class PlayerSurveyComponent extends WidgetBaseComponent
           userId = this.configSvc.userProfile.userId || ''
           this.userid = this.configSvc.userProfile.userId || ''
         }
-        const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
-                                                             this.activatedRoute.snapshot.queryParams.batchId, this.identifierId)
-        const req = {
-          request: {
-            userId,
-            batchId: resData.batchId || '',
-            courseId: resData.courseId || '',
-            contentIds: [],
-            fields: ['progressdetails'],
-          },
+        if (this.activatedRoute.snapshot.queryParams.collectionId &&
+          this.activatedRoute.snapshot.queryParams.batchId &&
+          this.identifierId) {
+          const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
+                                                               this.activatedRoute.snapshot.queryParams.batchId, this.identifierId)
+          const req = {
+            request: {
+              userId,
+              batchId: resData.batchId || '',
+              courseId: resData.courseId || '',
+              contentIds: [],
+              fields: ['progressdetails'],
+            },
+          }
+          this.widgetServ.fetchContentHistoryV2(req).subscribe(
+            (data: any) => {
+              this.contentProgressHash = data.result.contentList.filter((i: any) => i.contentId === this.currentResourceId)
+              if (this.contentProgressHash && this.contentProgressHash.length > 0) {
+                this.progressStatus = this.contentProgressHash[0].status
+              }
+              // console.log(this.progressStatus)
+          })
         }
-        this.widgetServ.fetchContentHistoryV2(req).subscribe(
-          (data: any) => {
-            this.contentProgressHash = data.result.contentList.filter((i: any) => i.contentId === this.currentResourceId)
-            if (this.contentProgressHash && this.contentProgressHash.length > 0) {
-              this.progressStatus = this.contentProgressHash[0].status
-            }
-            // console.log(this.progressStatus)
-        })
       }
     })
   }
@@ -149,7 +153,9 @@ export class PlayerSurveyComponent extends WidgetBaseComponent
                                                          this.activatedRoute.snapshot.queryParams.batchId, id)
     const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
     const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
-    this.viewerSvc.realTimeProgressUpdateQuiz(id, collectionId, batchId, status)
+    if (collectionId && batchId && id) {
+      this.viewerSvc.realTimeProgressUpdateQuiz(id, collectionId, batchId, status)
+    }
   }
 
   // fireRealTimeProgress(id: string) {

@@ -146,33 +146,38 @@ export class OfflineSessionComponent implements OnInit, OnDestroy {
     if (this.configSvc.userProfile) {
       userId = this.configSvc.userProfile.userId || ''
     }
-    const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
-      this.activatedRoute.snapshot.queryParams.collectionId,
-      this.activatedRoute.snapshot.queryParams.batchId,
-      this.activatedRoute.snapshot.params.resourceId)
-    const req: NsContent.IContinueLearningDataReq = {
-      request: {
-        userId,
-        batchId: requestCourse.batchId,
-        courseId: requestCourse.courseId || '',
-        contentIds: [],
-        fields: ['progressdetails'],
-      },
-    }
-    this.contentSvc.fetchContentHistoryV2(req).subscribe(
-      data => {
-        if (data && data.result && data.result.contentList.length) {
-          for (const content of data.result.contentList) {
-            if (content.contentId === this.activatedRoute.snapshot.params.resourceId) {
-              sessionData.completionPercentage = content.completionPercentage
-              sessionData.completionStatus = content.status
-              sessionData.lastCompletedTime = content.lastCompletedTime
+    if (this.activatedRoute.snapshot.queryParams.collectionId
+      && this.activatedRoute.snapshot.queryParams.batchId
+      && this.activatedRoute.snapshot.params.resourceId
+    ) {
+      const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+        this.activatedRoute.snapshot.queryParams.collectionId,
+        this.activatedRoute.snapshot.queryParams.batchId,
+        this.activatedRoute.snapshot.params.resourceId)
+      const req: NsContent.IContinueLearningDataReq = {
+        request: {
+          userId,
+          batchId: requestCourse.batchId,
+          courseId: requestCourse.courseId || '',
+          contentIds: [],
+          fields: ['progressdetails'],
+        },
+      }
+      this.contentSvc.fetchContentHistoryV2(req).subscribe(
+        data => {
+          if (data && data.result && data.result.contentList.length) {
+            for (const content of data.result.contentList) {
+              if (content.contentId === this.activatedRoute.snapshot.params.resourceId) {
+                sessionData.completionPercentage = content.completionPercentage
+                sessionData.completionStatus = content.status
+                sessionData.lastCompletedTime = content.lastCompletedTime
+              }
             }
           }
         }
-      }
-    )
-    resolveData.content.data['sessionData'] = sessionData
+      )
+      resolveData.content.data['sessionData'] = sessionData
+    }
     // calling initData to form the data
     this.initData(resolveData)
   }

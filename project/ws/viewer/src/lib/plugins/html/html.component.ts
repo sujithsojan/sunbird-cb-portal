@@ -126,10 +126,6 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     }
     // this.fireRealTimeProgress()
 
-    // tslint:disable-next-line: no-console
-    console.log('this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', this.store.getItem('Initialized'))
-    // tslint:disable-next-line: no-console
-    console.log('!this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', !this.store.getItem('Initialized'))
     // call for both LMS and duration calculation content
     this.fireRealTimeProgress(this.htmlContent)
 
@@ -152,16 +148,12 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       //   this.activatedRoute.snapshot.queryParams.batchId : ''
       const completionData = this.calculateCompletionStatus(htmlContent)
 
-      // tslint:disable-next-line: no-console
-      console.log('!this.store.getItem(\'Initialized\') in fireRealTimeProgress(htmlContent)', !this.store.getItem('Initialized'))
       let progressData
       if (this.store.getItem('Initialized')) {
         progressData = { ...this.store.getAll() || 0 , spentTime: (completionData && completionData.spentTime) }
       } else {
         progressData = { spentTime: (completionData && completionData.spentTime) || 0 }
       }
-      // tslint:disable-next-line: no-console
-      console.log('progressDetails in fireRealTimeProgress(htmlContent)', progressData)
 
       const req = {
         ...this.realTimeProgressRequest,
@@ -170,12 +162,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         progressDetails: progressData,
       }
 
-      // tslint:disable-next-line: no-console
-      console.log('progressDetails in req', req)
-
       this.scormAdapterService.addDataV3(req, htmlContent.identifier).subscribe((_res: any) => {
-        // tslint:disable-next-line: no-console
-        console.log('progressDetails in addDataV3', _res)
         this.loggerSvc.log('Progress updated successfully')
         // for updating the progress hashmap, for instant progress to be shown
         if (this.tocSvc.hashmap && this.tocSvc.hashmap[htmlContent.identifier]) {

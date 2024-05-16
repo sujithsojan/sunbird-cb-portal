@@ -50,7 +50,7 @@
                    <div class="each-sector flex items-center justify-start  {{sector?.name === selectedSector? 'selected-sector': ''}}"
                     (click)="sectorFilter(sector)" [style.background]="sector?.bgColor">
                     <img class="mr-3" width="24px" height="25px" src="{{sector?.imgUrl}}" [alt]="sector?.name">
-                    {{sector?.name}}
+                    {{sector?.name  | titlecase}}
                    </div> 
                 </ng-container>
             </div>
@@ -64,31 +64,31 @@
                 <form [formGroup]="gyaanForm" (ngSubmit)="applyFilter(gyaanForm)">
                     <div class="flex gap-2 items-center flex-col md:flex-row md:items-end justify-between">
                             <div class="flex flex-col">
-                                <label for="">{{'gyaanKarmayogi.sectors'| translate}}</label>
+                                <label for="">{{'gyaanKarmayogi.sector'| translate}}</label>
                                 <mat-form-field  appearance="outline"  class="filter-select">
                                     <mat-select name="sectors" placeholder="{{'gyaanKarmayogi.sectors' | translate}}" (selectionChange)="sectorChange($event)" formControlName="sectors">
                                         <ng-container *ngFor="let sector of sectorsList">
-                                            <mat-option [value]="sector">{{sector?.name}}</mat-option>
+                                            <mat-option [value]="sector">{{sector?.name | titlecase}}</mat-option>
                                         </ng-container>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="flex flex-col">
-                                <label for="">{{'gyaanKarmayogi.subSectors'| translate}}</label>
+                                <label for="">{{'gyaanKarmayogi.subSector'| translate}}</label>
                                 <mat-form-field   appearance="outline" class="filter-select">
                                     <mat-select name="subSectors" placeholder="{{'gyaanKarmayogi.subSectors' | translate}}" (selectionChange)="subSectorChange($event)" formControlName="subSectors" >
                                     <ng-container *ngFor="let subData of subSector">
-                                        <mat-option [value]="subData?.name">{{subData?.name}}</mat-option>
+                                        <mat-option [value]="subData?.name">{{subData?.name  | titlecase}}</mat-option>
                                     </ng-container>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="flex flex-col">
-                                <label for="">{{'gyaanKarmayogi.categories'| translate}}</label>
+                                <label for="">{{'gyaanKarmayogi.category'| translate}}</label>
                                 <mat-form-field   appearance="outline" class="filter-select">
                                     <mat-select name="category" placeholder="Categories" formControlName="category" >
                                         <ng-container *ngFor="let cat of categories">
-                                            <mat-option [value]="cat?.name">{{cat?.name}}</mat-option>
+                                            <mat-option [value]="cat?.name">{{cat?.name | titlecase}}</mat-option>
                                         </ng-container>
                                     </mat-select>
                                 </mat-form-field>

@@ -82,7 +82,7 @@ export class ViewerTocComponent implements OnInit, OnDestroy {
     private viewSvc: ViewerUtilService,
     private configSvc: ConfigurationsService,
     private contentProgressSvc: ContentProgressService,
-    private userSvc: WidgetUserService,
+    private userSvc: WidgetUserService
     // private tocSvc: AppTocService,
   ) {
     this.nestedTreeControl = new NestedTreeControl<IViewerTocCard>(this._getChildren)
@@ -207,14 +207,17 @@ export class ViewerTocComponent implements OnInit, OnDestroy {
   // tslint:disable
   private getContentProgressHash() {
     if (this.collection && this.batchId && this.configSvc.userProfile) {
-      this.contentProgressSvc
-        .getProgressHash(this.collection.identifier, this.batchId, this.configSvc.userProfile.userId)
+      if (this.resourceId) {
+        const requestCourse = this.viewSvc.getBatchIdAndCourseId(this.collection.identifier, this.batchId, this.resourceId)
+        this.contentProgressSvc
+        .getProgressHash(requestCourse.courseId, requestCourse.batchId , this.configSvc.userProfile.userId)
         .subscribe((progressHash:  any) => {
           this.contentProgressHash = progressHash
           if(this.collection && this.collection.identifier) {
             // this.updateProgressBasedOnHash(progressHash)
           }
         })
+      }
     }
   }
 

@@ -90,37 +90,44 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
             if (this.configSvc.userProfile) {
                 userId = this.configSvc.userProfile.userId || ''
             }
-            const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
-                this.activatedRoute.snapshot.queryParams.collectionId,
-                this.activatedRoute.snapshot.queryParams.batchId,
-                identifier)
-            const req: NsContent.IContinueLearningDataReq = {
-                request: {
-                    userId,
-                    batchId: requestCourse.batchId,
-                    courseId: requestCourse.courseId || '',
-                    contentIds: [],
-                    fields: ['progressdetails'],
-                },
-            }
-            this.contentSvc.fetchContentHistoryV2(req).subscribe(
-                data => {
-                    if (data && data.result && data.result.contentList.length) {
-                        for (const content of data.result.contentList) {
-                            if (content.contentId === identifier && content.progressdetails) {
-                                try {
-                                    // const progressdetails = JSON.parse(content.progressdetails)
-                                    // this.widgetResolverTestData.widgetData.resumePage = Number(content.progressdetails.current.pop())
-                                    // console.log(progressdetails)
-                                } catch { }
+            if (this.activatedRoute.snapshot.queryParams.collectionId
+                && this.activatedRoute.snapshot.queryParams.batchId
+                && identifier
+            ) {
+                const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+                    this.activatedRoute.snapshot.queryParams.collectionId,
+                    this.activatedRoute.snapshot.queryParams.batchId,
+                    identifier)
+                const req: NsContent.IContinueLearningDataReq = {
+                    request: {
+                        userId,
+                        batchId: requestCourse.batchId,
+                        courseId: requestCourse.courseId || '',
+                        contentIds: [],
+                        fields: ['progressdetails'],
+                    },
+                }
+                this.contentSvc.fetchContentHistoryV2(req).subscribe(
+                    data => {
+                        if (data && data.result && data.result.contentList.length) {
+                            for (const content of data.result.contentList) {
+                                if (content.contentId === identifier && content.progressdetails) {
+                                    try {
+                                        // const progressdetails = JSON.parse(content.progressdetails)
+                                        // this.widgetResolverTestData.widgetData.resumePage = Number(content.progressdetails.current.pop())
+                                        // console.log(progressdetails)
+                                    } catch { }
 
+                                }
                             }
                         }
-                    }
-                    resolve(true)
-                },
-                () => resolve(true),
-            )
+                        resolve(true)
+                    },
+                    () => resolve(true),
+                )
+            }
+            resolve(true)
+
         })
     }
     isErrorOccured(event: any) {
