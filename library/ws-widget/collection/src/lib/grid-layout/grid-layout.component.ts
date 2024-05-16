@@ -55,7 +55,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
   formID: any
   feedID: any
   formFields: any
-  submitBtnClick: boolean = false
+  submitBtnClick = false
   ratingList = [
     {
       value: 1,
@@ -101,7 +101,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
       })
     }
 
-    if(localStorage.getItem("platformRatingSubmit")) {
+    if (localStorage.getItem('platformRatingSubmit')) {
       this.isNPSOpen = false
       this.submitBtnClick = false
     } else {
@@ -132,7 +132,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
           //         this.isNPSOpen = true
           //         this.formID = item.data.actionData.formId
           //         this.feedID = item.id
-  
+
           //         this.npsService.getFormData(this.formID).subscribe((resform: any) => {
           //           if (resform) {
           //             this.formFields = resform.fields
@@ -145,8 +145,6 @@ export class GridLayoutComponent extends WidgetBaseComponent
         }
       })
     }
-
-   
 
     if (this.widgetData.gutter != null) {
       this.containerClass = `-mx-${this.widgetData.gutter}`
@@ -245,16 +243,16 @@ export class GridLayoutComponent extends WidgetBaseComponent
         'Tell us more about your experience': value,
       },
     }
-    if (localStorage.getItem("platformRatingSubmit")) {
+    if (localStorage.getItem('platformRatingSubmit')) {
       this.isNPSOpen = false
       this.submitBtnClick = false
     } else {
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
-        localStorage.setItem("platformRatingSubmit", "true")
+        localStorage.setItem('platformRatingSubmit', 'true')
         if (resp) {
-          const feedIDN = JSON.parse(this.feedID).map((item:any) => {
-            return item.replace(/\"/g, '');
-           });
+          const feedIDN = JSON.parse(this.feedID).map((item: any) => {
+            return item.replace(/\"/g, '')
+           })
           const req = {
             request: {
               userId: this.configSvc.unMappedUser.id,
@@ -274,20 +272,20 @@ export class GridLayoutComponent extends WidgetBaseComponent
               }
               this.submitBtnClick = false
             }
-          }, (error) => {
+          }, error => {
             // tslint:disable-next-line
             console.log(error)
             this.isNPSOpen = false
             this.submitBtnClick = false
           })
         }
-      }, (error) => {
+      }, error => {
         // tslint:disable-next-line
         console.log(error)
         this.isNPSOpen = false
         this.submitBtnClick = false
       }
-      )     
+      )
     }
   }
 
