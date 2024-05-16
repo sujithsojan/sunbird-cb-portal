@@ -17,7 +17,7 @@
          i18n-placeholder="search content" [placeholder]="placeHolder" i18-aria-label
           aria-label="search content" matInput [formControl]="queryControl" [matAutocomplete]="auto" maxlength="50" />
         
-        <mat-icon matSuffix (click)="clearSearchText()" class="cursor-pointer" *ngIf="queryControl.value">close</mat-icon>
+        <mat-icon matSuffix (click)="clearSearchText()" class="cursor-pointer seach-close-icon" *ngIf="queryControl.value">close</mat-icon>
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
           (optionSelected)="updateQuery($event.option.value)">
           <mat-option *ngIf="queryControl.value" [value]="queryControl.value">{{ queryControl.value }}

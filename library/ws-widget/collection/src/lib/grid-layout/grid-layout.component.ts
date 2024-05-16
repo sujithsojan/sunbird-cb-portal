@@ -30,15 +30,15 @@ const API_END_POINTS = {
 
 export class GridLayoutComponent extends WidgetBaseComponent
   implements OnInit, OnDestroy, NsWidgetResolver.IWidgetData<IGridLayoutDataMain> {
-    constructor(
-      private router: Router,
-      private events: EventService,
-      private configSvc: ConfigurationsService,
-      private http: HttpClient,
-      private npsService: NPSGridService,
-    ) {
-      super()
-    }
+  constructor(
+    private router: Router,
+    private events: EventService,
+    private configSvc: ConfigurationsService,
+    private http: HttpClient,
+    private npsService: NPSGridService,
+  ) {
+    super()
+  }
 
   @Input() widgetData!: IGridLayoutDataMain
   containerClass = ''
@@ -55,29 +55,30 @@ export class GridLayoutComponent extends WidgetBaseComponent
   formID: any
   feedID: any
   formFields: any
+  submitBtnClick: boolean = false
   ratingList = [
     {
-      value:  1,
+      value: 1,
       image: '/assets/images/nps/Rating_1@2x.svg',
       showImage: false,
     },
     {
-      value:  2,
+      value: 2,
       image: '/assets/images/nps/Rating_2@2x.svg',
       showImage: false,
     },
     {
-      value:  3,
+      value: 3,
       image: '/assets/images/nps/Rating_3@2x.svg',
       showImage: false,
     },
     {
-      value:  4,
+      value: 4,
       image: '/assets/images/nps/Rating_4@2x.svg',
       showImage: false,
     },
     {
-      value:  5,
+      value: 5,
       image: '/assets/images/nps/Rating_5@2x.svg',
       showImage: false,
     },
@@ -100,45 +101,52 @@ export class GridLayoutComponent extends WidgetBaseComponent
       })
     }
 
-    this.updateTelemetryDataSubscription = this.npsService.updateTelemetryDataObservable.subscribe((value: any) => {
-      if (value) {
-        if (localStorage.getItem('ratingformID')) {
-          this.isNPSOpen = true
-
-          if (this.isNPSOpen) {
-            this.configSvc.updatePlatformRatingMethod({ bottom: '190px' })
-          }
-          this.formID = localStorage.getItem('ratingformID')
-          this.npsService.getFormData(this.formID).subscribe((resform: any) => {
-            if (resform) {
-              this.formFields = resform.fields
+    if(localStorage.getItem("platformRatingSubmit")) {
+      this.isNPSOpen = false
+      this.submitBtnClick = false
+    } else {
+      this.updateTelemetryDataSubscription = this.npsService.updateTelemetryDataObservable.subscribe((value: any) => {
+        if (value) {
+          if (localStorage.getItem('ratingformID')) {
+            this.isNPSOpen = true
+            this.submitBtnClick = true
+            if (this.isNPSOpen) {
+              this.configSvc.updatePlatformRatingMethod({ bottom: '190px' })
             }
-          })
-          this.raisePlatformRatingStartTelemetry()
+            this.formID = localStorage.getItem('ratingformID')
+            this.npsService.getFormData(this.formID).subscribe((resform: any) => {
+              if (resform) {
+                this.formFields = resform.fields
+              }
+            })
+            this.raisePlatformRatingStartTelemetry()
+          }
+          if (localStorage.getItem('ratingfeedID')) {
+            this.feedID = localStorage.getItem('ratingfeedID')
+          }
+          // this.npsService.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
+          //   if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
+          //     const feed = res.result.response.userFeed
+          //     feed.forEach((item: any) => {
+          //       if (item.category === 'NPS' && item.data.actionData.formId) {
+          //         this.isNPSOpen = true
+          //         this.formID = item.data.actionData.formId
+          //         this.feedID = item.id
+  
+          //         this.npsService.getFormData(this.formID).subscribe((resform: any) => {
+          //           if (resform) {
+          //             this.formFields = resform.fields
+          //           }
+          //         })
+          //       }
+          //     })
+          //   }
+          // })
         }
-        if (localStorage.getItem('ratingfeedID')) {
-          this.feedID = localStorage.getItem('ratingfeedID')
-        }
-        // this.npsService.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
-        //   if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
-        //     const feed = res.result.response.userFeed
-        //     feed.forEach((item: any) => {
-        //       if (item.category === 'NPS' && item.data.actionData.formId) {
-        //         this.isNPSOpen = true
-        //         this.formID = item.data.actionData.formId
-        //         this.feedID = item.id
+      })
+    }
 
-        //         this.npsService.getFormData(this.formID).subscribe((resform: any) => {
-        //           if (resform) {
-        //             this.formFields = resform.fields
-        //           }
-        //         })
-        //       }
-        //     })
-        //   }
-        // })
-      }
-    })
+   
 
     if (this.widgetData.gutter != null) {
       this.containerClass = `-mx-${this.widgetData.gutter}`
@@ -196,7 +204,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
         this.configSvc.updatePlatformRatingMethod({ bottom: '190px' })
         if (rating.value < 4) {
           this.phtext = 'How can we make it better for you next time?'
-        } else  {
+        } else {
           this.phtext = 'Inspire others by sharing your positive experience'
         }
         // console.log('ratingGiven', this.ratingGiven)
@@ -226,6 +234,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
   }
 
   submitRating(value: any) {
+    this.submitBtnClick = true
     const currenttimestamp = new Date().getTime()
     const reqbody = {
       formId: Number(this.formID),
@@ -236,10 +245,16 @@ export class GridLayoutComponent extends WidgetBaseComponent
         'Tell us more about your experience': value,
       },
     }
-
-    this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
-      if (resp) {
-        const feedIDN = this.feedID.replace(/\"/g, '')
+    if (localStorage.getItem("platformRatingSubmit")) {
+      this.isNPSOpen = false
+      this.submitBtnClick = false
+    } else {
+      this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
+        localStorage.setItem("platformRatingSubmit", "true")
+        if (resp) {
+          const feedIDN = JSON.parse(this.feedID).map((item:any) => {
+            return item.replace(/\"/g, '');
+           });
           const req = {
             request: {
               userId: this.configSvc.unMappedUser.id,
@@ -247,19 +262,33 @@ export class GridLayoutComponent extends WidgetBaseComponent
               feedId: feedIDN,
             },
           }
-        this.npsService.deleteFeed(req).subscribe((res: any) => {
-          if (res) {
-            this.onSuccessRating = true
-            if (localStorage.getItem('ratingformID')) {
-              localStorage.removeItem('ratingformID')
+          this.npsService.deleteFeed(req).subscribe((res: any) => {
+            if (res) {
+              this.onSuccessRating = true
+              this.isNPSOpen = false
+              if (localStorage.getItem('ratingformID')) {
+                localStorage.removeItem('ratingformID')
+              }
+              if (localStorage.getItem('ratingfeedID')) {
+                localStorage.removeItem('ratingfeedID')
+              }
+              this.submitBtnClick = false
             }
-            if (localStorage.getItem('ratingfeedID')) {
-              localStorage.removeItem('ratingfeedID')
-            }
-          }
-        })
+          }, (error) => {
+            // tslint:disable-next-line
+            console.log(error)
+            this.isNPSOpen = false
+            this.submitBtnClick = false
+          })
+        }
+      }, (error) => {
+        // tslint:disable-next-line
+        console.log(error)
+        this.isNPSOpen = false
+        this.submitBtnClick = false
       }
-    })
+      )     
+    }
   }
 
   closeNPS() {
@@ -352,7 +381,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
     this.events.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: this.ratingGiven ? this.ratingGiven.value :  0,
+        subType: this.ratingGiven ? this.ratingGiven.value : 0,
         id: `platform-rating-${type}`,
       },
       {},

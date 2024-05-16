@@ -818,15 +818,18 @@ export class InitService {
 
   // for NPS user feed check
   private checkUserFeed() {
+    let feedId:any = []
     this.npsSvc.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
       if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
         const feed = res.result.response.userFeed
         feed.forEach((item: any) => {
-          if (item.category === 'NPS' && item.data.actionData.formId) {
+          if (item.category === 'NPS' && item && item.data && item.data.actionData && item.data.actionData.formId) {
+            feedId.push(item.id)
               const currentTime = moment()
               localStorage.platformratingTime = currentTime
               localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
-              localStorage.setItem('ratingfeedID', JSON.stringify(item.id))
+              localStorage.setItem('ratingfeedID', JSON.stringify(feedId))
+              
           }
         })
       }
