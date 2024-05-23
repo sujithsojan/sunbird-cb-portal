@@ -825,6 +825,7 @@ export class InitService {
         feed.forEach((item: any) => {
           if (item.category === 'NPS' && item && item.data && item.data.actionData && item.data.actionData.formId) {
             feedId.push(item.id)
+            // console.log(feedId, "feed id items============")
               const currentTime = moment()
               localStorage.platformratingTime = currentTime
               localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))

@@ -233,6 +233,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
 
   submitRating(value: any) {
     this.submitBtnClick = true
+    this.onSuccessRating = true
     const currenttimestamp = new Date().getTime()
     const reqbody = {
       formId: Number(this.formID),
@@ -248,43 +249,37 @@ export class GridLayoutComponent extends WidgetBaseComponent
       // this.submitBtnClick = false
     } else {
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
-        localStorage.setItem('platformRatingSubmit', 'true')
-        if (resp) {
+        // tslint:disable-next-line
+        console.log(resp)
+        localStorage.setItem('platformRatingSubmit', 'true')     
+        this.isNPSOpen = false
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
-          const req = {
-            request: {
-              userId: this.configSvc.unMappedUser.id,
-              category: 'NPS',
-              feedId: feedIDN,
-            },
-          }
-          this.npsService.deleteFeed(req).subscribe((res: any) => {
-            if (res) {
-              this.onSuccessRating = true
-              this.isNPSOpen = false
-              if (localStorage.getItem('ratingformID')) {
-                localStorage.removeItem('ratingformID')
-              }
-              if (localStorage.getItem('ratingfeedID')) {
-                localStorage.removeItem('ratingfeedID')
-              }
-              // this.submitBtnClick = false
+          // const feedIDN = this.feedID.replace(/\"/g, '')
+          if(feedIDN.length > 0 ) {   
+            if (localStorage.getItem('ratingformID')) {
+              localStorage.removeItem('ratingformID')
             }
-          }, error => {
-            // tslint:disable-next-line
-            console.log(error)
-            this.isNPSOpen = false
-            // this.submitBtnClick = false
-          })
+            if (localStorage.getItem('ratingfeedID')) {
+              localStorage.removeItem('ratingfeedID')
+            }
+            for (let item of feedIDN) {
+              const req = {
+                request: {
+                  userId: this.configSvc.unMappedUser.id,
+                  category: 'NPS',
+                  feedId: item,
+                },
+              }
+              this.npsService.deleteFeed(req).subscribe((res: any) => {
+              // tslint:disable-next-line
+              console.log(res)
+              }
+              )
+            }
+          }
         }
-      }, error => {
-        // tslint:disable-next-line
-        console.log(error)
-        this.isNPSOpen = false
-        // this.submitBtnClick = false
-      }
       )
     }
   }
@@ -299,30 +294,37 @@ export class GridLayoutComponent extends WidgetBaseComponent
         dataObject: {},
       }
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
-        if (resp) {
-          // this.isNPSOpen = false
-          const feedIDN = this.feedID.replace(/\"/g, '')
-          const req = {
-            request: {
-              userId: this.configSvc.unMappedUser.id,
-              category: 'NPS',
-              feedId: feedIDN,
-            },
-          }
-          this.npsService.deleteFeed(req).subscribe((res: any) => {
-            if (res) {
-              this.isNPSOpen = false
-              this.configSvc.updatePlatformRatingMethod({ bottom: '120px' })
-              if (localStorage.getItem('ratingformID')) {
-                localStorage.removeItem('ratingformID')
-              }
-              if (localStorage.getItem('ratingfeedID')) {
-                localStorage.removeItem('ratingfeedID')
-              }
-              this.raisePlatformRatingEndTelemetry()
+        this.isNPSOpen = false
+         // tslint:disable-next-line
+         console.log(resp)
+          // const feedIDN = this.feedID.replace(/\"/g, '')
+          const feedIDN = JSON.parse(this.feedID).map((item: any) => {
+            return item.replace(/\"/g, '')
+           })
+           if(feedIDN.length > 0 ) {   
+            if (localStorage.getItem('ratingformID')) {
+              localStorage.removeItem('ratingformID')
             }
-          })
-        }
+            if (localStorage.getItem('ratingfeedID')) {
+              localStorage.removeItem('ratingfeedID')
+            }
+            for (let item of feedIDN) {
+              const req = {
+                request: {
+                  userId: this.configSvc.unMappedUser.id,
+                  category: 'NPS',
+                  feedId: item,
+                },
+              }
+              this.npsService.deleteFeed(req).subscribe((res: any) => {
+                if(res) {
+                  this.configSvc.updatePlatformRatingMethod({ bottom: '120px' })
+                  this.raisePlatformRatingEndTelemetry()
+                }
+              }
+              )
+            }
+          }   
       })
     } else {
       this.isNPSOpen = false
