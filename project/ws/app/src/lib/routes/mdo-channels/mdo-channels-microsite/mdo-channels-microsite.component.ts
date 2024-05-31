@@ -24,6 +24,8 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     },
   ]
   showModal: boolean = false
+  descriptionMaxLength = 500
+  expanded = false
 
   constructor(
     private route: ActivatedRoute,
@@ -85,6 +87,10 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   onClose() {
     this.showModal = false
     document.body.style.overflow = 'auto'
+  }
+
+  viewMoreOrLess() {
+    this.expanded = !this.expanded
   }
 
 }

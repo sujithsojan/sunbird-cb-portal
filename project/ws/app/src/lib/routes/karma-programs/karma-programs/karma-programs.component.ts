@@ -30,7 +30,7 @@ export class KarmaProgramsComponent implements OnInit {
   totalCount = 0
   private unsubscribe = new Subject<void>()
   titles = [
-    { title: 'Channels', url: 'none', icon: '' },
+    { title: 'Karma Programs', url: 'none', icon: '' },
   ]
   getAllProvidersReq = {
     request: {
@@ -120,9 +120,10 @@ export class KarmaProgramsComponent implements OnInit {
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      sortByControl: new FormControl('asc'),
+      sortByControl: new FormControl(''),
       searchKey: new FormControl(''),
     })
+    this.sortType('asc')
     this.displayLoader = this.browseProviderSvc.isLoading()
     this.searchForm.valueChanges
       .pipe(
@@ -242,6 +243,15 @@ export class KarmaProgramsComponent implements OnInit {
       this.disableLoadMore = true
     } else {
       this.disableLoadMore = false
+    }
+  }
+
+  sortType(sortType: any){
+    if(this.searchForm && this.searchForm.get('sortByControl')){
+      // tslint:disable-next-line: no-non-null-assertion
+      this.searchForm.get('sortByControl')!.setValue(sortType)
+      this.sortBy = sortType;
+      this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
     }
   }
 

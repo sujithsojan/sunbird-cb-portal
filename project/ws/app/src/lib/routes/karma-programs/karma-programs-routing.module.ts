@@ -8,21 +8,21 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'all-channels',
+        redirectTo: 'all-programs',
     },
     {
-        path: 'all-channels',
+        path: 'all-programs',
         component: KarmaProgramsComponent,
         data: {
-            pageId: 'all-channels',
+            pageId: 'all-programs',
             module: 'Learn',
         },
     },
     {
-        path: ':channel/:orgId/micro-sites',
+        path: ':program/:orgId/micro-sites',
         component: KarmaProgramsMicrositeComponent,
         data: {
-            pageId: ':channel/:orgId/micro-sites',
+            pageId: ':program/:orgId/micro-sites',
             module: 'Learn',
         },
         resolve: {

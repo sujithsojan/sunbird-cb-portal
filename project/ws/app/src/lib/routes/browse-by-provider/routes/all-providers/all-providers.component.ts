@@ -65,6 +65,7 @@ export class AllProvidersComponent implements OnInit {
       sortByControl: new FormControl(''),
       searchKey: new FormControl(''),
     })
+    this.sortType('asc')
     this.displayLoader = this.browseProviderSvc.isLoading()
     this.searchForm.valueChanges
       .pipe(
@@ -173,6 +174,16 @@ export class AllProvidersComponent implements OnInit {
       this.disableLoadMore = true
     } else {
       this.disableLoadMore = false
+    }
+  }
+
+  sortType(sortType: any) {
+    if (this.searchForm && this.searchForm.get('sortByControl')) {
+      // tslint:disable-next-line: no-non-null-assertion
+      this.searchForm.get('sortByControl')!.setValue(sortType)
+      this.sortBy = sortType
+      // tslint:disable-next-line: max-line-length
+      this.allProviders = _.orderBy(this.allProviders && this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
     }
   }
 

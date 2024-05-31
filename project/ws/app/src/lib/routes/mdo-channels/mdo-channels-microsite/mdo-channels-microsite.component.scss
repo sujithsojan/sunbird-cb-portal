@@ -30,6 +30,30 @@
     box-sizing: border-box;
 }
 
+.logo-box-container {
+    width: 157px;
+    position: relative;
+    height: 64px;
+}
+
+.logo-box-square {
+    height: 99px;
+    width: 157px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
+    .logo-img{
+        max-width: 122px;
+    }
+    &.top{
+        position: absolute;
+        top: -54px;
+    }
+}
+
 .logo-img {
     object-fit: contain;
     max-height: 70px;

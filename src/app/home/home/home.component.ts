@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isKPPanelenabled = false
   enrollData: any
   enrollInterval: any
+  newHomeStrips: any
   jan26Change: any
   pendingApprovalList: any
 
@@ -74,6 +75,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     })
     if (this.activatedRoute.snapshot.data.pageData) {
       this.homeConfig = this.activatedRoute.snapshot.data.pageData.data.homeConfig
+    }
+    if (this.activatedRoute.snapshot.data.pageData) {
+      this.newHomeStrips = this.activatedRoute.snapshot.data.pageData.data.newHomeStrip
     }
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []

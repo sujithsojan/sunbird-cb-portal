@@ -28,25 +28,53 @@
 
 
 <ng-template #topSection let-data="data">
-    <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
-        <div class="container">
-            <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
-                <div class="col-span-12 md:col-span-6">
-                    <div class="flex-1 flex flex-col mr-4 ws-mat-black-text">
-                        <div class="flex items-center logo-square ">
-                            <img alt="Application Logo" class="logo-img" [src]="data?.logo">
+    <!-- top section desktop layout -->
+    <div class="hidden md:block">
+        <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
+            <div class="container">
+                <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                    <div class="col-span-12 md:col-span-6">
+                        <div class="flex-1 flex flex-col mr-4 ws-mat-black-text">
+                            <div class="flex items-center logo-square ">
+                                <img alt="Application Logo" class="logo-img" [src]="data?.logo">
+                            </div>
+                            <div class="mt-6 pt-6">
+                                <h1  class=" txt-ellipsis-2 break-words">{{data.title}}</h1>
+                                <p class="mat-body-1">
+                                    {{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
+                                    <span (click)="viewMoreOrLess()"
+                                        *ngIf="data?.description?.length > descriptionMaxLength"
+                                        class="cursor-pointer ws-mat-default-text font-bold"> ...View {{expanded ? 'less' : 'more' }}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="mt-6 pt-6">
-                            <h1 >{{data.title}}</h1>
-                            <p>{{data.description}}</p>
+                    </div>
+                    <div class="col-span-12 md:col-span-6">
+                        <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                            <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
                         </div>
                     </div>
                 </div>
-                <div class="col-span-12 md:col-span-6">
-                    <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
-                        <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
-                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- top section m-site layout -->
+    <div class="block md:hidden">
+        <div class="col-span-12">
+            <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
+            </div>
+        </div>
+        <div class="container px-4 flex flex-col">
+            <div class="mr-4 logo-box-container">
+                <div class="flex logo-box-square top mr-4">
+                    <img alt="Application Logo" class="logo-img" [src]="data?.logo">
                 </div>
+            </div>
+            <div class="w-full md:w-9/12 flex-1 flex flex-col">
+                <h1 class=" txt-ellipsis-2 break-words">{{data?.title}}</h1>
+                <p class="mat-body-2">{{data.description}}</p>
             </div>
         </div>
     </div>
@@ -54,7 +82,6 @@
         <ng-container>
             <div class="flex items-center justify-center empty-div" [ngStyle]="{'background': data.background}"></div>    
         </ng-container>
-        
     </div>
     <div class="flex items-center justify-center">
         <div class="container metrics-section" >

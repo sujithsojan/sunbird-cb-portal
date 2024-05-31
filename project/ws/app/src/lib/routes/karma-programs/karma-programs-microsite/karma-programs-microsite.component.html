@@ -1,3 +1,6 @@
+<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
+</ws-widget-btn-page-back>
+
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
         <ng-container *ngIf="sectionList?.length">
@@ -23,13 +26,38 @@
 
 <!-- banner start -->
 <ng-template #banner let-data="data">
-    <div class="flex justify-between container-balanced   pt-8 pb-8">
-        <div class="flex-1 flex flex-col mr-4 text-white">
-            <h1 >{{data.title}}</h1>
-            <p>{{data.description}}</p>
+    <div class="hidden md:block">
+        <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
+            <div class="container">
+                <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                    <div class="col-span-12 md:col-span-6">
+                        <div class="flex-1 flex flex-col mr-4 ws-mat-white-text">
+                            <div class="mt-6 pt-6">
+                                <h1  class=" txt-ellipsis-2 break-words">{{data.title}}</h1>
+                                <p class="mat-body-1">{{data.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-12 md:col-span-6">
+                        <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                            <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="slider slider-box" *ngIf="data.sliders">
-            <sb-uic-sliders [widgetData]="data.sliders"></sb-uic-sliders>
+    </div>
+    <div class="block md:hidden">
+        <div class="col-span-12">
+            <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
+            </div>
+        </div>
+        <div class="container px-4 py-4 flex flex-col">
+            <div class="w-full md:w-9/12 flex-1 flex flex-col ws-mat-white-text">
+                <h1 class=" txt-ellipsis-2 break-words">{{data?.title}}</h1>
+                <p class="mat-body-2">{{data.description}}</p>
+            </div>
         </div>
     </div>
 </ng-template>
@@ -37,16 +65,16 @@
 
 <!-- karma program data with search -->
 <ng-template #contentWithSearch let-data="data">
-    <div class="container-balanced  pt-8 pb-8">
-        <div class="flex-1 flex flex-col mr-4 text-white">
+    <div class="container-balanced px-4 pt-8 pb-8 ">
+        <div class="flex-1 flex flex-col text-white">
             <div class="w-full">
-                  <mat-form-field appearance="outline"  class="w-full pl-1 mat-form-search">
+                  <mat-form-field appearance="outline"  class="w-full mat-form-search">
                     <input name="search"  (keyup.enter)="handleSearchQuery($event)"   matInput placeholder="Search">
                   </mat-form-field>
               </div>
         </div>
        <ng-container *ngIf="contentDataList?.length">
-            <div class="flex flex-row flex-wrap content-container mt-10 mb-10 ng-star-inserted">
+            <div class="flex flex-row flex-wrap content-container mt-5 mb-10 ng-star-inserted">
                 <div class="mr-2 mb-5 flex" *ngFor="let c of contentDataList">
                     <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
                 </div>

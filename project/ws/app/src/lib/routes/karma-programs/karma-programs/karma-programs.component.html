@@ -2,21 +2,20 @@
 </ws-widget-btn-page-back>
 <div class="container-balanced main_content_box">
     <div class="all_provider_box">
-        <h2 class="mat-h1 margin-bottom-m inline-block "> {{ 'allChannelsComponent.allChannels' | translate }} ({{allProviders?.length}})</h2>
+        <h2 class="mat-h1 margin-bottom-m inline-block "> {{ 'allChannelsComponent.allPrograms' | translate }} ({{allProviders?.length}})</h2>
         <div class="all_provider_inner">
             <!-- search box and dropdown-->
             <form [formGroup]="searchForm">
                 <div class="flex top_search_box">
                     <div class="search_box_inner flex-1">
                         <div class="flex flex-1 flex-column margin-fix search search_box_main">
-                            <mat-form-field appearance="outline" class="autocomplete-form mat-form-search-programs search_form margin-right-s"
-                                color="primary">
-                                <mat-icon matPrefix class="flex items-center justify-center mr-2">search
+                            <div class="relative search-wrapper">
+                                <mat-icon matPrefix class="flex absolute items-center justify-center mr-2">search
                                 </mat-icon>
-                                <input type="search" name="searchKey" #searchKey class="ml-2" i18-aria-label
+                                <input type="search" name="searchKey" #searchKey class="ml-2 search-field" i18-aria-label
                                     aria-label="Search" formControlName="searchKey" i18n-placeholder="search"
-                                    [placeholder]="'allproviderscomponent.search' | translate" matInput />
-                            </mat-form-field>
+                                    [placeholder]="'allproviderscomponent.search' | translate" />
+                            </div>
                         </div>
                     </div>
 
@@ -24,15 +23,27 @@
                         <div class="flex flex-1 flex-wrap section-input">
                             <div class="item">
                                 <mat-menu #appMenu="matMenu">
-                                    <button mat-menu-item>{{ 'allChannelsComponent.ascending' | translate }} ( A - Z )</button>
-                                    <button mat-menu-item>{{ 'allChannelsComponent.descending' | translate }} ( Z - A )</button>
+                                    <button (click)="sortType('asc')" mat-menu-item>
+                                        {{ 'allChannelsComponent.ascending' | translate }} ( A - Z )
+                                    </button>
+                                    <button (click)="sortType('desc')"  mat-menu-item>
+                                        {{ 'allChannelsComponent.descending' | translate }} ( Z - A )
+                                    </button>
                                   </mat-menu>
                                   
-                                  <button mat-icon-button class="flex" [matMenuTriggerFor]="appMenu">
+                                  <button mat-icon-button class="flex w-full sort-menu justify-end" [matMenuTriggerFor]="appMenu">
                                    <div class="flex items-center">
-                                        <span class="mr-1" *ngIf="searchForm?.value?.sortByControl === 'asc'">{{ 'allChannelsComponent.ascending' | translate }} ( A - Z )</span>
-                                        <span class="mr-1" *ngIf="searchForm?.value?.sortByControl !== 'asc'">{{ 'allChannelsComponent.descending' | translate }} ( Z - A )</span>
-                                        <mat-icon matPrefix class="flex items-center justify-center mr-2">sort
+                                        <span class="mr-1" *ngIf="searchForm?.value?.sortByControl === 'asc'">
+                                            <span class="block md:hidden">A-Z</span>
+                                            <span class="hidden md:block">{{ 'allChannelsComponent.ascending' | translate }} ( A - Z )</span>
+                                        </span>
+                                        <span class="mr-1" *ngIf="searchForm?.value?.sortByControl !== 'asc'">
+                                            <span class="block md:hidden">Z-A</span>
+                                            <span class="hidden md:block">{{ 'allChannelsComponent.descending' | translate }} ( Z - A )</span>
+                                        </span>
+                                        
+                                        
+                                        <mat-icon matPrefix class="flex items-center justify-center ">sort
                                         </mat-icon>
                                    </div>
                                   </button>
@@ -54,8 +65,7 @@
             <mat-sidenav-container>
                 <!-- search cards -->
                 <mat-sidenav-content class="custom-sidecontent  mat-drawer-content mat-sidenav-content">
-
-                    <div class="provider_card_box">
+                    <div class="provider_card_box mt-8 justify-center md:justify-start">
                         <ng-container *ngFor="let p of clonesProviders">
                             <sb-uic-card-karma-programs [widgetData]="p"></sb-uic-card-karma-programs>
                         </ng-container>

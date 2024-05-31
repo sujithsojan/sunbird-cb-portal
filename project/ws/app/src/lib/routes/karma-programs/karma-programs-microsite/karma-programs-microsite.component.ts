@@ -9,9 +9,18 @@ import { KarmaProgramsService } from '../service/karma-programs.service'
   styleUrls: ['./karma-programs-microsite.component.scss'],
 })
 export class KarmaProgramsMicrositeComponent implements OnInit {
-
+  programName = ''
+  orgId = ''
   sectionList: any = []
   contentDataList: any = []
+  titles = [
+    {
+      title: `Karma programs`,
+      url: `/app/learn/karma-programs/all-programs`,
+      textClass: 'ws-mat-black60-text',
+      icon: '', disableTranslate: true,
+    },
+  ]
   loadContentSearch = false
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
@@ -29,6 +38,14 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
 
       this.getDataFromSearch()
     }
+    this.route.params.subscribe(params => {
+      this.programName = params['program']
+      this.orgId = params['orgId']
+      this.titles.push({
+        title: this.programName, icon: '', url: 'none', disableTranslate: true,
+        textClass: '',
+      })
+    })
   }
 
   async getDataFromSearch(requestData?: any) {

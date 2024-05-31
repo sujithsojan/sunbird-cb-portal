@@ -27,6 +27,7 @@ import {
   MatProgressSpinnerModule,
   MatCheckboxModule,
   MatTooltipModule,
+  MatMenuModule,
 } from '@angular/material'
 import { MatCardModule } from '@angular/material/card'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
@@ -86,6 +87,7 @@ import { ProviderContentAllComponent } from './routes/provider-content-all/provi
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
+    MatMenuModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     PipeFilterModule,

@@ -28,6 +28,7 @@ import {
   MatButtonToggleModule,
   MatTabsModule,
   MatAutocompleteModule,
+  MatMenuModule,
 } from '@angular/material'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { HttpClient } from '@angular/common/http'
@@ -90,6 +91,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
     CommonStripModule,
     CardsModule,
     AnnouncementsModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

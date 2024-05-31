@@ -43,6 +43,7 @@
                             </span>
                         </ng-container>
                     </ng-container>
+                    <ng-container  [ngTemplateOutlet]="loadNewStrips" ></ng-container>
 
                     <div class="slider" *ngIf="sliderData && sliderData[0]?.active">
                         <ng-container *ngFor="let vitem of sectionList">
@@ -204,3 +205,10 @@
         <button class="ui fluid-button update-now" (click)="fetchProfile()" role="button">{{ 'home.updateNow' | translate }}</button>
     </div>
 </div>
+
+<ng-template #loadNewStrips>
+    <ng-container *ngFor="let newStrip of newHomeStrips">
+        <sb-uic-content-strip-with-tabs 
+        [providerId]="'01381906916850892825'" [widgetData]="newStrip"></sb-uic-content-strip-with-tabs>
+    </ng-container>
+</ng-template>
