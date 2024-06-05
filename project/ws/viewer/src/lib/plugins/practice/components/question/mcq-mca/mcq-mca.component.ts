@@ -67,6 +67,12 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
     updateParent($event: any) {
         this.update.emit($event)
     }
+    getSanitizeString(res: any) {
+        if (res) {
+            const response = res.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+            return response
+        }
+    }
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {

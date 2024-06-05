@@ -64,22 +64,40 @@
   <div class="flex flex-1 blank_box"></div>
 </div> -->
 
-<div class="flex flex-col ws-mat-primary-lite-background-important box-height">
+<div class="flex flex-col ws-mat-primary-lite-background-important" [ngClass]="coursePrimaryCategory !== 'Standalone Assessment' ? 'box-height':'box-height-standalone'">
   <div class="assessment-container">
-  <div class="assessment-stats-count">
+  <div [ngClass]="coursePrimaryCategory !== 'Standalone Assessment' ? 'assessment-stats-count':'standalone-assessment-stats-count'">
     <div class="flex flex-row justify-between">
       <div class="flex flex-row">
+        <div>
         <div class="flex flex-col stats-label">
             <div><img src="assets/icons/final-assessment/assessment.svg"></div>
             <div>{{noOfQuestions}} {{ 'playerbrief.questions' | translate }}</div>
         </div>
-        <div class="flex flex-col margin-left-64 stats-label" *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory">
+      </div>
+      <div>
+        <div class="flex flex-col stats-label" *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory" [ngClass]="coursePrimaryCategory === 'Standalone Assessment' ? 'ml-5':''">
           <div><img src="assets/icons/final-assessment/timer.svg"></div>
           <div>{{( timeLimit | pipeDurationTransform: 'hms')}}</div>
         </div>
       </div>
-      <div class="start-assessment-cta hidden md:block">
-        <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" class="bg-blue-800 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
+      <div>
+        <div class="ml-5 start-assessment-cta-standalone block md:hidden" *ngIf="coursePrimaryCategory === 'Standalone Assessment'">
+          <button [disabled]="!consentGiven" *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" [ngClass]="consentGiven ? 'bg-blue-800 text-white' : 'secondary text-black'" class=" text-sm font-semibold  py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
+            <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
+          </button>
+          <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">{{'playerbrief.maxAllowedRetake' | translate}}</mat-hint>
+        </div>
+      </div>
+      </div>
+      <div class="start-assessment-cta hidden md:block" *ngIf="coursePrimaryCategory === 'Standalone Assessment'">
+        <button [disabled]="!consentGiven" *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" [ngClass]="consentGiven ? 'bg-blue-800 text-white' : 'secondary text-black'" class="text-sm font-semibold py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
+          <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
+        </button>
+        <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">{{'playerbrief.maxAllowedRetake' | translate}}</mat-hint>
+      </div>
+      <div class="start-assessment-cta hidden md:block" *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+        <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" class="bg-blue-800 text-white text-sm font-semibold py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
           <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
         </button>
         <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">{{'playerbrief.maxAllowedRetake' | translate}}</mat-hint>
@@ -88,7 +106,7 @@
     </div>
    
   </div>
-  <div class="summary flex flex-col">
+  <div class="summary flex flex-col" *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
     <div>
       <h2 class="summary-label">{{ 'practiceoverview.summary' | translate }}</h2>
     </div>
@@ -110,10 +128,21 @@
      </ul>
     </div>
   </div>
+  <div class="summary-standalone flex flex-col" *ngIf="coursePrimaryCategory == 'Standalone Assessment'">
+    <!-- <div>
+      <h2 class="summary-label">{{ 'practiceoverview.summary' | translate }}</h2>
+    </div> -->
+    <div class="summary-detail mt-5">
+      <p [innerHtml]="instructionAssessment"></p>
+    </div>
+    <div class="consent-checkbox">
+      <mat-checkbox (change)="startTestEnable($event)">I have read and understood all the instructions. I understand that using unfair means of any sort for any advantage will lead to immediate disqualification. The decision of iGOTkarmayogi.gov.in  will be final in these matters.</mat-checkbox>
+    </div>
+  </div>
 
   
 </div>
-<div class="start-assessment-cta block md:hidden">
+<div class="start-assessment-cta block md:hidden" *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
   <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" class="bg-blue-800 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
     <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
   </button>

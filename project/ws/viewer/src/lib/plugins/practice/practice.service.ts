@@ -10,9 +10,11 @@ const API_END_POINTS = {
   ASSESSMENT_SUBMIT_V2: `/apis/protected/v8/user/evaluate/assessment/submit/v2`,
   ASSESSMENT_SUBMIT_V3: `/apis/protected/v8/user/evaluate/assessment/submit/v3`,
   ASSESSMENT_SUBMIT_V4: `/apis/protected/v8/user/evaluate/assessment/submit/v4`,
+  ASSESSMENT_SUBMIT_V5: `/apis/protected/v8/user/evaluate/assessment/submit/v5`,
   ASSESSMENT_RESULT_V4: `/apis/proxies/v8/user/assessment/v4/result`,
-  QUESTION_PAPER_SECTIONS: `/apis/proxies/v8/assessment/read`,
-  QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/read`,
+  QUESTION_PAPER_SECTIONS: `/apis/proxies/v8/assessment/v5/read`,
+  QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/v5/read`,
+  SAVE_AND_NEXT_QUESTION: `apis/proxies/v8/assessment/save`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
 }
 @Injectable({
@@ -78,6 +80,12 @@ export class PracticeService {
   }
   submitQuizV4(req: NSPractice.IQuizSubmit): Observable<any> {
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_SUBMIT_V4, req).pipe(map(response => {
+      return response
+    }))
+  }
+
+  submitQuizV5(req: NSPractice.IQuizSubmit): Observable<any> {
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_SUBMIT_V5, req).pipe(map(response => {
       return response
     }))
   }
@@ -211,6 +219,12 @@ export class PracticeService {
       attemptsMade: 0,
       attemptsAllowed: 1,
     })
+  }
+
+  saveAndNextQuestion(req: NSPractice.IQuizSubmit) {
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.SAVE_AND_NEXT_QUESTION, req).pipe(map(response => {
+      return response
+    }))
   }
 
   shCorrectAnswer(val: boolean) {

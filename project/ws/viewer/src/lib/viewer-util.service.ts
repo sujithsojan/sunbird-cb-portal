@@ -16,7 +16,7 @@ export class ViewerUtilService {
     setS3Cookie: `/apis/v8/protected/content/setCookie`,
     // PROGRESS_UPDATE: `/apis/protected/v8/user/realTimeProgress/update`,
     PROGRESS_UPDATE: `/apis/proxies/v8/content-progres`,
-    ASSESSMENT_SECTION: `/apis/proxies/v8/assessment/read`,
+    ASSESSMENT_SECTION: `/apis/proxies/v8/assessment/v5/read`,
   }
   downloadRegex = new RegExp(`(/content-store/.*?)(\\\)?\\\\?['"])`, 'gm')
   authoringBase = '/apis/authContent/'

@@ -9,7 +9,7 @@
     <div *ngFor="let option of question?.options; let i = index">
       <div class="html-option" [ngClass]="{
     'correct-option': viewState === 'answer' && option?.isCorrect
-  }" *ngIf="viewState === 'answer' && option?.isCorrect" [innerHtml]="option?.text ">
+  }" *ngIf="viewState === 'answer' && option?.isCorrect" [innerHtml]="getSanitizeString(option?.text) ">
         
       </div>
       <div class="background-well padding-left-m padding-xs" *ngIf="showAns && option?.hint && !unTouchedBlank[i]"

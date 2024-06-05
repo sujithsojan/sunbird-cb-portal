@@ -296,6 +296,19 @@
     }
 }
 
+.box-height-standalone-assessment {
+    height: 533px;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: #fff;
+    .small-screen {
+        @include breakpoint-xs {
+            display: none !important;
+        }
+    }
+}
+
 .summary-label {
     margin-top: 24px;
     color: rgba(113,113,113);
@@ -581,6 +594,19 @@
         letter-spacing: 0.25px;
     }
 
+    .box-height-standalone-assessment {
+        height: auto;
+        box-sizing: border-box;
+        overflow: hidden;
+        overflow-y: auto;
+        background-color: #fff;
+        .small-screen {
+            @include breakpoint-xs {
+                display: none !important;
+            }
+        }
+    }
+
 
 }
 
@@ -786,15 +812,18 @@
             background-color: #F5F5F5 !important;
     
             th.mat-header-cell {
-                color: #8b8b8b !important;
+                color: rgb(0,0,0,0.54) !important;
                 font-size: 14px;
+                font-weight: 400;
             }
         }
 
         td.mat-cell {
-            color: #7d7d7d !important;
+            color: #212529 !important;
             font-size: 14px;
+            font-weight: 400;
         } 
+
     }
 }
 

@@ -145,6 +145,16 @@
     }
 }
 
+.box-height-standalone {
+    min-height: 533px;
+    box-sizing: border-box;
+    .small-screen {
+    @include breakpoint-xs {
+        display: none !important;
+    } 
+    }
+}
+
 .summary-detail-list {
     margin-left: 16px !important;
 }
@@ -161,6 +171,11 @@
 
 .assessment-stats-count {
     padding: 24px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.standalone-assessment-stats-count {
+    padding: 12px 0px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -224,6 +239,19 @@
     // margin-left: 16px;
 }
 
+.summary-standalone {
+    word-wrap: break-word;
+    overflow-y: auto;
+    // height: calc(100vh - 220px);
+
+}
+
+::ng-deep .consent-checkbox .mat-checkbox-label{
+    width: 100%;    
+    /* overflow: hidden; */
+    white-space: pre-wrap;
+}
+
 @media only screen and (max-width: 767px) {
     .box-height {
         // min-height: 100%;
@@ -258,6 +286,33 @@
     .start-assessment-cta button {
         width: 98%;
     }
+
+    .box-height-standalone {
+        min-height: 100vh;
+    }
+
+    .summary-standalone {
+        word-wrap: break-word;
+        overflow-y: auto;
+        height: calc(100vh - 350px);
+    
+    }
+
+    .consent-checkbox {
+        position: fixed;
+        bottom: 0;
+        /* margin: 0 auto; */
+        /* width: 100%; */
+        padding: 0 10px;
+        margin: 10px 0;
+    }
+
+    ::ng-deep .consent-checkbox .mat-checkbox-label{
+        width: 100%;    
+        /* overflow: hidden; */
+        white-space: pre-wrap;
+    }
+
 }
 
 @media only screen and (min-width: 540px) and (max-width: 540px) {
