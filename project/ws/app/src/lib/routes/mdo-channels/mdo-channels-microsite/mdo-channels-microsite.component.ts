@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { EventService, WsEvents } from '@sunbird-cb/utils'
 /* tslint:disable */
 import * as _ from 'lodash'
-import { environment } from 'src/environments/environment'
+import { TranslateService } from '@ngx-translate/core'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-mdo-channels-microsite',
@@ -17,6 +18,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   selectedIndex = 0
   sectionList: any = []
   hideCompetencyBlock: boolean = false
+  contentTabEmptyResponseCount: number = 0
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
@@ -34,6 +36,8 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private eventSvc: EventService,
+    private translate: TranslateService,
+    private langtranslations: MultilingualTranslationsService,
   ) { 
     if (this.route.snapshot.data && this.route.snapshot.data.formData
       && this.route.snapshot.data.formData.data
@@ -44,7 +48,13 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     ) {
       this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList
     }
-    console.log(environment,';=-=-=-=-=-=-=-=-=')
+    this.langtranslations.languageSelectedObservable.subscribe(() => {
+      if (localStorage.getItem('websiteLanguage')) {
+        this.translate.setDefaultLang('en')
+        const lang = localStorage.getItem('websiteLanguage')!
+        this.translate.use(lang)
+      }
+    })
   }
 
   ngOnInit() {
@@ -63,6 +73,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   hideContentStrip(event: any, contentStripData: any) {
     if (event) {
       contentStripData['hideSection'] = true
+      this.contentTabEmptyResponseCount = this.contentTabEmptyResponseCount + 1
     }
   }
 

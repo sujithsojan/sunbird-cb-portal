@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      <div class="viewer-player-container" [ngClass]="contentMIMEType == 'application/vnd.sunbird.questionset' ? 'sidenavContent':''">
+      <div class="viewer-player-container" [ngClass]="contentMIMEType == 'application/vnd.sunbird.questionset' && coursePrimaryCategory !== 'Standalone Assessment' ? 'sidenavContent':'standaloneSidenavContent'">
         <router-outlet (activate)="getContentData($event)"></router-outlet>
       </div>
 

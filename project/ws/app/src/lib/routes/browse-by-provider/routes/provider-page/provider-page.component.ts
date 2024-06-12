@@ -18,9 +18,9 @@ export class ProviderPageComponent implements OnInit  {
   sectionList: any = []
   currentMonthAndYear: any
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     { title: `All Providers`,
       url: `/app/learn/browse-by/provider/all-providers`,
-      textClass: 'ws-mat-black60-text',
       icon: '', disableTranslate: true,
     },
   ]
@@ -49,7 +49,6 @@ export class ProviderPageComponent implements OnInit  {
       this.providerId = params['orgId']
       this.titles.push({
         title: this.providerName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
       })
     })
     this.getNavitems()
@@ -73,9 +72,18 @@ export class ProviderPageComponent implements OnInit  {
       })
     }
   }
-  hideCompetency(event: any) {
+  hideCompetency(event: any, columnData: any) {
     if (event) {
       this.hideCompetencyBlock = true
+      columnData['navigation'] = false
+      columnData['enabled'] = false
+      this.navList.forEach((navItem: any) => {
+       navItem.column.forEach((colEle: any) => {
+          if (colEle.key === columnData.key) {
+            navItem['navigation'] = false
+          }
+       })
+      })
     }
   }
   hideContentStrip(event: any, contentStripData: any) {

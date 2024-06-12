@@ -17,6 +17,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() timeLimit = 0
   @Input() noOfQuestions = 0
   @Input() canAttempt!: NSPractice.IRetakeAssessment
+  @Input() coursePrimaryCategory: any
+  @Input() instructionAssessment: any
+  @Input() selectedAssessmentCompatibilityLevel: any
   @Output() userSelection = new EventEmitter<NSPractice.TUserSelectionType>()
   questionTYP = NsContent.EPrimaryCategory
   // staticImage = '/assets/images/exam/practice-test.png'
@@ -29,7 +32,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ]
   isretakeAllowed = false
   dataSubscription: any
-
+  consentGiven = false
   constructor(
     private route: ActivatedRoute,
     public viewerHeaderSideBarToggleService: ViewerHeaderSideBarToggleService,
@@ -73,5 +76,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabel(label, type, '')
+  }
+
+  startTestEnable(event: any) {
+    // tslint:disable-next-line
+    console.log('event', event)
+    this.consentGiven = !this.consentGiven
   }
 }

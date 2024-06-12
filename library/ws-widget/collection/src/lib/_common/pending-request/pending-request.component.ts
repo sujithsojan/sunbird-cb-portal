@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core'
 export class PendingRequestComponent implements OnInit {
   @Input() pendingRequestData: any
   @Input() isLoading = true
-  constructor(private router: Router,private translate: TranslateService) {
+  constructor(private router: Router, private translate: TranslateService) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       const lang = localStorage.getItem('websiteLanguage')!

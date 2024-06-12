@@ -56,7 +56,12 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   matchHintDisplay: NSPractice.IOption[] = []
   isMobile = false
   @Input() mobileQuestionSetExpand: any = false
+  @Input() coursePrimaryCategory: any
+  @Input() showOnlyQuestion: any
+  @Input() showMarkForReview: any = false
+  @Input() assessmentType = 'optionWeightage'
   expandedQuestionSetSubscription: any
+
   constructor(
     // private domSanitizer: DomSanitizer,
     // private elementRef: ElementRef,

@@ -1,4 +1,4 @@
-<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
+<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles }">
 </ws-widget-btn-page-back>
 
 <div class="container-fluid" id="section-micro-sites">
@@ -62,7 +62,13 @@
         <div class="container px-4 py-4 flex flex-col">
             <div class="w-full md:w-9/12 flex-1 flex flex-col ws-mat-white-text">
                 <h1 class=" txt-ellipsis-2 break-words">{{data?.title}}</h1>
-                <p class="mat-body-2">{{data.description}}</p>
+                <p class="mat-body-2">
+                    {{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
+                    <span (click)="viewMoreOrLess()"
+                        *ngIf="data?.description?.length > descriptionMaxLength"
+                        class="cursor-pointer font-white"> ...View {{expanded ? 'less' : 'more' }}
+                    </span>
+                </p>
             </div>
         </div>
     </div>
@@ -72,7 +78,7 @@
 <!-- karma program data with search -->
 <ng-template #contentWithSearch let-data="data">
     <div class="container-balanced px-4 pt-8 pb-8 ">
-        <div class="flex-1 flex flex-col text-white">
+        <div class="flex-1 flex flex-col text-white" *ngIf="contentDataList?.length">
             <div class="w-full">
                   <mat-form-field appearance="outline"  class="w-full mat-form-search">
                     <input name="search"  (keyup.enter)="handleSearchQuery($event)"   matInput placeholder="Search">

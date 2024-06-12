@@ -91,10 +91,10 @@
                 <mat-sidenav-content class="custom-sidecontent  mat-drawer-content mat-sidenav-content">
 
                     <div class="provider_card_box mt-8 justify-center md:justify-start">
-                        <ng-container *ngFor="let p of allProviders">
+                        <ng-container *ngFor="let p of clonesProviders">
                             <ws-app-provider-card [provider]="p"></ws-app-provider-card>
                         </ng-container>
-                        <h4 *ngIf="allProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
+                        <h4 *ngIf="clonesProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
                             {{ 'allproviderscomponent.noProvidersFound' | translate }}
                          </h4>
                     </div>

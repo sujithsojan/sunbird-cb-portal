@@ -55,6 +55,13 @@
   word-wrap: break-word;
   text-align: center;
 }
+.standalone-question {
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Lato';
+  color: rgba(0, 0, 0, 0.87)
+  
+}
 .answer {
   width: 40%;
   max-width: 200px;
@@ -144,7 +151,7 @@
 
 .question-number {
   font-family: 'Montserrat';
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.12;
   line-height: 28px;
@@ -202,7 +209,46 @@ color: rgb(27, 76, 161)
   color: #fff !important;
 }
 
+.question-with-background {
+  background-color: #f5f5f5;
+}
 
+.show-only-question {
+  padding: 0;
+  margin: 0;
+}
+
+.question-heading {
+  padding: 10px;
+    height: 28px;
+}
+
+.quest_btn_review {
+  background: #EDF1F7 !important;
+  width: auto;
+  border-radius: 63px;
+  color: #000 !important;
+
+}
+
+.question-marks {
+  vertical-align: middle;
+  margin-top: 12px;
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+
+}
+
+@media only screen and (min-width: 360px) and (max-width: 767px) {
+  .standalone-assessment.mat-card {
+    padding: 0 !important
+  }
+  .standalone-assessment.respo {
+    margin: 0 !important
+  }
+
+}
 
 @media only screen and (min-width: 360px) and (max-width:767px) {
       .mobile-responsive-question-container{

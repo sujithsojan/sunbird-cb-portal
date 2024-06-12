@@ -67,6 +67,11 @@
 
 }
 
+.standaloneSidenavContent::-webkit-scrollbar {
+  width: 5px !important;
+
+}
+
 .flex-row-c {
   flex-direction: row;
 
@@ -131,6 +136,8 @@
     overflow: auto !important;
     overflow-y: hidden !important;
   }
+
+  
 }
 
 ::-webkit-scrollbar {

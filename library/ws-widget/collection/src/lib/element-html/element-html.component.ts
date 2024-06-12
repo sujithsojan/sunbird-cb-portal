@@ -70,8 +70,8 @@ export class ElementHtmlComponent extends WidgetBaseComponent
     this.html = this.domSanitizer.bypassSecurityTrustHtml(mustache.render(template, data))
   }
 
-  transilateTo(data: any){
-    const splitedData = data.split("$$")
+  transilateTo(data: any) {
+    const splitedData = data.split('$$')
     const part1 = splitedData[0]
     const part2 = splitedData[1]
     const part3 = splitedData[2]

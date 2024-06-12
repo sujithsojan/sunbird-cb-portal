@@ -25,6 +25,7 @@ export class AllProvidersComponent implements OnInit {
   sortBy: any
   searchQuery = ''
   allProviders: any
+  clonesProviders: any
   disableLoadMore = false
   totalCount = 0
   private unsubscribe = new Subject<void>()
@@ -124,6 +125,8 @@ export class AllProvidersComponent implements OnInit {
             this.disableLoadMore = false
           }
         }
+
+        this.clonesProviders = this.allProviders
       })
     } else {
       const fData: any[] = []
@@ -151,6 +154,8 @@ export class AllProvidersComponent implements OnInit {
       } else {
         this.disableLoadMore = false
       }
+
+      this.clonesProviders = this.allProviders
     }
   }
 
@@ -161,7 +166,18 @@ export class AllProvidersComponent implements OnInit {
     this.getAllProvidersReq.request.limit = this.defaultLimit
     this.page = 1
     this.getAllProvidersReq.request.sort_by.orgName = this.sortBy
-    this.getAllProviders()
+    // this.getAllProviders()
+    this.filterChannles(key)
+  }
+
+  filterChannles(value: string) {
+    if (value) {
+      const filterValue = value.toLowerCase()
+      this.clonesProviders = this.allProviders.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    }
+    if (!value) {
+      this.clonesProviders = this.allProviders
+    }
   }
 
   loadMore() {
@@ -183,7 +199,7 @@ export class AllProvidersComponent implements OnInit {
       this.searchForm.get('sortByControl')!.setValue(sortType)
       this.sortBy = sortType
       // tslint:disable-next-line: max-line-length
-      this.allProviders = _.orderBy(this.allProviders && this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
+      this.allProviders = _.orderBy(this.allProviders && this.allProviders.length ? this.allProviders : this.allProviders, ['name'], [this.sortBy])
     }
   }
 

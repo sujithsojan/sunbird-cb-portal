@@ -78,7 +78,18 @@ export namespace NSPractice {
     correct: number
     passPercent: number
     inCorrect: number
-    pass: boolean
+    pass: boolean,
+    children: ISectionQuestion[]
+  }
+
+  export interface ISectionQuestion {
+    identifier: string,
+    mimeType: string,
+    objectType: string
+    primaryCategory: string
+    qType: string
+    question: string
+    result: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string
@@ -98,6 +109,7 @@ export namespace NSPractice {
 
   export interface IQPaper {
     questionSet: {
+      assessmentType: string,
       lastStatusChangedOn: string
       children: IPaperSection[]
       name: string

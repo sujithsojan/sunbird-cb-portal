@@ -13,7 +13,12 @@
 }
 
 .mat-radio-label {
-    padding: 3px 16px;
+    padding: 3px 10px;
+}
+
+.mat-radio-label-content {
+    width:340px;
+    word-wrap: break-word;
 }
 
 ::ng-deep .mat-radio-button {
@@ -29,7 +34,7 @@
     margin: 5px;
     padding: 8px;
     width:380px;
-    background: #F5F5F5;
+    background: #F5F5F5 !important;
     word-wrap: break-word;
 }
 

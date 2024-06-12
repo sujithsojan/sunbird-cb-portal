@@ -54,6 +54,9 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
             this.showAns = displayAns
         })
         this.localQuestion = this.question.question
+        // if(this.question && this.question.editorState && this.question.editorState.options) {
+        //     this.question.options = this.question.editorState.options
+        // }
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
@@ -67,7 +70,6 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
     updateParent($event: any) {
         this.update.emit($event)
     }
-
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {
             const response = res.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
@@ -75,7 +77,6 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
         }
         return res
     }
-
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {
