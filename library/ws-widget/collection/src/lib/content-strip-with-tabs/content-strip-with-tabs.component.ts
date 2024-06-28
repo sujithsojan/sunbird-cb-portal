@@ -69,6 +69,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   OnDestroy,
   NsWidgetResolver.IWidgetData<NsContentStripWithTabs.IContentStripMultiple> {
   @Input() widgetData!: NsContentStripWithTabs.IContentStripMultiple
+  @Input() subTabdata: any
   @HostBinding('id')
   public id = `ws-strip-miltiple_${Math.random()}`
   stripsResultDataMap!: { [key: string]: IStripUnitContentData }
@@ -116,6 +117,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     this.environment = environment
     // const url = window.location.href
     this.initData()
+    console.log('subTabdata', this.subTabdata)
   }
 
   ngOnDestroy() {
@@ -872,7 +874,17 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     }
     return false
   }
+  public subTabdataClick (tab: any, tabindex : any, tabdata:any) {
+    // debugger
+    if (tab.index === 0) {
+      this.tabClicked(tab,tabindex, tabdata )
+    } else {
+
+    }
+
+  }
   public tabClicked(tabEvent: MatTabChangeEvent, stripMap: IStripUnitContentData, stripKey: string) {
+    debugger
     const tabLabel = tabEvent.tab.textLabel.trim().toLowerCase()
 
     if (tabLabel && stripMap && stripMap.stripTitle) {
@@ -1029,7 +1041,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   }
 
   async fetchAllCbpPlans(strip: any, calculateParentStatus = true) {
-
+// debugger
     if (strip.request && strip.request.cbpList && Object.keys(strip.request.cbpList).length) {
 
       let courses: NsContent.IContent[]
@@ -1088,12 +1100,33 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       clearInterval(this.enrollInterval)
     }
   }
-  splitCbpTabsData(contentNew: NsContent.IContent[], strip: NsContentStripWithTabs.IContentStripUnit) {
+  splitCbpTabsData(contentNew: NsContent.IContent[], strip: any) {
     const tabResults: any[] = []
     const splitData = this.getTabsList(
       contentNew,
       strip,
     )
+    // new code
+    // for (let i = 0; i < strip.tabs.length; i += 1) {
+    //   // Check if the current tab has data
+    //   if (strip.tabs && strip.tabs[i] && strip.tabs[i].data && strip.tabs[i].data.length) {
+    //     // Iterate over the data of the current tab
+    //     for (let j = 0; j < strip.tabs[i].data.length; j += 1) {
+    //       if (strip.tabs[i].data[j]) {
+    //         // Find the matching item in splitData
+    //         const foundItem = splitData.find(itmInner => itmInner.value === strip.tabs[i].data[j].value);
+    
+    //         // Push the tab data to the results
+    //         tabResults.push({
+    //           ...strip.tabs[i].data[j],
+    //           fetchTabStatus: 'done',
+    //           ...(foundItem || {})
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
+    // Check if the current tab has data
     if (strip.tabs && strip.tabs.length) {
       for (let i = 0; i < strip.tabs.length; i += 1) {
         if (strip.tabs[i]) {
@@ -1108,8 +1141,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
                 return undefined
               })),
             }
-          )
-        }
+          )}
       }
     }
     return tabResults
@@ -1174,6 +1206,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   }
 
   getSelectedIndex(stripsResultDataMap: any, key: any): number {
+    // debugger
     let returnValue = 0
     if (key === 'cbpPlan') {
       if (stripsResultDataMap.tabs.length) {

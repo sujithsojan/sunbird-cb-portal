@@ -14,10 +14,11 @@ import {
 } from '@angular/material'
 import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
-import { HttpLoaderFactory } from 'src/app/app.module'
+import { HttpLoaderFactory } from 'src/app/app.module';
+import { ContentStripWithTabsChipComponent } from './content-strip-with-tabs-chip/content-strip-with-tabs-chip.component'
 
 @NgModule({
-  declarations: [ContentStripMultipleComponent],
+  declarations: [ContentStripMultipleComponent, ContentStripWithTabsChipComponent],
   imports: [
     CommonModule,
     RouterModule,
