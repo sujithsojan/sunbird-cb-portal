@@ -883,15 +883,16 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     }
 
   }
-  public tabClicked(tabEvent: MatTabChangeEvent, stripMap: IStripUnitContentData, stripKey: string) {
-    debugger
-    const tabLabel = tabEvent.tab.textLabel.trim().toLowerCase()
-
+  public tabClicked(event: MatTabChangeEvent, stripMap: IStripUnitContentData, stripKey: string, index: number) {
+    // index = 1
+    console.log('index', index)
+    const tabLabel = stripMap.tabs[index].label.trim().toLowerCase();
+  
     if (tabLabel && stripMap && stripMap.stripTitle) {
       const data: WsEvents.ITelemetryTabData = {
-        label: `${tabEvent.tab.textLabel}`,
-        index: tabEvent.index,
-      }
+        label: `${stripMap.tabs[index].label}`,
+        index: index,
+      };
       this.eventSvc.raiseInteractTelemetry(
         {
           type: WsEvents.EnumInteractTypes.CLICK,
@@ -902,43 +903,44 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
         {
           module: WsEvents.EnumTelemetrymodules.HOME,
         }
-      )
-   }
-    if (stripMap && stripMap.tabs && stripMap.tabs[tabEvent.index]) {
-      stripMap.tabs[tabEvent.index].fetchTabStatus = 'inprogress'
-      stripMap.tabs[tabEvent.index]['tabLoading'] = true
-      stripMap.showOnLoader = true
+      );
     }
-
-    const currentTabFromMap: any = stripMap.tabs && stripMap.tabs[tabEvent.index]
-    const currentStrip = this.widgetData.strips.find(s => s.key === stripKey)
+  
+    if (stripMap && stripMap.tabs && stripMap.tabs[index]) {
+      stripMap.tabs[index].fetchTabStatus = 'inprogress';
+      stripMap.tabs[index]['tabLoading'] = true;
+      stripMap.showOnLoader = true;
+    }
+  
+    const currentTabFromMap: any = stripMap.tabs && stripMap.tabs[index];
+    const currentStrip = this.widgetData.strips.find(s => s.key === stripKey);
     if (this.stripsResultDataMap[stripKey] && currentTabFromMap) {
       this.stripsResultDataMap[stripKey].viewMoreUrl.queryParams = {
         ...this.stripsResultDataMap[stripKey].viewMoreUrl.queryParams,
         tabSelected: currentTabFromMap.label,
-      }
+      };
     }
+  
     if (currentStrip && currentTabFromMap && !currentTabFromMap.computeDataOnClick) {
       if (currentTabFromMap.requestRequired && currentTabFromMap.request) {
         // call API to get tab data and process
-        // this.processStrip(currentStrip, [], 'fetching', true, null)
         if (currentTabFromMap.request.searchV6) {
-          this.getTabDataByNewReqSearchV6(currentStrip, tabEvent.index, currentTabFromMap, true)
+          this.getTabDataByNewReqSearchV6(currentStrip, index, currentTabFromMap, true);
         } else if (currentTabFromMap.request.trendingSearch) {
-          this.getTabDataByNewReqTrending(currentStrip, tabEvent.index, currentTabFromMap, true)
+          this.getTabDataByNewReqTrending(currentStrip, index, currentTabFromMap, true);
         }
-        if (stripMap && stripMap.tabs && stripMap.tabs[tabEvent.index]) {
-          stripMap.tabs[tabEvent.index]['tabLoading'] = false
+        if (stripMap && stripMap.tabs && stripMap.tabs[index]) {
+          stripMap.tabs[index]['tabLoading'] = false;
         }
       } else {
-        this.getTabDataByfilter(currentStrip, currentTabFromMap, true)
+        this.getTabDataByfilter(currentStrip, currentTabFromMap, true);
         setTimeout(() => {
-          if (stripMap && stripMap.tabs && stripMap.tabs[tabEvent.index]) {
-              stripMap.tabs[tabEvent.index]['tabLoading'] = false
-              stripMap.tabs[tabEvent.index].fetchTabStatus = 'done'
-              stripMap.showOnLoader = false
+          if (stripMap && stripMap.tabs && stripMap.tabs[index]) {
+            stripMap.tabs[index]['tabLoading'] = false;
+            stripMap.tabs[index].fetchTabStatus = 'done';
+            stripMap.showOnLoader = false;
           }
-        },         200)
+        }, 200);
       }
     }
   }

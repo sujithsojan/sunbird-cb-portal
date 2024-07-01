@@ -87,63 +87,57 @@
                   </mat-tab>
                   
            </mat-tab-group>
-                <mat-tab-group animationDuration="0ms" [selectedIndex]="getSelectedIndex(stripsResultDataMap[key], key)"
-                class="mat-tab-labels w-full strips-tabgroup" dynamicHeight
-                  (selectedTabChange)="tabClicked($event, stripsResultDataMap[key], key)">
-                  <mat-tab label="{{tab?.label}}" *ngFor="let tab of stripsResultDataMap[key].tabs; let last = last;">
-                    <ng-template mat-tab-label >
-                      <span style="border-radius: 25px; border: 1px solid rgba(0,0,0,0.8); padding: 4px 8px;">
-                      <span>{{ translateLabels(tab?.label, 'home') }} &nbsp;</span>
-                      <!-- <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length">({{tab?.widgets?.length}})</span> -->
-                      <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length && stripsResultDataMap[key].key !== 'cbpPlan'">({{tab?.widgets?.length}})</span> 
-                     <span *ngIf="tab?.showTabDataCount && stripsResultDataMap[key].key === 'cbpPlan'">({{tab?.widgets?.length || 0}})</span>
-                    </span>
-                    </ng-template>
-                    <div>
-                      <!-- <ng-container [ngTemplateOutlet]="loader" *ngIf="stripsResultDataMap[key]?.showOnLoader">
-                      </ng-container> -->
-                      <div *ngIf="stripsResultDataMap && stripsResultDataMap[key]?.showOnLoader ||
-                      !tab.fetchTabStatus"
-                      class="text-center my-2">
-                            <ws-utils-horizontal-scroller-v2  *ngIf="stripsResultDataMap && key && stripsResultDataMap[key]"[sliderConfig]="stripsResultDataMap[key]?.sliderConfig"
-                                    [loadStatus]="'fetching'" [stripConfig]="stripsResultDataMap[key]?.stripConfig">
-                              <ng-container *ngFor="let widget of stripsResultDataMap[key]?.loaderWidgets; trackBy: tracker">
-                                <ng-container [wsResolverWidget]="widget"></ng-container>
-                              </ng-container>
-                            </ws-utils-horizontal-scroller-v2>
-                      </div>
-                      <div *ngIf="((tab?.fetchTabStatus && tab?.fetchTabStatus === 'done') &&
-                      (!tab?.widgets || !tab?.widgets?.length))">
-                      <ng-container *ngIf="tab?.value === 'inprogress'; else msgTemp">
-                        <div class="w-full flex flex-col items-center justify-center">
-                          <img alt="" class="mt-4 mb-4" src="assets/icons/home/nodataDefault.svg">
-                          <div class="mat-subheading-1 text-center info-content">{{ 'contentstripmultiple.getReadyForLearningAdventure' | translate }} -
-                            <a class="click-here" [routerLink]="'/page/learn'">{{ 'contentstripmultiple.clickHere' | translate }}</a> {{ 'contentstripmultiple.toEnrollNextCourse' | translate }}</div>
-                        </div>
+           <mat-chip-list aria-label="Tab selection">
+            <mat-chip
+              *ngFor="let tab of stripsResultDataMap[key].tabs; let i = index; let last = last;"
+              [selected]="getSelectedIndex(stripsResultDataMap[key], key) === i"
+              (click)="tabClicked($event, stripsResultDataMap[key], key, i)">
+              <span>{{ translateLabels(tab?.label, 'home') }} &nbsp;</span>
+              <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length && stripsResultDataMap[key].key !== 'cbpPlan'">({{tab?.widgets?.length}})</span>
+              <span *ngIf="tab?.showTabDataCount && stripsResultDataMap[key].key === 'cbpPlan'">({{tab?.widgets?.length || 0}})</span>
+            </mat-chip>
+          </mat-chip-list>
+          
+          <div *ngFor="let tab of stripsResultDataMap[key].tabs; let i = index;">
+            <div *ngIf="getSelectedIndex(stripsResultDataMap[key], key) === i">
+              <div *ngIf="stripsResultDataMap && stripsResultDataMap[key]?.showOnLoader || !tab.fetchTabStatus" class="text-center my-2">
+                <ws-utils-horizontal-scroller-v2 *ngIf="stripsResultDataMap && key && stripsResultDataMap[key]"
+                  [sliderConfig]="stripsResultDataMap[key]?.sliderConfig"
+                  [loadStatus]="'fetching'" [stripConfig]="stripsResultDataMap[key]?.stripConfig">
+                  <ng-container *ngFor="let widget of stripsResultDataMap[key]?.loaderWidgets; trackBy: tracker">
+                    <ng-container [wsResolverWidget]="widget"></ng-container>
+                  </ng-container>
+                </ws-utils-horizontal-scroller-v2>
+              </div>
+              <div *ngIf="(tab?.fetchTabStatus && tab?.fetchTabStatus === 'done') && (!tab?.widgets || !tab?.widgets?.length)">
+                <ng-container *ngIf="tab?.value === 'inprogress'; else msgTemp">
+                  <div class="w-full flex flex-col items-center justify-center">
+                    <img alt="" class="mt-4 mb-4" src="assets/icons/home/nodataDefault.svg">
+                    <div class="mat-subheading-1 text-center info-content">{{ 'contentstripmultiple.getReadyForLearningAdventure' | translate }} -
+                      <a class="click-here" [routerLink]="'/page/learn'">{{ 'contentstripmultiple.clickHere' | translate }}</a> {{ 'contentstripmultiple.toEnrollNextCourse' | translate }}</div>
+                  </div>
+                </ng-container>
+                <ng-template #msgTemp>
+                  <div class="w-full flex flex-col items-center justify-center">
+                    <img alt="" class="mt-4 mb-4" src="assets/icons/home/nodataDefault.png">
+                    <div class="mat-subheading-1 text-center">{{ translateLabels(tab.nodataMsg, 'home') }}</div>
+                  </div>
+                </ng-template>
+              </div>
+              <ng-container *ngIf="(tab?.fetchTabStatus === 'done' || tab?.widgets?.length)">
+                <ng-container *ngIf="!tab?.tabLoading">
+                  <ng-container *ngIf="getContineuLearningLenth(stripsResultDataMap[key]) && showAccordion(key)">
+                    <ws-utils-horizontal-scroller-v2 [sliderConfig]="stripsResultDataMap[key]?.sliderConfig" [widgetsLength]="tab?.widgets?.length"
+                      [loadStatus]="'done'" [defaultMaxWidgets]="tab?.maxWidgets || stripsResultDataMap[key]?.sliderConfig?.maxWidgets || defaultMaxWidgets" [subtype]="stripsResultDataMap[key]?.stripTitle">
+                      <ng-container *ngFor="let widget of tab?.widgets | slice:0:(tab?.maxWidgets || stripsResultDataMap[key]?.sliderConfig?.maxWidgets || defaultMaxWidgets); trackBy: tracker">
+                        <ng-container [wsResolverWidget]="widget"></ng-container>
                       </ng-container>
-                      <ng-template #msgTemp>
-                        <div class="w-full flex flex-col items-center justify-center">
-                          <img alt="" class="mt-4 mb-4" src="assets/icons/home/nodataDefault.png">
-                          <div class="mat-subheading-1 text-center">{{ translateLabels(tab.nodataMsg, 'home') }}</div>
-                        </div>
-                      </ng-template>
-                      </div>
-                      <ng-container *ngIf="(tab?.fetchTabStatus === 'done' || tab?.widgets?.length)">
-                        <ng-container *ngIf="!tab?.tabLoading">
-                          <ng-container *ngIf="getContineuLearningLenth(stripsResultDataMap[key]) && showAccordion(key)">
-                            <ws-utils-horizontal-scroller-v2  [sliderConfig]="stripsResultDataMap[key]?.sliderConfig" [widgetsLength]="tab?.widgets?.length" [loadStatus]="'done'" 
-                              [defaultMaxWidgets]="tab?.maxWidgets || stripsResultDataMap[key]?.sliderConfig?.maxWidgets || defaultMaxWidgets"[subtype]="stripsResultDataMap[key]?.stripTitle">
-                              <ng-container *ngFor="let widget of tab?.widgets | slice:0:(tab?.maxWidgets || stripsResultDataMap[key]?.sliderConfig?.maxWidgets || defaultMaxWidgets); trackBy: tracker">
-                                <ng-container [wsResolverWidget]="widget"></ng-container>
-                              </ng-container>
-                            </ws-utils-horizontal-scroller-v2>
-                          </ng-container>
-                        </ng-container>
-                      </ng-container>
-                      
-                    </div>
-                  </mat-tab>
-                </mat-tab-group>
+                    </ws-utils-horizontal-scroller-v2>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
               </ng-container>
               <ng-container *ngIf="!stripsResultDataMap[key].tabs || !stripsResultDataMap[key].tabs.length">
                 <div *ngIf="stripsResultDataMap && stripsResultDataMap[key]?.showOnLoader" class="text-center my-2">

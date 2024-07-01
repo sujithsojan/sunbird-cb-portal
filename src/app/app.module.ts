@@ -28,6 +28,7 @@ import {
   MatSidenavModule,
 } from '@angular/material'
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
+import { MatChipsModule } from '@angular/material/chips'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {
   BtnFeatureModule, ErrorResolverModule, TourModule, WIDGET_REGISTERED_MODULES, WIDGET_REGISTRATION_CONFIG, PipeContentRoutePipe,
@@ -205,6 +206,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PipeSafeSanitizerModule,
     TourModule,
     MatTabsModule,
+    MatChipsModule,
     GuidedTourModule,
     AppChatbotModule,
     DiscussionUiModule.forRoot(ConfigService),
