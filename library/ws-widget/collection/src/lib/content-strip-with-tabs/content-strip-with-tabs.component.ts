@@ -874,15 +874,15 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     }
     return false
   }
-  public subTabdataClick (tab: any, tabindex : any, tabdata:any) {
-    // debugger
-    if (tab.index === 0) {
-      this.tabClicked(tab,tabindex, tabdata )
-    } else {
+  // public subTabdataClick (tab: any, tabindex : any, tabdata:any) {
+  //   // debugger
+  //   if (tab.index === 0) {
+  //     this.tabClicked(tab,tabindex, tabdata )
+  //   } else {
 
-    }
+  //   }
 
-  }
+  // }
   public tabClicked(event: MatTabChangeEvent, stripMap: IStripUnitContentData, stripKey: string, index: number) {
     // index = 1
     console.log('index', index)
