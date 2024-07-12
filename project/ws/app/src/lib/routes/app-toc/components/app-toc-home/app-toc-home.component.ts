@@ -1019,7 +1019,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   downloadCert(certIdArr: any) {
-    if (certIdArr.length) {
+    if (certIdArr.length && certIdArr.length > 0) {
       certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
       const certId = certIdArr[0].identifier
       this.certId = certId

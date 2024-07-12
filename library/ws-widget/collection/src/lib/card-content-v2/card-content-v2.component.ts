@@ -381,8 +381,9 @@ export class CardContentV2Component extends WidgetBaseComponent
       })
     if(certificateData.issuedCertificates.length > 0) {
       this.downloadCertificateLoading = true
-      let certData: any = certificateData.issuedCertificates[0]
-      this.certificateService.downloadCertificate_v2(certData.identifier).subscribe((res: any)=>{
+      let certData: any = certificateData.issuedCertificates
+      certData.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+      this.certificateService.downloadCertificate_v2(certData[0].identifier).subscribe((res: any)=>{
         this.downloadCertificateLoading = false
         const cet = res.result.printUri
         this.dialog.open(CertificateDialogComponent, {
