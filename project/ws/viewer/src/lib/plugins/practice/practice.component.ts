@@ -141,7 +141,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   sectionalTimer = false
   questionStartTime: number = Date.now()
   timeSpentOnQuestions: any = {}
-  charactersPerPage = 1500
+  charactersPerPage = 1300
   showQuestionMarks = 'No'
   forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
                 window.location.href.includes('editMode'))

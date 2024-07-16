@@ -257,6 +257,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
         }
       }
     }
+    this.forPreview = window.location.href.includes('/public/') || window.location.href.includes('&preview=true')
   }
 
   getSubThemes(): any[] {

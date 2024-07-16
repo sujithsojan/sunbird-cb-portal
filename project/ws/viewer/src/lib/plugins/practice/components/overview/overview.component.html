@@ -134,13 +134,13 @@
     </div> -->
     <div class="flex justify-end gap-4 mt-3">
       <ng-container *ngIf="currentPage !== 0">
-        <button (click)="previousPage()" mat-button class="flex gap-2 justify-center items-center blue-outline">
+        <button (click)="previousPage()" mat-button class="flex gap-2 justify-center items-center blue-outline mr-10">
           <mat-icon class="navigation-icons">navigate_before</mat-icon>
           <span class="ml-1">Previous</span>
         </button>
       </ng-container>
       <ng-container *ngIf="currentPage + 1 < instructionAssessment?.length">
-        <button (click)="nextPage()" mat-button class="flex gap-2 justify-center items-center blue-outline">
+        <button (click)="nextPage()" mat-button class="flex gap-2 justify-center items-center blue-outline mr-10">
           <span>Next</span>
           <mat-icon class="navigation-icons">navigate_next</mat-icon>
         </button>
