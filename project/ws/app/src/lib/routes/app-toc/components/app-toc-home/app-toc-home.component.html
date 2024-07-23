@@ -117,7 +117,7 @@
             <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.noActiveBatches' | translate }}</span>
           </ng-container>
           <ng-container *ngIf="!isBatchInProgress && currentCourseBatchId && getStartDate !== 'NA'">
-            <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.batchWillStart' | translate }} {{getStartDate}}!</span>
+            <div class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.batchWillStart' | translate }}  {{getStartDate}}! </div>
           </ng-container>
         </ng-container>
         <ng-container *ngIf="!isBatchInProgress && courseCategory?.MODERATED_PROGRAM === contentReadData?.courseCategory && !enrollBtnLoading">
