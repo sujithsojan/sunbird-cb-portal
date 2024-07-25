@@ -68,6 +68,9 @@ a.download_btn {
     float: right;
     top: -52px;
     right: -52px;
+    position: absolute;
+    top: 19px;
+    right: 18px;
 }
 ::ng-deep .icon-outside .mat-dialog-container {
     overflow: unset;
@@ -94,4 +97,34 @@ a.download_btn {
             flex: 1;
         }
     }
+}
+.btn-custom{
+    box-sizing: border-box;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    text-align: center;
+    margin: 0;
+    min-width: 64px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    overflow: visible;
+}
+
+
+.close-button {
+    position: absolute !important;
+    top: 19px !important;
+    right: 18px !important;
 }

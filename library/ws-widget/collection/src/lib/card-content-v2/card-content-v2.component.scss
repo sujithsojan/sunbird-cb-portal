@@ -1754,3 +1754,7 @@ $title-line-count: 2;
 .card-standard-container:hover {
   transform: scale(1.02);
 }
+.retiredCards {
+  opacity: 0.5;
+  cursor: default;
+}

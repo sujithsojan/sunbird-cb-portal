@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { NgModule } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import {
   MatAutocompleteModule,
@@ -46,10 +46,13 @@ import { SeeAllRoutingModule } from './seeAll-routing.module'
 import { SeeAllHomeComponent } from './components/see-all-home/see-all-home.component'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { TranslateModule } from '@ngx-translate/core'
+import { SeeAllWithPillsComponent } from './components/see-all-with-pills/see-all-with-pills.component'
+import { CardsModule } from '@sunbird-cb/consumption'
 
 @NgModule({
   declarations: [
     SeeAllHomeComponent,
+    SeeAllWithPillsComponent,
   ],
   imports: [
     CommonModule,
@@ -100,9 +103,11 @@ import { TranslateModule } from '@ngx-translate/core'
     UserAutocompleteModule,
     InfiniteScrollModule,
     TranslateModule,
+    CardsModule,
   ],
   exports: [SeeAllHomeComponent],
   providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [SeeAllHomeComponent],
 })
 export class SeeAllModule { }

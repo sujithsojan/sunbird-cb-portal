@@ -256,6 +256,7 @@ export class MatchTheFollowingQuesComponent implements OnInit, OnChanges, AfterV
                     if (match && match.trim()) {/** ===  selectors[0].innerText.trim() */
                         this.jsPlumbInstance.connect({
                             endpoint: ['Dot', {
+                                radius: 3,
                                 cssClass: 'amit icon-svg',
                                 PaintStyle: {
                                     stroke: 'rgba(0,0,0,0.5)',

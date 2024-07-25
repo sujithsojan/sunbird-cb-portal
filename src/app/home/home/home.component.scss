@@ -155,6 +155,11 @@
     min-width: 87px;
   }
 
+  .linktext {
+    color:  rgb(27, 76, 161) !important;
+    font-weight: 700;
+  }
+
    .update-profile{
       visibility: hidden;
     }
@@ -588,4 +593,8 @@
       width: 90%;
     }
   }
+}
+
+.customindex {
+  z-index: 9999;
 }

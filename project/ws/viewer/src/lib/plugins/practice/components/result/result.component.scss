@@ -512,6 +512,10 @@
     font-size: 12px;
 }
 
+// .result-insight {
+//     overflow-x: auto;
+// }
+
 @media only screen and (min-width: 280px) and (max-width: 280px) {
     .message {
         width:280px;
@@ -678,6 +682,7 @@
     }
 
 
+
 }
 
 .blue-bg {
@@ -798,6 +803,7 @@
         color: #FFFFFF;
         font-size: 16px;
         font-family: 'Montserrat';
+        text-transform: capitalize;
 
         .separator {
             width: 0px;
@@ -826,10 +832,16 @@
 
     .correct {
         color: #1D8923;
+        text-transform: capitalize;
     }
 
     .wrong {
         color: #D13924;
+        text-transform: capitalize;
+    }
+
+    .blank {
+        text-transform: capitalize;
     }
 }
 
@@ -870,7 +882,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1366px) {
     .wrap-mweb {
         flex-wrap: wrap !important;
     }
@@ -892,6 +904,7 @@
             color: #212529 !important;
             font-size: 14px;
             font-weight: 400;
+            padding: 0 10px;
         } 
 
     }

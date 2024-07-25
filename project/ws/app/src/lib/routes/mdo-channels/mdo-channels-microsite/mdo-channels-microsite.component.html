@@ -143,7 +143,7 @@
             <div class="grid grid-cols-12 gap-4 padding-top-m mb-6">
                 <div class="col-span-12 md:col-span-{{data.tabSection.colspan}}">
                     <!-- Tabs Section -->
-                    <mat-tab-group animationDuration="0ms" class="mat-tab-labels w-full"
+                    <mat-tab-group animationDuration="0ms" class="mat-tab-labels mytabs w-full "
                         [selectedIndex]="selectedIndex" (selectedTabChange)="selectedIndex = $event.index; tabClicked($event)">
                         <mat-tab label="Content" >
                             <ng-template mat-tab-label i18n>
@@ -231,19 +231,20 @@
 
 <!-- Start Competencies -->
 <ng-template #competency let-competency="competency">
-    <div class="padding-top-l padding-bottom-l relative"  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock">
+    <div class="padding-top-l padding-bottom-l relative"  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock;else noData">
         <div class="w-full container-balanced">
             <p class="mat-body-1">This section shows the list of top competencies users in this MDO are learning, based on the courses they've completed and enrolled in.</p>
             <div class="pl-4 pr-4 md:pl-0 md:pr-0">
-                <sb-uic-competency-passbook
+                <sb-uic-competency-passbook-mdo
                     [dynamicColor]="'#999999'"
                     [dynamicAlignPills]="'start'"
                     [cardDisplayCount]="2"
                     (emptyResponse)="hideCompetency($event)"
                     (temeletryResponse)="raiseCompetencyTelemetry($event)"
                     [objectData]="competency"
-                    [providerId]="orgId">
-                </sb-uic-competency-passbook>
+                    [providerId]="orgId"
+                    >
+                </sb-uic-competency-passbook-mdo>
             </div>
         </div>
         <!-- <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt=""> -->
@@ -262,9 +263,20 @@
                     (emptyResponse)="hideContentStrip($event, contentStrip)"
                     [providerId]="orgId"
                     [widgetData]="contentStrip"
+                    [channnelName]="channnelName"
                     >
                 </sb-uic-content-strip-with-tabs>
             </div>
         </div>
     </ng-container>
+</ng-template>
+
+<ng-template #noData>
+        <div class="flex justify-center w-full">
+            <div class="margin-xl text-center" >
+                <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                    class="margin-top-l margin-bottom-s">
+                <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+            </div>
+        </div>
 </ng-template>

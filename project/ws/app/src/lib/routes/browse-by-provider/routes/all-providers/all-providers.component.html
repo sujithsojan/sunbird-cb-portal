@@ -2,7 +2,7 @@
 </ws-widget-btn-page-back>
 
 <div class="container-balanced main_content_box">
-    <div class="top_card_container">
+    <div class="top_card_container" *ngIf="featuredProviders?.length">
         <h2 class="mat-h1 margin-bottom-m inline-block "> {{ 'allproviderscomponent.popularProviders' | translate }}</h2>
         <div class="top_card_inner_box flex">
             <ng-container *ngFor="let p of featuredProviders | slice:0:8; let i=index">
@@ -24,7 +24,7 @@
             <!-- search box and dropdown-->
             <form [formGroup]="searchForm">
                 <div class="flex top_search_box">
-                    <div class="search_box_inner flex-1">
+                    <div class="search_box_inner mb-4 flex-1">
                         <div class="flex flex-1 flex-column margin-fix search search_box_main">
                             <!-- <mat-form-field appearance="outline" class="autocomplete-form search_form margin-right-s"
                                 color="primary">

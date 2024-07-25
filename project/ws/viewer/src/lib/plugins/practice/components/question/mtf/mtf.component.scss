@@ -11,7 +11,10 @@
             r: 3;
         }
         circle:hover {
-            r: 10;
+            r: 3;
+        }
+        circle:active { 
+            r: 3;
         }
     }
 }

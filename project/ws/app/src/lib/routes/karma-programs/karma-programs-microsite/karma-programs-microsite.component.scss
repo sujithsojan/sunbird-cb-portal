@@ -80,6 +80,7 @@
     filter: brightness(100);
     left: 0;
     right: 0;
+    top: 178px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -88,4 +89,16 @@
   .mob-comp-back-img {
     background-image: url("/assets/icons/microsite/competency.svg");
     filter: brightness(100);
+  }
+
+  .zindex {
+    z-index: 99
+  }
+
+  .ref-links {
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    color: #F3962F !important;
+    position: relative;
+    z-index: 999999;
   }

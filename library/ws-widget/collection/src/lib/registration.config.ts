@@ -180,6 +180,7 @@ import { CardEventHubComponent } from './card-event-hub/card-event-hub.component
 import { CardEventHubModule } from './card-event-hub/card-event-hub.module'
 import { CardCompetencyComponent } from './card-competency/card-competency.component'
 import { CardCompetencyModule } from './card-competency/card-competency.module'
+import { TipsForLearnerModule } from './_common/tips-for-learner/tips-for-learner.module'
 
 export const WIDGET_REGISTERED_MODULES = [
   AvatarPhotoModule,
@@ -271,6 +272,7 @@ export const WIDGET_REGISTERED_MODULES = [
   BreadcrumbsOrgModule,
   CardEventHubModule,
   CardCompetencyModule,
+  TipsForLearnerModule,
 ]
 
 export const WIDGET_REGISTRATION_CONFIG: NsWidgetResolver.IRegistrationConfig[] = [

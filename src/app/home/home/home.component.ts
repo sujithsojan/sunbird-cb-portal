@@ -56,10 +56,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isKPPanelenabled = false
   enrollData: any
   enrollInterval: any
-  newHomeStrips: any
+  // newHomeStrips: any
   jan26Change: any
   pendingApprovalList: any
   isTelemetryRaised = false
+  isMDOMsgOpen = true
+  approvedStatusList: any = []
+  rejectedStatusList: any = []
+  approvedStatus = false
+  rejectedStatus = false
 
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
@@ -71,6 +76,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     if (this.configSvc) {
       this.jan26Change = this.configSvc.overrideThemeChanges
+      if (this.configSvc.unMappedUser.profileDetails && this.configSvc.unMappedUser.profileDetails.additionalProperties) {
+        if (this.configSvc.unMappedUser.profileDetails.additionalProperties.isProfileUpdatedMsgViewed !== undefined) {
+          this.isMDOMsgOpen = this.configSvc.unMappedUser.profileDetails.additionalProperties.isProfileUpdatedMsgViewed
+          if (!this.isMDOMsgOpen) {
+            this.getApprovedStatus()
+            this.getRejectedStatus()
+          }
+        }
+      }
     }
     this.mobileAppsService.mobileTopHeaderVisibilityStatus.subscribe((status: any) => {
       this.mobileTopHeaderVisibilityStatus = status
@@ -78,13 +92,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.activatedRoute.snapshot.data.pageData) {
       this.homeConfig = this.activatedRoute.snapshot.data.pageData.data.homeConfig
     }
-    if (this.activatedRoute.snapshot.data.pageData) {
-      this.newHomeStrips = this.activatedRoute.snapshot.data.pageData.data.newHomeStrip
-    }
+    // if (this.activatedRoute.snapshot.data.pageData) {
+    //   this.newHomeStrips = this.activatedRoute.snapshot.data.pageData.data.newHomeStrip
+    // }
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []
       // tslint:disable-next-line: prefer-template
-      this.contentStripData = (this.contentStripData.homeStrips || []).sort((a: any, b: any) => a.order - b.order)
+      this.contentStripData = (this.contentStripData.newHomeStrip || []).sort((a: any, b: any) => a.order - b.order)
       // tslint:disable-next-line
       for (let i = 0; i < this.contentStripData.length; i++) {
         if (this.contentStripData[i] &&
@@ -322,7 +336,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
        this.checkSectionVisibility(this.sectionList[i]['section'])
       }
     }
-
   }
 
   checkSectionVisibility(className: string) {
@@ -366,6 +379,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   fetchProfile() {
+    this.handleMDOMsgstatus()
     this.router.navigate(['/app/person-profile/me'])
   }
 
@@ -411,4 +425,84 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     )
   }
+
+  handleMDOMsgstatus() {
+    const reqUpdates = {
+      request: {
+        userId: this.configSvc.unMappedUser.id,
+        profileDetails: {
+          additionalProperties: {
+            isProfileUpdatedMsgViewed:  true,
+          },
+         },
+      },
+    }
+    this.userProfileService.editProfileDetails(reqUpdates).subscribe((res: any) => {
+      if (res) {
+        this.isMDOMsgOpen = true
+      }
+    },                                                               (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open(error.error.text)
+      }
+    })
+  }
+
+  getApprovedStatus(): void {
+      this.userProfileService.fetchApprovedFields()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.approvedStatusList = res.result.data
+          if (this.approvedStatusList && this.approvedStatusList.length > 0) {
+
+            const exists = this.approvedStatusList.filter((obj: any) => {
+              if (obj.hasOwnProperty('name') || obj.hasOwnProperty('group') || obj.hasOwnProperty('designation')) {
+                return obj
+              }
+            }).length > 0
+            if (exists) {
+              this.approvedStatus = true
+            } else {
+              this.approvedStatus = false
+            }
+          } else {
+            this.approvedStatus = false
+          }
+         }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(error.error.text)
+        }
+      })
+    }
+
+  getRejectedStatus(): void {
+      this.userProfileService.listRejectedFields()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.rejectedStatusList = res.result.data
+          if (this.rejectedStatusList && this.rejectedStatusList.length > 0) {
+            const exists = this.rejectedStatusList.filter((obj: any) => {
+              if (obj.hasOwnProperty('name') || obj.hasOwnProperty('group') || obj.hasOwnProperty('designation')) {
+                return obj
+              }
+            }).length > 0
+
+            if (exists) {
+              this.rejectedStatus = true
+            } else {
+              this.rejectedStatus = false
+            }
+          } else {
+            this.rejectedStatus = false
+          }
+        }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(error.error.text)
+        }
+      })
+    }
 }

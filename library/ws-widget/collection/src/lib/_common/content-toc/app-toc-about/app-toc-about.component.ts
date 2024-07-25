@@ -99,13 +99,18 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @Input() config: any
   @Input() resumeData: any
   @Input() forPreview = false
+  @Input() showReviews = false
   @Input() batchData: any
   @Input() fromViewer = false
   @Input() selectedBatchData: any
   @Input() selectedTabValue = 0
+  @Input() fromMarketPlace ? = false
   @ViewChild('summaryElem', { static: false }) summaryElem !: ElementRef
+  @ViewChild('objectivesElem', { static: false }) objectivesElem !: ElementRef
   @ViewChild('descElem', { static: false }) descElem !: ElementRef
   @ViewChild('tagsElem', { static: false }) tagsElem !: ElementRef
+  @ViewChild('searchTagElem', { static: false }) searchTagElem !: ElementRef
+
   primaryCategory = NsContent.EPrimaryCategory
   stripsResultDataMap!: { [key: string]: IStripUnitContentData }
   summary = {
@@ -116,7 +121,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     ellipsis: false,
     viewLess: false,
   }
+  objectives = {
+    ellipsis: false,
+    viewLess: false,
+  }
   tagsEllipsis = false
+  searchTagsEllipsis = false
   competencySelected = ''
   ratingSummary: any
   authReplies: any
@@ -175,9 +185,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     } else {
       this.isMobile = false
     }
-
     if (this.content && this.content.identifier) {
       this.fetchRatingSummary()
+      this.loadCompetencies()
+    }
+
+    if (this.content && this.content.contentId && this.content.contentId.includes('ext_')) {
       this.loadCompetencies()
     }
 
@@ -198,25 +211,35 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     if (changes.selectedTabValue && changes.selectedTabValue.currentValue === 0) {
       setTimeout(() => {
         if (!this.isMobile) {
-          if (this.summaryElem.nativeElement.offsetHeight > 72) {
+          if (this.summaryElem && this.summaryElem.nativeElement.offsetHeight > 72) {
             this.summary.ellipsis = true
           }
 
-          if (this.descElem.nativeElement.offsetHeight > 72) {
+          if (this.descElem && this.descElem.nativeElement.offsetHeight > 72) {
             this.description.ellipsis = true
+          }
+          if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 72) {
+            this.objectives.ellipsis = true
           }
         } else {
-          if (this.summaryElem.nativeElement.offsetHeight > 48) {
+          if (this.summaryElem && this.summaryElem.nativeElement.offsetHeight > 48) {
             this.summary.ellipsis = true
           }
 
-          if (this.descElem.nativeElement.offsetHeight > 48) {
+          if (this.descElem && this.descElem.nativeElement.offsetHeight > 48) {
             this.description.ellipsis = true
+          }
+          if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 48) {
+            this.objectives.ellipsis = true
           }
         }
 
         if (this.tagsElem && this.tagsElem.nativeElement.offsetHeight > 64) {
           this.tagsEllipsis = true
+        }
+
+        if (this.searchTagElem && this.searchTagElem.nativeElement.offsetHeight > 64) {
+          this.searchTagsEllipsis = true
         }
       },         500)
     }
@@ -257,6 +280,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
         }
       }
     }
+    this.forPreview = window.location.href.includes('/public/') || window.location.href.includes('&preview=true')
   }
 
   getSubThemes(): any[] {
@@ -554,13 +578,17 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   handleCapitalize(str: string, type?: string): string {
+    let tempStr = str
+    if (tempStr) {
+      tempStr = tempStr.split('_x000D_,').join('')
+    }
     let returnValue = ''
-    if (str && type === 'name') {
-      returnValue = str.split(' ').map(_str => {
+    if (tempStr && type === 'name') {
+      returnValue = tempStr.split(' ').map(_str => {
         return _str.charAt(0).toUpperCase() + _str.slice(1)
       }).join(' ')
     } else {
-      returnValue = str && (str.charAt(0).toUpperCase() + str.slice(1))
+      returnValue = tempStr && (tempStr.charAt(0).toUpperCase() + tempStr.slice(1))
     }
     return returnValue
   }

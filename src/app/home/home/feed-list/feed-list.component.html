@@ -9,5 +9,21 @@
     </div>
     <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
 </div> -->
-<ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
-    
+
+<!-- <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs> -->
+
+ <ng-container *ngIf="widgetData?.stripType === 'withOutPils'  && (widgetData?.stripVisable === 'mobile' &&  isMobile)">
+    <sb-uic-content-strip-with-tabs 
+    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+    [widgetData]="widgetData">
+    </sb-uic-content-strip-with-tabs>
+ </ng-container>
+<ng-container *ngIf="widgetData?.stripType === 'withOutPils' && widgetData?.stripVisable === 'responsive'">
+    <sb-uic-content-strip-with-tabs 
+    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+    [widgetData]="widgetData">
+    </sb-uic-content-strip-with-tabs>
+</ng-container>
+<ng-container *ngIf="widgetData?.stripType === 'withPils'  && widgetData?.stripVisable === 'responsive'">
+    <sb-uic-content-strip-with-tabs-pills [widgetData]="widgetData"></sb-uic-content-strip-with-tabs-pills>
+</ng-container>

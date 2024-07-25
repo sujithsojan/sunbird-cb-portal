@@ -243,6 +243,9 @@
     word-wrap: break-word;
     overflow-y: auto;
     min-height: 100px;
+    max-height: 500px;
+    margin: 20px 0;
+    overflow-y: auto;
     // height: calc(100vh - 220px);
 
 }
@@ -259,6 +262,14 @@
 
 .text-standalone-black {
     color: #666666
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+::ng-deep .consent-checkbox .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #1a4ca1 !important;
 }
 
 @media only screen and (max-width: 767px) {
@@ -308,7 +319,6 @@
     }
 
     .consent-checkbox {
-        position: fixed;
         bottom: 0;
         /* margin: 0 auto; */
         /* width: 100%; */

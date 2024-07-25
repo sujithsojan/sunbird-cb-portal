@@ -4,7 +4,8 @@
   [primaryCategory]="primaryCategory" [canAttempt]="canAttempt" [noOfQuestions]="noOfQuestions"
   (userSelection)="getSections($event)" [coursePrimaryCategory]="coursePrimaryCategory"
   [instructionAssessment]="instructionAssessment"
-  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
+  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"
+  [forPreview]="forPreview">
 </viewer-overview>
 
 <!-- Overlay Loader -->
@@ -65,7 +66,7 @@
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.next' | translate }}</ng-container>
             </a>
             &nbsp;&nbsp;
-            <a *ngIf="(currentQuestionIndex + 1) === totalQCount"
+            <a *ngIf="(currentQuestionIndex + 1) === totalQCount && !forPreview"
               class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submit' | translate }}</ng-container>
             </a>
@@ -175,7 +176,7 @@
                     </ng-container>
                 
                     <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                      <span class="time-title ws-mat-default-text"> (Submitted)</span>
+                      <span class="time-title ws-mat-default-text"> ({{ 'practiceoverview.submitted' | translate | titlecase}})</span>
                     </div>
                   </div>
                 </span>
@@ -407,7 +408,7 @@
                     </ng-container>
 
                     <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                      <span class="time-title ws-mat-default-text"> (Submitted)</span>
+                      <span class="time-title ws-mat-default-text"> ({{ 'practiceoverview.submitted' | translate | titlecase}})</span>
                     </div>
                   </div>
                 </span>
@@ -447,7 +448,7 @@
                           </ng-container>
 
                           <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                            <span class="time-title ws-mat-default-text"> (Submitted)</span>
+                            <span class="time-title ws-mat-default-text"> ({{ 'practiceoverview.submitted' | translate | titlecase}})</span>
                           </div>
                         </div>
                       </span>
@@ -682,7 +683,7 @@
             <ng-container>{{ 'playerbrief.next' | translate }}</ng-container>
           </a>
           &nbsp;&nbsp;
-          <a *ngIf="(currentQuestionIndex + 1) === totalQCount" class="text-white ws-mat-primary-background quest_btn"
+          <a *ngIf="(currentQuestionIndex + 1) === totalQCount && !forPreview" class="text-white ws-mat-primary-background quest_btn"
             mat-button (click)="proceedToSubmit()">
             <ng-container>{{ 'playerbrief.submit' | translate }}</ng-container>
           </a>
@@ -1139,7 +1140,7 @@
             <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
               <div>
                 <mat-form-field appearance="none">
-                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer && !forPreview  ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1153,7 +1154,7 @@
             </div>
           </div>
 
-          <div>
+          <div *ngIf="!forPreview">
             <a [ngClass]="(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn justify-right ': 'text-white ws-mat-primary-background margin-xs quest_btn justify-right' "  
             mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
@@ -1235,7 +1236,7 @@
                             <span class="timerText time-title flex align-center"> {{ timeLeft | pipeDurationTransform: 'hms2H'
                               }}</span>
                           <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                            <span class="timerText time-title flex align-center"> (Submitted)</span>
+                            <span class="timerText time-title flex align-center"> ({{ 'practiceoverview.submitted' | translate}})</span>
                           </div>
                         </div>
                       </span>
@@ -1310,7 +1311,7 @@
               </div>
             </ng-container>
             <div class="seperate-text-standalone">
-              <span>Legend</span>
+              <span>{{ 'practiceoverview.legend' | translate}}</span>
             </div>
             <div class="my-8 mx-6">
               <div class="flex justify-between">
@@ -1318,12 +1319,12 @@
                   <div class="flex gap-2  align-center">
                     <div class="flex justify-center items-center attempted-question-background question-guide"><span
                         class="question-guide-text-legend"></span></div>
-                    <div class="question-guide-text">Answered</div>
+                    <div class="question-guide-text">{{ 'practiceoverview.answered' | translate}}</div>
                   </div>
                   <div class="flex gap-2  align-center">
                     <div class="flex justify-center items-center question-guide marked-question-standalone-background"><span
                         class="question-guide-text-legend"></span></div>
-                    <div class="question-guide-text">Marked</div>
+                    <div class="question-guide-text">{{ 'practiceoverview.marked' | translate}}</div>
                   </div>
                 </div>
 
@@ -1331,13 +1332,13 @@
                   <div class="flex gap-2  align-center ml-5">
                     <div class="flex justify-center items-center question-guide not-answered-background"><span
                         class="question-guide-text-legend"></span></div>
-                    <div class="question-guide-text">Not Answered</div>
+                    <div class="question-guide-text">{{ 'practiceoverview.notAnswered' | translate}}</div>
                   </div>
 
                   <div class="flex gap-2  align-center ml-5">
                     <div class="flex justify-center items-center question-guide not-visited-background"><span
                         class="question-guide-text-legend-not-visited"></span></div>
-                    <div class="question-guide-text">Not Visited</div>
+                    <div class="question-guide-text">{{ 'practiceoverview.notVisited' | translate}}</div>
                   </div>
                 </div>
               </div>
@@ -1382,7 +1383,7 @@
               <a *ngIf="(currentQuestionIndex+1) !== totalQCount"
                 class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button
                 (click)="getNextQuestion(currentQuestionIndex + 1)">
-                <ng-container *ngIf="!isXsmall">Save & Next</ng-container>
+                <ng-container *ngIf="!isXsmall">{{ 'practiceoverview.saveNext' | translate }}</ng-container>
               </a>
               &nbsp;&nbsp;
               <a *ngIf="currentQuestionIndex !== 0" class="ws-mat-accent-border margin-xs quest_btn prev" mat-button
@@ -1721,12 +1722,12 @@
           </div>
           
         </div>
-        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-around':'justify-center'">
+        <div class="flex flex-row flex-wrap question-section-container" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-around':'justify-center'">
           <div class="section-dd-container">
             <div class="flex flex-row">
               <div *ngIf="assessmentType !== 'optionalWeightage'">
                 <mat-form-field appearance="none">
-                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer && !forPreview ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1736,7 +1737,7 @@
             </div>
           </div>
 
-          <div>
+          <div *ngIf="!forPreview">
             
             <a mat-button (click)="proceedToSubmit()" [ngClass]=
             "(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn_option_weightage': 'text-white ws-mat-primary-background margin-xs quest_btn' ">
@@ -1782,7 +1783,7 @@
                             <span class="timerText time-title flex align-center"> {{ timeLeft | pipeDurationTransform: 'hms2H'
                               }}</span>
                           <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                            <span class="timerText time-title flex align-center"> (Submitted)</span>
+                            <span class="timerText time-title flex align-center"> ({{ 'practiceoverview.submitted' | translate}})</span>
                           </div>
                         </div>
                       </span>
@@ -1867,23 +1868,23 @@
                       <div class="flex gap-2">
                         <div class="flex justify-center items-center attempted-question-background question-guide">
                         </div>
-                        <div class="question-guide-text">Answered</div>
+                        <div class="question-guide-text">{{ 'practiceoverview.answered' | translate | titlecase}}</div>
                       </div>
                       <div class="flex gap-2">
                         <div class="flex justify-center items-center question-guide marked-question-standalone-background"></div>
-                        <div class="question-guide-text">Marked</div>
+                        <div class="question-guide-text">{{ 'practiceoverview.marked' | translate | titlecase}}</div>
                       </div>
                     </div>
 
                     <div class="gap-4 flex flex-col">
                       <div class="flex gap-2">
                         <div class="flex justify-center items-center question-guide not-answered-background"></div>
-                        <div class="question-guide-text">Not Answered</div>
+                        <div class="question-guide-text">{{ 'practiceoverview.notAnswered' | translate}}</div>
                       </div>
 
                       <div class="flex gap-2">
                         <div class="flex justify-center items-center question-guide not-visited-background"></div>
-                        <div class="question-guide-text">Not Visited</div>
+                        <div class="question-guide-text">{{ 'practiceoverview.notVisited' | translate}}</div>
                       </div>
                     </div>
                   </div>
@@ -1973,7 +1974,7 @@
                 <button 
                   class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button
                   (click)="getNextQuestion(currentQuestionIndex + 1)">
-                  <ng-container>Save & Next</ng-container>
+                  <ng-container>{{ 'practiceoverview.saveNext' | translate }}</ng-container>
                 </button>
               </ng-container>
               <ng-container
@@ -2229,7 +2230,7 @@
       </div>
     </ng-container>
     <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-      <span class="time-title ws-mat-default-text"> (Submitted)</span>
+      <span class="time-title ws-mat-default-text"> ({{ 'practiceoverview.submitted' | translate}})</span>
     </div>
   </div>
 </ng-template>

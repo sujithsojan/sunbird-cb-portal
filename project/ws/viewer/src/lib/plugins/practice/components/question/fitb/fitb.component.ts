@@ -140,7 +140,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             let fromRichTextEditor = false
             for (let i = 0; i < iterationNumber; i += 1) {
                 // tslint:disable-next-line
-                if(this.localQuestion.includes('/_______________/') ) {
+                if(this.localQuestion.includes('_______________') ) {
                     this.localQuestion = this.localQuestion.replace('_______________', 'idMarkerForReplacement')
                 } else if (this.localQuestion.includes('input style="border-style:none none solid none"')) {
                     // tslint:disable-next-line
@@ -216,7 +216,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     functionChangeBlankBorder() {
         if (this.question.questionType === 'ftb' && this.showAns) {
             let iterationNumber: any = 0
-            if (this.localQuestion.includes('/_______________/')) {
+            if (this.localQuestion.includes('_______________')) {
                 iterationNumber = ((this.localQuestion.match(/_______________/g) || []).length)
             } else if (this.localQuestion.includes('input style="border-style:none none solid none"')) {
                 iterationNumber = ((this.localQuestion.match(/input style="border-style:none none solid none"/g) || []).length)

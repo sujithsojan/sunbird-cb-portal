@@ -27,7 +27,6 @@ resolve(
       'orderBy': 'createdOn',
       'orderDirection': 'ASC',
       'facets': ['category', 'orgId'],
-      'query': '',
     }
     return this.http.post(requestUrl, requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),

@@ -219,8 +219,8 @@
       <!-- INVITE ONLY STANDALONE ASSESSMENT block-->      
       <ng-container
         *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
-        
-          <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
+    
+          <ng-container *ngIf="!forPreview || isInIFrame; else authViewForInviteOnlyAssessment" i18n>
             <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.youAreNotInvitedForAssessment' | translate }} </span>
           </ng-container>
       </ng-container>
@@ -409,11 +409,18 @@
         <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure" 
         [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
         [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}" [kparray]="kparray"></ws-widget-content-toc>
+        <div class="mob-tip-for-learner">
+          <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+            <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+        </div>
+        </div>
       </div>
     </div>
+    
 
-    <div class="right-container">
+    <div class="right-container" >
       <div class="right-content" #rightContainer>
+        <div class="right-content-inner">
         <ng-container *ngIf="skeletonLoader">
           <ws-widget-skeleton-loader [width]="'384px'" [height]="'224px'"
             [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
@@ -620,9 +627,16 @@
           </ng-container>
         </div>
       </div>
-    </div>
+
+    <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+      <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+  </div>
+      </div>
+
+     
 
   </div>
+</div>
 
   <div class="mobile-enroll-div" [ngClass]="{'bg-white': content?.primaryCategory === primaryCategory.BLENDED_PROGRAM }">
     <ng-container *ngIf="content && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM ">
@@ -654,3 +668,12 @@
 </ng-template>
 
 <ng-template #authView i18n>{{'apptochome.view' | translate}}</ng-template>
+<ng-template #authViewForInviteOnlyAssessment i18n>
+  <ng-container
+        *ngIf="forPreview && content?.courseCategory === 'Invite-Only Assessment'">        
+        <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
+          [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')">          
+          <ng-container>{{ 'apptochome.takeTest' | translate }}</ng-container>
+        </a>
+      </ng-container>
+</ng-template>

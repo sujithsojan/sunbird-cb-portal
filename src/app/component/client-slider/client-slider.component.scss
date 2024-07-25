@@ -38,6 +38,16 @@
     max-width: 1260px;
     margin-top: 60px;
 }
+.view-more {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 40px;
+    justify-content: center;
+}
+.view-more:hover {
+    background-color: #DCDFE5;
+  }
 @keyframes animate {
 	0% {transform: translateX(0);}
   100% {transform: translatex(-3500px)}

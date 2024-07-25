@@ -2,12 +2,12 @@
 
     <ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles }">
     </ws-widget-btn-page-back>
-    <p class="mat-subheading-1">All {{seeAllPageConfig?.title}} <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
+    <p class="mat-subheading-1">All {{selectedTab?.label}} <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
 
 <div class="">
     <div class="container">
         <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
-            <div class="col-span-12 md:col-span-9 ">
+            <div class="col-span-12">
                 <div class="mb-4">
                     <div>
                         <mat-form-field appearance="outline"  class="w-1/2 pl-1 mat-form-search">
@@ -15,19 +15,22 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
-                    <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
-                </div>            
+                <ng-container *ngIf="contentDataList?.length ; else noData">
+                    <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
+                        <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
+                    </div>
+                </ng-container>
+                <ng-template #noData>
+                    <div class="flex justify-center w-full">
+                        <div class="margin-xl text-center" >
+                            <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                                class="margin-top-l margin-bottom-s">
+                            <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
-            <div class="col-span-12 md:col-span-3">
-               <!-- <div class="filter-section">
-                <p class="mat-subheading-2">Filter by</p>
-                <p><mat-checkbox >Course</mat-checkbox></p>
-                <p><mat-checkbox >Program</mat-checkbox></p>
-                <p><mat-checkbox >Blended program</mat-checkbox></p>
-                <p><mat-checkbox >Curated program</mat-checkbox></p>
-               </div> -->
-            </div>
+            
         </div>
     </div>
 </div>

@@ -47,7 +47,7 @@
                             </span>
                         </ng-container>
                     </ng-container>
-                    <ng-container  [ngTemplateOutlet]="loadNewStrips" ></ng-container>
+                    <!-- <ng-container  [ngTemplateOutlet]="loadNewStrips" ></ng-container> -->
 
                     <div class="slider" *ngIf="sliderData && sliderData[0]?.active">
                         <ng-container *ngFor="let vitem of sectionList">
@@ -200,6 +200,20 @@
     <ws-download-app></ws-download-app>
 </div>
 
+<div class="footer footer-update-mobile-number customindex" *ngIf="!isMDOMsgOpen">
+    <div (click)="handleMDOMsgstatus()" class="desktop-cross">X</div>
+    <div class="update-mobile-number-flex">
+        <span (click)="handleMDOMsgstatus()" class="mobile-cross">X</span>
+        <img class="hand-icon" src="assets/icons/footer-nav/update-mobile-number.svg"/>
+        <p class="updatetitle" *ngIf="rejectedStatus && !approvedStatus">MDO has rejected your request. 
+            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+        <p class="updatetitle" *ngIf="!rejectedStatus && approvedStatus">MDO has approved your request. 
+            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+        <p class="updatetitle" *ngIf="(!rejectedStatus && !approvedStatus) || (rejectedStatus && approvedStatus)">MDO has updated your details. 
+            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+    </div>
+</div>
+
 <div class="footer footer-update-mobile-number" *ngIf="isNudgeOpen">
     <div (click)="handleRemindLater()" class="desktop-cross">X</div>
     <div class="update-mobile-number-flex">
@@ -210,11 +224,11 @@
     </div>
 </div>
 
-<ng-template #loadNewStrips>
+<!-- <ng-template #loadNewStrips>
     <ng-container *ngFor="let newStrip of newHomeStrips">
         <sb-uic-content-strip-with-tabs 
             (telemtryResponse)="raiseTelemetryInteratEvent($event)"
             [widgetData]="newStrip">
         </sb-uic-content-strip-with-tabs>
     </ng-container>
-</ng-template>
+</ng-template> -->

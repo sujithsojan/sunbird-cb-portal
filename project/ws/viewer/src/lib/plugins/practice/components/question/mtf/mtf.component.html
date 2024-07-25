@@ -28,7 +28,7 @@ showAns &&
       <th mat-header-cell *matHeaderCellDef i18n="mtf explanation Option">
         Option
       </th>
-      <td mat-cell *matCellDef="let element">{{ element.text }}</td>
+      <td mat-cell *matCellDef="let element" [innerHTML]="element.text"></td>
     </ng-container>
     <ng-container matColumnDef="hint">
       <th mat-header-cell *matHeaderCellDef i18n="mtf explanation Hint">

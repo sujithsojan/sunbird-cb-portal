@@ -73,6 +73,9 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     if (event) {
       contentStripData['hideSection'] = true
       this.contentTabEmptyResponseCount = this.contentTabEmptyResponseCount + 1
+      // if(this.contentTabEmptyResponseCount === 4 ) {
+      //   this.selectedIndex = 1
+      // }
     }
   }
 

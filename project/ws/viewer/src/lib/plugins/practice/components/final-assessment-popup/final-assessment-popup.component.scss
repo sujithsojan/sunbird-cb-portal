@@ -54,7 +54,8 @@
         .table-section {
             overflow-x: auto;
             border-top: 1px solid #DEE2E6;
-
+            overflow-y: auto;
+            max-height: 400px;
             .results-table {
                 min-width: 700px;
             }

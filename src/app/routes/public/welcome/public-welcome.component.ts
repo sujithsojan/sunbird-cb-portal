@@ -338,11 +338,13 @@ export class PublicWelcomeComponent implements OnInit, OnDestroy {
                 },
             }
         }
+
         this.welcomeSignupSvc.register(req).subscribe(
             (_res: any) => {
                 this.disableBtn = false
                 this.configSvc.updateGlobalProfile(true)
-                this.router.navigate(['/app/setup'])
+                // this.router.navigate(['/app/setup'])
+                this.router.navigate(['/page/home'])
             },
             (err: any) => {
                 this.disableBtn = false

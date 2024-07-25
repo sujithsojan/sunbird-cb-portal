@@ -1,16 +1,16 @@
 <div class="container-balanced">
     <ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles}">
     </ws-widget-btn-page-back>
-    <p class="mat-subheading-1 mt-8">All {{seeAllPageConfig?.title}} <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
+    <p class="mat-subheading-1 mt-8">All {{selectedTab?.label}} <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
 
     <div class="">
         <div class="container">
             <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
-                <div class="col-span-12 md:col-span-9 ">
+                <div class="col-span-12">
                     <div class="mb-4">
                         <div>
-                            <mat-form-field appearance="outline"  class="w-1/2 pl-1 mat-form-search">
-                                <input name="search"  (keyup.enter)="handleSearchQuery($event)"    matInput placeholder="Search">
+                            <mat-form-field appearance="outline" class="pl-1 mat-form-search">
+                                <input name="search" (keyup.enter)="handleSearchQuery($event)" matInput placeholder="Search">
                             </mat-form-field>
                         </div>
                     </div>

@@ -101,6 +101,7 @@ import {
 WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG,
 } from '@sunbird-cb/consumption'
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
+import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
 
 @Injectable()
 export class HammerConfig extends GestureConfig {
@@ -154,6 +155,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppLogoComponent,
     SurveyShikshaComponent,
     PrivacyPolicyComponent,
+    LearnerAdvisoryComponent,
   ],
   imports: [
     FormsModule,

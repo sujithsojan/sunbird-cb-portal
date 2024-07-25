@@ -38,10 +38,17 @@
                                     {{data?.description | slice:0:descriptionMaxLength}}
                                     <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
                                 </p>
+                                <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
+                                    <ng-container *ngFor="let ref of data?.referenceLinks">
+                                        <p >
+                                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links " target="_blank"> {{'contentstripmultiple.clickHere' | translate}}</a>
+                                        </p>
+                                    </ng-container>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-6">
+                    <div class="col-span-12 md:col-span-6 zindex">
                         <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
                             <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
                         </div>
@@ -64,6 +71,14 @@
                     {{data?.description | slice:0:descriptionMaxLength}}
                     <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
                 </p>
+                <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
+                    <ng-container *ngFor="let ref of data?.referenceLinks">
+                        <p >
+                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links "  target="_blank">{{'contentstripmultiple.clickHere' | translate}}</a>
+                        </p>
+                    </ng-container>
+                </ng-container>
+                
             </div>
         </div>
     </div>

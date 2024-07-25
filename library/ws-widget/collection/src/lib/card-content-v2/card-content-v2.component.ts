@@ -379,10 +379,11 @@ export class CardContentV2Component extends WidgetBaseComponent
         id: certificateData.issuedCertificates[0].identifier,   // id of the certificate
         type: WsEvents.EnumInteractSubTypes.CERTIFICATE,
       })
-    if(certificateData.issuedCertificates.length > 0) {
+    if(certificateData && certificateData.issuedCertificates && certificateData.issuedCertificates.length && certificateData.issuedCertificates.length > 0) {
       this.downloadCertificateLoading = true
-      let certData: any = certificateData.issuedCertificates[0]
-      this.certificateService.downloadCertificate_v2(certData.identifier).subscribe((res: any)=>{
+      let certData: any = certificateData.issuedCertificates
+      certData.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+      this.certificateService.downloadCertificate_v2(certData[0].identifier).subscribe((res: any)=>{
         this.downloadCertificateLoading = false
         const cet = res.result.printUri
         this.dialog.open(CertificateDialogComponent, {
@@ -418,6 +419,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
   }
   async getRedirectUrlData(content: any,contentType?:any){
+    const contentCategory = content && content.primaryCategory ? content.primaryCategory : 'Content'
     if(contentType) {
       this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
         queryParams : {
@@ -426,14 +428,19 @@ export class CardContentV2Component extends WidgetBaseComponent
         }
       })
     } else {
-      let urlData = await this.contSvc.getResourseLink(content)
-      this.router.navigate(
-        [urlData.url],
-        {
-          queryParams: urlData.queryParams
-        })
+      // if (content && content.status && content.status.toLowerCase() !== 'retired') {
+        let urlData = await this.contSvc.getResourseLink(content)
+        if (urlData && urlData.url ) {
+          this.router.navigate(
+            [urlData.url],
+            {
+              queryParams: urlData.queryParams
+            })
+    } else {
+      // const contentType = urlData;
+      this.snackBar.open(`This ${contentCategory} has been archived and is no longer available.`, 'X', { duration: 2000 });
     }
- 
+    }
     
   }
 

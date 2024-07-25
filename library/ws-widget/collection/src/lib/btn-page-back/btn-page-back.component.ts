@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Component, HostBinding, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-
+// import { environment } from './../../../environments/environment'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ConfigurationsService, MultilingualTranslationsService, NsInstanceConfig } from '@sunbird-cb/utils-v2'
 
@@ -12,8 +12,8 @@ import { environment } from 'src/environments/environment'
 import _ from 'lodash'
 import { TranslateService } from '@ngx-translate/core'
 // tslint:enable
-type TUrl = undefined | 'none' | 'back' | string
 
+type TUrl = undefined | 'none' | 'back' | string
 @Component({
   selector: 'ws-widget-btn-page-back',
   templateUrl: './btn-page-back.component.html',
@@ -33,12 +33,9 @@ type TUrl = undefined | 'none' | 'back' | string
     ),
   ],
 })
-
 export class BtnPageBackComponent extends WidgetBaseComponent
   implements OnInit, NsWidgetResolver.IWidgetData<{ url: TUrl }> {
-
-  @Input() widgetData: { url: TUrl, titles?: NsWidgetResolver.ITitle[],
-     disableTranslate?: boolean, textClass: any } = { url: 'none', titles: [], disableTranslate: false, textClass: '' }
+  @Input() widgetData: { url: TUrl, titles?: NsWidgetResolver.ITitle[], textClass?: string } = { url: 'none', titles: [] }
   presentUrl = ''
   @HostBinding('id')
   public id = 'nav-back'
@@ -76,19 +73,17 @@ export class BtnPageBackComponent extends WidgetBaseComponent
       this.loggedinUser = false
     }
   }
-
   get isUserLoggegIn(): boolean {
     return this.loggedinUser
   }
-
   get backUrl(): { fragment?: string; routeUrl: string; queryParams: any } {
+
     if (this.presentUrl === '/page/explore') {
       return {
         queryParams: undefined,
         routeUrl: '/page/home',
       }
     }
-
     if (this.widgetData.url === 'home') {
       return {
         queryParams: undefined,
@@ -102,18 +97,17 @@ export class BtnPageBackComponent extends WidgetBaseComponent
         queryParams: this.btnBackSvc.getLastUrl(2).queryParams,
         routeUrl: this.btnBackSvc.getLastUrl(2).route,
       }
-    }
-
-    if (this.widgetData.url === 'back') {
+    } if (this.widgetData.url === 'back') {
       return {
         fragment: this.btnBackSvc.getLastUrl().fragment,
         queryParams: this.btnBackSvc.getLastUrl().queryParams,
         routeUrl: this.btnBackSvc.getLastUrl().route,
       }
     }
-
     if (this.widgetData.url !== 'back' && this.widgetData.url !== 'doubleBack') {
+
       this.btnBackSvc.checkUrl(this.widgetData.url)
+
     }
 
     return {
@@ -160,6 +154,12 @@ export class BtnPageBackComponent extends WidgetBaseComponent
     this.router.navigate(['/app/discussion-forum'], { queryParams: { page: 'home' }, queryParamsHandling: 'merge' })
   }
 
+  // get titleUrl(): { fragment?: string; routeUrl: string; queryParams: any } {
+  //   return {
+  //     queryParams: undefined,
+  //     routeUrl: this.widgetData.url ? this.widgetData.url : '/app/home',
+  //   }
+  // }
   toggleVisibility() {
     this.visible = !this.visible
   }

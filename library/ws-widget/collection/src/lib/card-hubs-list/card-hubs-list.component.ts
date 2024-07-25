@@ -256,6 +256,11 @@ export class CardHubsListComponent extends WidgetBaseComponent
   translateLabels(label: string, type: any, subtype: '') {
     return this.langtranslations.translateLabel(label, type, subtype)
   }
+
+  routeToMentorship() {
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
+  }
+
   raiseTelemetry(name: any) {
     this.events.raiseInteractTelemetry(
       {

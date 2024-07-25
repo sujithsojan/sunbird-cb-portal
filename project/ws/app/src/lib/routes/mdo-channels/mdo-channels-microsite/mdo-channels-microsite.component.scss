@@ -114,9 +114,9 @@
     }
 }
 
-::ng-deep.mat-tab-label-active {
-    .mat-tab-label-content {
-      font-weight: 700 !important;
-      opacity: 1;
-    }
+  ::ng-deep .mytabs .mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
+  ::ng-deep .mytabs .mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
+    font-weight: 700;
+    color: black;
+    opacity: 1;
   }

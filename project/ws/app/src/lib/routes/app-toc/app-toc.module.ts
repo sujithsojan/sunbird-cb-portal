@@ -90,6 +90,7 @@ import { ConnectionNameModule } from '@sunbird-cb/collection/src/lib/_common/con
 import { CertificateDialogModule } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.module'
 import { ConfirmDialogModule } from '@sunbird-cb/collection/src/lib/_common/confirm-dialog/confirm-dialog.module'
 import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module'
+import { TipsForLearnerModule } from '@sunbird-cb/collection/src/lib/_common/tips-for-learner/tips-for-learner.module'
 
 // Components
 import { AppTocAnalyticsComponent } from './routes/app-toc-analytics/app-toc-analytics.component'
@@ -134,6 +135,8 @@ import { AppTocOverviewDirective } from './routes/app-toc-overview/app-toc-overv
 import { AppTocHomeDirective } from './routes/app-toc-home/app-toc-home.directive'
 import { AppTocCohortsDirective } from './routes/app-toc-cohorts/app-toc-cohorts.directive'
 import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-single-page.directive'
+import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
+import { CommonMethodsService } from '@sunbird-cb/consumption'
 
 @NgModule({
   declarations: [
@@ -163,6 +166,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     AppTocSessionsComponent,
     AppTocSessionCardComponent,
     EnrollQuestionnaireComponent,
+    AppTocCiosHomeComponent,
   ],
   imports: [
     CommonModule,
@@ -251,6 +255,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     ShareTocModule,
     TocKpiValuesModule,
     KarmaPointsModule,
+    TipsForLearnerModule,
   ],
   providers: [
     AppTocResolverService,
@@ -266,6 +271,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     ProfileResolverService,
     ActionService,
     MultilingualTranslationsService,
+    CommonMethodsService,
   ],
   exports: [
     AppTocDiscussionComponent,

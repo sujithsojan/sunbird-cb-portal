@@ -16,8 +16,8 @@ export namespace NSPractice {
     questionId: string
     options: IOption[]
     questionLevel: String,
-    timeTaken: String
-    questionType?: TQuizQuestionType
+    timeTaken: String,
+    questionType?: TQuizQuestionType,
     rhsChoices?: string[]
   }
 
@@ -84,7 +84,8 @@ export namespace NSPractice {
     pass: boolean,
     totalMarks: number,
     sectionMarks: number,
-    children: ISectionQuestion[]
+    children: ISectionQuestion[],
+    name: string
   }
 
   export interface ISectionQuestion {
@@ -112,7 +113,9 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
-    timeTakenForAssessment: string
+    timeTakenForAssessment: string,
+    totalSectionMarks: number,
+    totalMarks: number
   }
 
   export interface IQPaper {

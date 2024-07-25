@@ -80,6 +80,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
     if (window.location.pathname.includes('/public/privacy-policy')) {
       this.hideHeaderAndFooter = true
     }
+
     this.getHeaderFooterConfiguration().subscribe((sectionData: any) => {
       // console.log('headerFooterConfigData',sectionData)
       this.headerFooterConfigData = sectionData.data
@@ -169,6 +170,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
     || window.location.pathname.includes('/public/contact')
     || window.location.pathname.includes('/public/signup')
     || window.location.pathname.includes('/public/request')
+
     ) {
       this.customHeight = true
     }
@@ -337,6 +339,13 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
           this.showFooter = true
           this.showNavbar = true
           this.isNavBarRequired = true
+        }
+        if (window.location.pathname.includes('/learner-advisory')) {
+          this.showNavbar = true
+          this.isNavBarRequired = true
+          this.showBottomNav = true
+          this.showHubs = true
+
         }
 
         if (!!this.currentUrl.startsWith('/app/toc/')) {

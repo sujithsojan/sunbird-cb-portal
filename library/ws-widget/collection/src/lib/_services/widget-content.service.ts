@@ -55,6 +55,9 @@ const API_END_POINTS = {
   READ_COURSE_KARMAPOINTS: '/apis/proxies/v8/karmapoints/user/course/read',
   CLAIM_KARMAPOINTS: '/apis/proxies/v8/claimkarmapoints',
   USER_KARMA_POINTS: '/apis/proxies/v8/user/totalkarmapoints',
+  EXT_CONTENT_READ: (contentId: any) => `/apis/proxies/v8/cios/v1/content/read/${contentId}`,
+  EXT_USER_COURSE_ENROLL : (contentId: any) => `/apis/proxies/v8/cios-enroll/v1/readby/useridcourseid/${contentId}`,
+  EXT_CONTENT_EROLL: `/apis/proxies/v8/cios-enroll/v1/create`,
 }
 
 @Injectable({
@@ -436,6 +439,17 @@ export class WidgetContentService {
     return this.http.get<NsContent.IContent[]>(url)
     // return this.http.get<NsContent.IContent[]>(API_END_POINTS.CONTENT_READ(contentId))
   }
+  fetchExternalContent(contentId: string[]): Observable<NsContent.IContent[]> {
+    return this.http.get<NsContent.IContent[]>(API_END_POINTS.EXT_CONTENT_READ(contentId))
+  }
+
+  fetchExtUserContentEnroll(contentId: string) {
+    return this.http.get<any>(API_END_POINTS.EXT_USER_COURSE_ENROLL(contentId))
+  }
+
+  extContentEnroll (requestBody: any) {
+    return this.http.post<any>(`${API_END_POINTS.EXT_CONTENT_EROLL}`, requestBody)
+  }
 
   getCourseKarmaPoints(request: any) {
     return this.http.post<any>(API_END_POINTS.READ_COURSE_KARMAPOINTS, request)
@@ -458,21 +472,22 @@ export class WidgetContentService {
   async getResourseLink(content: any) {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
-      if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
-          if (!this.isBatchInProgress(enrolledCourseData.batch)) {
-            return this.gotoTocPage(content)
-          }
+      if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status &&
+        enrolledCourseData.content.status.toLowerCase() !== 'retired') {
+        if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
+            if (!this.isBatchInProgress(enrolledCourseData.batch)) {
+              return this.gotoTocPage(content)
+            }
+        } else {
           const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
           return data
-      }  {
-        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
-        return data
+        }
       }
-
+      return ''
     }
     return this.gotoTocPage(content)
 

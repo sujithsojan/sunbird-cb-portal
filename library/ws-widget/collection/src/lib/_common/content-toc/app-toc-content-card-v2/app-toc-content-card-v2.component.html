@@ -74,7 +74,7 @@
                             <!-- <mat-icon class="margin-right-xs radiobtn time-icon">radio_button_unchecked </mat-icon> -->
                             {{ content?.name }}
                         </p>
-                        <span class="content-type optional-span" *ngIf="content?.optionalReading">optional </span>
+                        <span class="content-type optional-span" *ngIf="content?.optionalReading">{{ 'playerbrief.optional' | translate | titlecase}} </span>
                     </div>
                     <!-- for default grey icons -->
                     <ng-container *ngIf="!pathSet?.has(content?.identifier) || !isEnrolled">
@@ -107,7 +107,7 @@
                             content.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT ||
                             content.primaryCategory === primaryCategory.PRACTICE_RESOURCE">
                            
-                                <span class="resourceDuration ws-mat-black60-text">{{ content?.maxQuestions }} questions</span>
+                                <span class="resourceDuration ws-mat-black60-text">{{ content?.maxQuestions }} {{ 'playerbrief.questions' | translate | titlecase}}</span>
                             </ng-container>
                             <ng-container *ngIf="!(content.primaryCategory === primaryCategory.FINAL_ASSESSMENT || 
                             content.primaryCategory === primaryCategory.COMP_ASSESSMENT ||
@@ -150,7 +150,7 @@
                             content.primaryCategory === primaryCategory.COMP_ASSESSMENT ||
                             content.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT ||
                             content.primaryCategory === primaryCategory.PRACTICE_RESOURCE">
-                                <span class="resourceDuration ws-mat-black60-text">{{ content?.maxQuestions }} questions</span>
+                                <span class="resourceDuration ws-mat-black60-text">{{ content?.maxQuestions }} {{ 'playerbrief.questions' | translate | titlecase}}</span>
                             </ng-container>
                             <ng-container *ngIf="!(content.primaryCategory === primaryCategory.FINAL_ASSESSMENT || 
                             content.primaryCategory === primaryCategory.COMP_ASSESSMENT ||

@@ -31,7 +31,7 @@ import { NotificationComponent } from '@ws/author/src/lib/modules/shared/compone
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
-
+import { environment } from 'src/environments/environment'
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -43,7 +43,8 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'YYYY',
   },
 }
-const EMAIL_PATTERN = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+const EMAIL_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9._-]*[a-zA-Z0-9]+@[a-zA-Z0-9]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,4}$/
+// const EMAIL_PATTERN = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 const EMP_ID_PATTERN = /^[a-z0-9]+$/i
@@ -157,7 +158,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   designationApprovedTime = 0
   currentDate = new Date()
   designationsMeta: any
-
+  isMentor = false
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -242,7 +243,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
-
+    if (this.configService && this.configService.userRoles) {
+      this.isMentor = this.configService.userRoles.has('MENTOR') ? true : false
+    }
     this.route.queryParams.subscribe((params: Params) => {
       this.params = params
     })
@@ -291,7 +294,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRejectedStatus()
     this.getApprovedFields()
     this.getInsightsData()
-    //this.getAssessmentData()
+    // this.getAssessmentData()
   }
 
   fetchDiscussionsData(): void {
@@ -1240,5 +1243,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       width: '500px',
       maxWidth: '90vw',
     })
+  }
+
+  viewMentorProfile() {
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
   }
 }

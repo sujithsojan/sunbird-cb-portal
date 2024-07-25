@@ -1,32 +1,89 @@
 <div class="margin-top-m">
-    <ws-widget-profile-card-stats (expandCollapse)="expandCollapse($event)"
-    (activity)="goToActivity($event)" [profileData]="homePageData.profileCard"
-        [insightsData]="insightsData" [isLoading]="profileDataLoading"></ws-widget-profile-card-stats>
+    <ws-widget-profile-card-stats (expandCollapse)="expandCollapse($event)" (activity)="goToActivity($event)"
+        [profileData]="homePageData.profileCard" [insightsData]="insightsData"
+        [isLoading]="profileDataLoading"></ws-widget-profile-card-stats>
 </div>
 
+
+
+
+
 <section class="hidden md:block" style="position: relative;" [ngClass]="{'':!collapsed, 'margin-bottom-m': collapsed}">
-    <section class="collapsible" [@collapse]="collapsed" [ngClass]="{'padding-top-m':(!collapsed && isLeaderboardExist)}">
-        <ws-widget-user-leaderboard (isLeaderboardAvailable)="checkLeaderboardData($event)"></ws-widget-user-leaderboard>
+    <div class="assessment-box  collapsible" [@collapse]="collapsed"
+        [ngClass]="{'margin-bottom-remove margin-top-remove':collapsed,'margin-top-l':!collapsed}">
+        <ng-container [ngTemplateOutlet]="loadNewStrips"></ng-container>
+        <ng-template #loadNewStrips>
+            <ng-container *ngFor="let newStrip of assessmentStrip">
+                <sb-uic-content-strip-with-tabs [widgetData]="newStrip">
+                </sb-uic-content-strip-with-tabs>
+            </ng-container>
+        </ng-template>
+    </div>
+    <section class="collapsible" [@collapse]="collapsed"
+        [ngClass]="{'padding-top-m':(!collapsed && isLeaderboardExist)}">
+        <ws-widget-user-leaderboard
+            (isLeaderboardAvailable)="checkLeaderboardData($event)"></ws-widget-user-leaderboard>
     </section>
     <div class="collapsible" [@collapseWeekly]="collapsed" [ngClass]="{'margin-bottom-m margin-top-m':!collapsed}">
-        <ws-widget-weekly-claps [insightsData]="insightsData" [weeklyData]="homePageData.weeklyClaps" [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
+        <ws-widget-weekly-claps [insightsData]="insightsData" [weeklyData]="homePageData.weeklyClaps"
+            [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
     </div>
 
-    <div *ngIf="assessmentsData" class="margin-bottom-m" class="collapsible" [@collapsDiscuss]="collapsed" [ngClass]="{'padding-bottom-m': !collapsed}">
+    <!-- <div class="tips-container collapsible" [@collapse]="collapsed" *ngIf="randomlearnAdvisoryObj">
+        <div class="circle-box">
+            <div class="background-circle">
+                
+            </div>
+        </div>
+        <div class="tips-header">
+            <h3>Tips for Learners</h3>
+           
+            <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
+                <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
+                    (click)="showAllTips()">
+                    <span class="ws-mat-default-text">Show all</span>
+                    <mat-icon class="ws-mat-default-text mat-icon" color="accent" role="img"
+                        aria-hidden="true">navigate_next</mat-icon>
+                </a>
+            </div>
+        </div>
+        <div class="tip-content">
+            <div class="background">
+                <img class="book-icon" src="{{randomlearnAdvisoryObj.contentImg}}"
+                    alt="{{randomlearnAdvisoryObj.content}}">
+            </div>
+            <div class="tip-data">
+                <p>{{randomlearnAdvisoryObj.content}}</p>
+            </div>
+            <div class="tip-count">
+                {{randomlearnAdvisoryObj.id}}/{{learnAdvisoryDataLength}}
+            </div>
+        </div>
+    </div> -->
+
+    <div class="collapsible" [@collapse]="collapsed" *ngIf="learnAdvisoryData">
+        <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+    </div>
+
+
+    <div *ngIf="assessmentsData" class="margin-bottom-m" class="collapsible" [@collapsDiscuss]="collapsed"
+        [ngClass]="{'padding-bottom-m': !collapsed}">
         <div class="assessments-wrapper">
             <div class="assessments-info-wrapper">
                 <div class="flex justify-between">
                     <div class="flex flex-col">
                         <div class="flex flex-between flex-middle">
-                            <p class="flex-align-start upcoming-assessment-title flex flex-middle margin-remove">Upcoming Assessment
+                            <p class="flex-align-start upcoming-assessment-title flex flex-middle margin-remove">
+                                Upcoming Assessment
                                 <img class="margin-left-s cursor-pointer" width="20px" height="20px"
-                                    src="assets/icons/home/help_icon.svg" #tooltip="matTooltip" [matTooltipClass]="'below'"
+                                    src="assets/icons/home/help_icon.svg" #tooltip="matTooltip"
+                                    [matTooltipClass]="'below'"
                                     matTooltip="View your Credentials and take your Assessment.">
                             </p>
                         </div>
                         <button
                             class="bg-blue-700 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer mt-4 mb-2 tracking-wide"
-                            [routerLink]="['/app/discussion-forum']" >START</button>
+                            [routerLink]="['/app/discussion-forum']">START</button>
                     </div>
                     <div class="flex justify-center system-icon">
                         <mat-icon class="custom-size">desktop_mac</mat-icon>
@@ -39,7 +96,8 @@
                         <span class="cred-title">{{ credMessage }}</span>
                     </div>
                     <div class="flex">
-                        <mat-icon class="ws-mat-default-text cursor-pointer" (click)="toggleCreds()">{{showCreds ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+                        <mat-icon class="ws-mat-default-text cursor-pointer" (click)="toggleCreds()">{{showCreds ?
+                            'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
                     </div>
                 </div>
                 <div class="my-credentials p-3" *ngIf="showCreds">
@@ -47,14 +105,16 @@
                         <span class="pr-5 font-semibold">Username</span>
                         <div class="flex flex-middle copy-items">
                             <span class="pr-2 custom-width">{{assessmentsData.userName}}</span>
-                            <span class=""><mat-icon class="cursor-pointer copy-icon" (click)="copyToClipboard('Venkat')">content_copy</mat-icon></span>
+                            <span class=""><mat-icon class="cursor-pointer copy-icon"
+                                    (click)="copyToClipboard('Venkat')">content_copy</mat-icon></span>
                         </div>
                     </div>
                     <div class="flex flex-middle" style="padding: 5px 0px;">
                         <span class="pr-6 font-semibold">Password</span>
                         <div class="flex flex-middle copy-items">
                             <span class="pr-2  custom-width">{{assessmentsData.password}}</span>
-                            <span class=""><mat-icon class="cursor-pointer copy-icon" (click)="copyToClipboard('Test@1234')">content_copy</mat-icon></span>
+                            <span class=""><mat-icon class="cursor-pointer copy-icon"
+                                    (click)="copyToClipboard('Test@1234')">content_copy</mat-icon></span>
                         </div>
                     </div>
                 </div>
@@ -91,27 +151,66 @@
     <section class="collapsible" [@collapsDiscuss]="collapsed" [ngClass]="{'':!collapsed}" *ngIf="!discussion?.error">
         <div class="flex flex-col discussion-card">
             <div class="flex mat-subheading-1 p-4">
-                <div class="flex flex-row gap-1 mat-subheading-1 cursor-pointer feed-title" (click)="navigate(); raiseTelemetry('discussions')">
+                <div class="flex flex-row gap-1 mat-subheading-1 cursor-pointer feed-title"
+                    (click)="navigate(); raiseTelemetry('discussions')">
                     {{ 'home.myDiscussions' | translate }}
-                    <mat-icon class="ws-mat-default-text mr-3 mat-icon notranslate material-icons mat-icon-no-color feed-title-icon">
+                    <mat-icon
+                        class="ws-mat-default-text mr-3 mat-icon notranslate material-icons mat-icon-no-color feed-title-icon">
                         chevron_right
                     </mat-icon>
                 </div>
             </div>
             <ng-container>
-                <ws-widget-discussions [discussion]="discussion" [count]="2" ></ws-widget-discussions>
+                <ws-widget-discussions [discussion]="discussion" [count]="2"></ws-widget-discussions>
             </ng-container>
         </div>
     </section>
     <section class="collapsible" [@collapse]="collapsed" [ngClass]="{'padding-top-m margin-bottom-m':!collapsed}">
-        <ws-widget-pending-request  [pendingRequestData]="pendingRequestData" [isLoading]="pendingRequestSkeleton"></ws-widget-pending-request>
+        <ws-widget-pending-request [pendingRequestData]="pendingRequestData"
+            [isLoading]="pendingRequestSkeleton"></ws-widget-pending-request>
     </section>
     <div class="empty-div margin-bottom-xl" *ngIf="collapsed">
-        <div class="empty-div2 margin-bottom-m"  *ngIf="!discussion?.error">
+        <div class="empty-div2 margin-bottom-m" *ngIf="!discussion?.error">
 
         </div>
     </div>
-    <div class="flex flex-col" >
+    <div class="flex flex-col">
         <ws-home-other-portal></ws-home-other-portal>
     </div>
+</section>
+<section class="block md:hidden">
+    <div *ngIf="learnAdvisoryData">
+        <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+    </div>
+    <!-- <div class="tips-container" *ngIf="randomlearnAdvisoryObj">
+        <div class="circle-box">
+            <div class="background-circle">
+            </div>
+        </div>
+        <div class="tips-header">
+            <h3>Tips for Learners</h3>
+    
+            <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
+                <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
+                    (click)="showAllTips()">
+                    <span class="ws-mat-default-text">Show all</span>
+                    <mat-icon class="ws-mat-default-text mat-icon" color="accent" role="img"
+                        aria-hidden="true">navigate_next</mat-icon>
+                </a>
+            </div>
+        </div>
+        <div class="tip-content flex flex-row">
+            <div class="background">
+                <img class="book-icon" src="{{randomlearnAdvisoryObj.contentImg}}"
+                    alt="{{randomlearnAdvisoryObj.content}}">
+            </div>
+            <div class="tip-data">
+                <p>{{randomlearnAdvisoryObj.content}}</p>
+            </div>
+            
+            <div class="tip-count">
+                {{randomlearnAdvisoryObj.id}}/{{learnAdvisoryDataLength}}
+            </div>
+        </div>
+    </div> -->
 </section>

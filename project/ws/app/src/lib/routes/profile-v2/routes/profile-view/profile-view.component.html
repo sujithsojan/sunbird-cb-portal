@@ -9,7 +9,8 @@
               <mat-icon class="custom-mat-icon" [matTooltipPosition]="'below'" #pTooltip="matTooltip"
                 matTooltip="{{ 'profileInfo.pdTooltipMsg' | translate }}"
                 (click)="pTooltip.toggle()">info_outline</mat-icon>
-            </div>
+               
+            </div>            
             <ng-container *ngIf="!enableWTR && !enableWR && isCurrentUser">
               <div class="flex flex-row">
                 <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editProfile"
@@ -32,6 +33,7 @@
   
             <div class="withdraw-text edit-button" *ngIf="enableWR && isCurrentUser" (click)="showWithdrawRequestPopup()">{{
               'profileInfo.withdrawRequest' | translate }}</div>
+            
           </div>
   
           <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col grid-container-2">
@@ -605,17 +607,29 @@
     </div>
     <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
+        
         <div class="flex flex-row" *ngIf="portalProfile?.profileStatus !== 'VERIFIED'">
           <div class="profile-not-verified">
             <div class="text">{{ 'profileInfo.profileNotVerified' | translate }}</div>
             <mat-icon>info_outline</mat-icon>
           </div>
+
         </div>
+        <div class="flex flex-row justify-between">
         <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
           <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
           <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
+          <div *ngIf="isMentor" class="blue-bg-mentor">
+            Mentor
+          </div>
         </div>
+        <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile" (click)="viewMentorProfile()">
+          <div class="text-sm blue-background-outline">
+            {{ 'profileInfo.viewMentorProfile' | translate }}
+          </div>          
+        </div>
+      </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <!--  pattern="/^[a-z0-9._-]+$/i" -->
           <input #profileNameVar="ngModel" type="text" name="profileNameVar" [(ngModel)]="profileName" class="input-text"/>          
@@ -660,7 +674,14 @@
                     <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
                   </div>
                 </ng-container>
+                
               </ng-container>
+             
+            </div>
+            <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile-mob" (click)="viewMentorProfile()">
+              <div class="text-sm blue-background-outline">
+                {{ 'profileInfo.viewMentorProfile' | translate }}
+              </div>          
             </div>
           </div>
         </ng-container>

@@ -11,7 +11,6 @@ import { ViewerUtilService } from '../../viewer-util.service'
 import { CourseCompletionDialogComponent } from '../course-completion-dialog/course-completion-dialog.component'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
 import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
-
 @Component({
   selector: 'viewer-viewer-secondary-top-bar',
   templateUrl: './viewer-secondary-top-bar.component.html',
@@ -77,7 +76,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     private viewerSvc: ViewerUtilService,
     private pdfScormDataService: PdfScormDataService,
     private events: EventService,
-    private appTocSvc: AppTocService,
+    private appTocSvc: AppTocService
   ) {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.logo = !isXSmall

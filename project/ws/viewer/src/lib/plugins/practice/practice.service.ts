@@ -21,6 +21,7 @@ const API_END_POINTS = {
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
   CAN_ATTEMPT_V5: (assessmentId: any) => `/apis/proxies/v8/user/assessment/v5/retake/${assessmentId}`,
 }
+const forcreator = window.location.href.includes('editMode=true')
 @Injectable({
   providedIn: 'root',
 })
@@ -38,7 +39,9 @@ export class PracticeService {
   clearResponse = new Subject()
   constructor(
     private http: HttpClient,
-  ) { }
+  ) {
+
+  }
 
   // handleError(error: ErrorEvent) {
   //   let errorMessage = ''
@@ -160,11 +163,16 @@ export class PracticeService {
                 const stringRemoveSlashN =  this.extractContent(question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>'))
                 const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, stringRemoveSlashN.replace(/<(.|\n)*?>/g, ''))
                 const targetId = mtfSrc[question.questionId].target[idxOfSource]
-                const lastChar = targetId.slice(-1)
-                if (question) {
-                  question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
+                if (targetId) {
+                  const lastChar = targetId.slice(-1)
+                  if (question && lastChar) {
+                    question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
+                  }
+                  question.options[i].userSelected = true
+                } else {
+                  question.options[i].userSelected = false
                 }
-                question.options[i].userSelected = true
+
               // }
             // }
           } else {
@@ -206,7 +214,13 @@ export class PracticeService {
   }
 
   getSection(sectionId: string): Observable<NSPractice.ISectionResponse> {
-    return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}`).pipe(retry(2))
+    if (forcreator) {
+      // tslint:disable-next-line: max-line-length
+      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}?editMode=true`).pipe(retry(2))
+    }
+      // tslint:disable-next-line: max-line-length
+      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}`).pipe(retry(2))
+
   }
   getQuestions(identifiers: string[], assessmentId: string): Observable<{ count: Number, questions: any[] }> {
     const data = {
@@ -217,11 +231,23 @@ export class PracticeService {
         },
       },
     }
-    return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS, data)
+    if (forcreator) {
+      // tslint:disable-next-line: max-line-length
+      return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS}?editMode=true`, data)
+    }
+
+      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS, data)
+
   }
 
   getSectionV4(sectionId: string): Observable<NSPractice.ISectionResponse> {
-    return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}`).pipe(retry(2))
+    if (forcreator) {
+      // tslint:disable-next-line: max-line-length
+      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}?editMode=true`).pipe(retry(2))
+    }
+      // tslint:disable-next-line: max-line-length
+      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}`).pipe(retry(2))
+
   }
   getQuestionsV4(identifiers: string[], assessmentId: string): Observable<{ count: Number, questions: any[] }> {
     const data = {
@@ -232,7 +258,13 @@ export class PracticeService {
         },
       },
     }
-    return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4, data)
+    if (forcreator) {
+      // tslint:disable-next-line: max-line-length
+      return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4}?editMode=true`, data)
+    }
+      // tslint:disable-next-line: max-line-length
+      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4, data)
+
   }
   shuffle(array: any[] | (string | undefined)[]) {
     let currentIndex = array.length

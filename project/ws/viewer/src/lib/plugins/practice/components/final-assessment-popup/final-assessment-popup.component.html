@@ -14,7 +14,7 @@
                         <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index">
                             <ng-container matColumnDef="{{ disCol.key }}">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    {{ disCol.header }}
+                                    {{ disCol.header | translate }}
                                 </th>
 
                                 <td mat-cell *matCellDef="let element; let rowIndex = index;">
@@ -39,7 +39,7 @@
                     <div>
                         <mat-icon class="warning-icon">warning</mat-icon>
                     </div>
-                    <div>{{assessmentData?.warningNote}}</div>
+                    <div>{{assessmentData?.warningNote | translate}}</div>
                 </div>
             </ng-container>
 
@@ -49,7 +49,7 @@
                 <div class="flex justify-end items-center gap-2 mt-3">
                     <ng-container *ngFor="let button of assessmentData?.buttonsList">
                         <button mat-button class="flex justify-center items-center" [ngClass]="button.classes"
-                            (click)="closePopup(button.response)">{{button.text}}</button>
+                            (click)="closePopup(button.response)">{{button.text | translate}}</button>
                     </ng-container>
                 </div>
             </div>

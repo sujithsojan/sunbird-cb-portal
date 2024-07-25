@@ -60,18 +60,19 @@
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
+            <ng-container *ngIf="question.questionType === 'mcq-mca'">
               <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)">
               </viewer-mcq-mca-question>
             </ng-container>
     
-            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf'">
+            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf' || question.questionType === 'mcq-mca-w'">
               <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType" 
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
-              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -83,7 +84,7 @@
                     <th mat-header-cell *matHeaderCellDef i18n="mtf explanation Option">
                       {{ 'practiceoverview.option' | translate }}
                     </th>
-                    <td mat-cell *matCellDef="let element">{{ element.text }}</td>
+                    <td mat-cell *matCellDef="let element" [innerHTML]="element.text"></td>
                   </ng-container>
                   <ng-container matColumnDef="hint">
                     <th mat-header-cell *matHeaderCellDef i18n="mtf explanation Hint">
@@ -164,7 +165,8 @@
               <div class="flex flex-1 viewer_quest_box">
                 <!-- {{log(question)}} -->
                 <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
@@ -182,7 +184,8 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-fitb-question>
+              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-fitb-question>
             </ng-container>
           </div>
         </div>
@@ -208,7 +211,10 @@
         </div>
         <div>
           <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
-            <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
+            <p *ngIf="question?.marks">
+             <span *ngIf="question?.marks === 1">{{question?.marks}} {{ 'practiceoverview.mark' | translate }}</span> 
+             <span *ngIf="question?.marks > 1">{{question?.marks}} {{ 'practiceoverview.marks' | translate }}</span> 
+            </p>
           </div>
           <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
             <p>{{questionNumber}}/{{ total }}</p>
@@ -224,23 +230,25 @@
             </h2>
             <ng-container *ngIf="question.questionType === 'ftb'">
               <viewer-fitb-question [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
-                (update)="update($event)"></viewer-fitb-question>
+                (update)="update($event)" 
+                ></viewer-fitb-question>
             </ng-container>
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
+            <ng-container *ngIf="question.questionType === 'mcq-mca'">
               <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)">
               </viewer-mcq-mca-question>
             </ng-container>
     
-            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf'">
+            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf' || question.questionType === 'mcq-mca-w'">
               <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
-              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -285,7 +293,10 @@
           </div>
           <div>
             <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
-              <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
+              <p *ngIf="question?.marks">
+                <span *ngIf="question?.marks === 1">{{question?.marks}} {{ 'practiceoverview.mark' | translate }}</span> 
+                <span *ngIf="question?.marks > 1">{{question?.marks}} {{ 'practiceoverview.marks' | translate }}</span> 
+              </p>
             </div>
             <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
               <p>{{questionNumber}}/{{ total }}</p>
@@ -298,7 +309,8 @@
             <div class="flex flex-1 flex-column">
               <div class="flex flex-1 viewer_quest_box">
                 <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
@@ -316,7 +328,8 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-fitb-question>
+              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-fitb-question>
             </ng-container>
           </div>
         </div>
@@ -331,12 +344,12 @@
     <a 
                 class="text-black margin-xs quest_btn_review" mat-button
                 (click)="markQuestion()">
-                <ng-container *ngIf="!isXsmall">Mark for Review & next</ng-container>
+                <ng-container *ngIf="!isXsmall">{{ 'practiceoverview.markForReviewNext' | translate }}</ng-container>
               </a>
     <a 
           class="text-black margin-xs quest_btn_review" mat-button
           (click)="clearResponse()">
-          <ng-container *ngIf="!isXsmall">Clear Response</ng-container>
+          <ng-container *ngIf="!isXsmall">{{ 'practiceoverview.clearResponse' | translate }}</ng-container>
         </a>
   </div>
   

@@ -137,6 +137,12 @@
     overflow-y: hidden !important;
   }
 
+  .mat-drawer-content.isAssessmentScreenNew {
+    overflow: auto !important;
+    overflow-y: auto !important;
+  }
+  
+
   
 }
 

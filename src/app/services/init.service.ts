@@ -651,6 +651,10 @@ export class InitService {
     const publicConfig = await this.http
       .get<NsInstanceConfig.IConfig>(`${this.configSvc.sitePath}/site.config.json`)
       .toPromise()
+    if (publicConfig.npsCategory) {
+      localStorage.setItem('npsCategory', publicConfig.npsCategory)
+    }
+
     this.configSvc.instanceConfig = publicConfig
     this.configSvc.rootOrg = publicConfig.rootOrg
     this.configSvc.org = publicConfig.org
@@ -843,7 +847,13 @@ export class InitService {
               localStorage.platformratingTime = currentTime
               localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
               localStorage.setItem('ratingfeedID', JSON.stringify(feedId))
-
+          } else if (item.category === 'NPS2' && item && item.data && item.data.actionData && item.data.actionData.formId) {
+            feedId.push(item.id)
+            // console.log(feedId, "feed id items============")
+              const currentTime = moment()
+              localStorage.platformratingTime = currentTime
+              localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
+              localStorage.setItem('ratingfeedID', JSON.stringify(feedId))
           }
         })
       }

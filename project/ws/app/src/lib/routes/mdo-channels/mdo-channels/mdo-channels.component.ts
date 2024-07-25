@@ -31,7 +31,7 @@ export class MdoChannelsComponent implements OnInit {
   private unsubscribe = new Subject<void>()
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
-    { title: 'Channels', url: 'none', icon: '' },
+    { title: 'MDO Channels', url: 'none', icon: '' },
   ]
   getAllProvidersReq = {
     request: {

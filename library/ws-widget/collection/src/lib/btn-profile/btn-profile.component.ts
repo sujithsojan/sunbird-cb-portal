@@ -60,7 +60,8 @@ export class BtnProfileComponent extends WidgetBaseComponent
     super()
     this.btnAppsConfig = { ...this.basicBtnAppsConfig }
     this.btnSettingsConfig = { ... this.settingBtnConfig }
-    if (this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
+    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails &&
+      this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
       this.verifiedBadge = true
     }
     this.updateUserInfo()
@@ -225,6 +226,10 @@ export class BtnProfileComponent extends WidgetBaseComponent
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
     )
+  }
+  redirectToLearnersPage() {
+    this.raiseTelemetry('Tips For Learners')
+    this.router.navigate(['/learner-advisory'])
   }
 
   // rasieProfileMenuTelemetry(tabname: string) {

@@ -134,16 +134,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   questionVisitedData: any = []
   assessmentType = 'optionalWeightage'
   compatibilityLevel = 2
-  selectedAssessmentCompatibilityLevel = 2
+  selectedAssessmentCompatibilityLevel = 0
   sectionalInstruction: any = ''
   allSectionTimeLimit = 0
   totalAssessemntQuestionsCount = 0
   sectionalTimer = false
   questionStartTime: number = Date.now()
   timeSpentOnQuestions: any = {}
-  charactersPerPage = 1500
+  charactersPerPage = 1300
   showQuestionMarks = 'No'
-
+  forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
+                window.location.href.includes('editMode'))
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -170,6 +171,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.showToolTip = false
       }
     })
+
   }
 
   toggleToolTip() {
@@ -224,6 +226,44 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
     })
   }
+
+  retakeAssessment() {
+    if (window.innerWidth < 768) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
+    this.isSubmitted = false
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    // this.quizSvc.mtfSrc.next({})
+    // quizSvc.questionAnswerHash.subscribe(qaHash => {
+    //   this.questionAnswerHash = qaHash
+    // })
+    // console.log(activatedRoute.snapshot.data)
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationStart && e.navigationTrigger === 'imperative'),
+      // switchMap(() => this.router.events.pipe(
+      //   filter(e => e instanceof NavigationEnd
+      //     || e instanceof NavigationCancel
+      //     || e instanceof NavigationError
+      //   ),
+      //   take(1),
+      //   filter(e => e instanceof NavigationEnd)
+      // ))
+    ).subscribe(() => {
+      if (this.viewState !== 'initial' && !this.isSubmitted) {
+        this.submitQuiz()
+      }
+      // console.log(val)
+    })
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
+      this.isXsmall = isXSmall
+    })
+  }
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(e: any) {
     // or directly false
@@ -243,36 +283,37 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
-      if (this.selectedAssessmentCompatibilityLevel < 6) {
-        this.quizSvc.canAttend(this.identifier).subscribe(response => {
-          if (response) {
-             this.canAttempt = response
-            //  this.canAttempt = {
-            //   attemptsAllowed: 1,
-            //   attemptsMade: 0,
-            // }
-          }
-          this.init()
-          this.updateVisivility()
-        })
-      } else {
-        this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
-          if (response) {
-             this.canAttempt = response
-            //  this.canAttempt = {
-            //   attemptsAllowed: 1,
-            //   attemptsMade: 0,
-            // }
-          }
-          this.init()
-          this.updateVisivility()
-        })
+      if (this.selectedAssessmentCompatibilityLevel) {
+        if (this.selectedAssessmentCompatibilityLevel < 6) {
+          this.quizSvc.canAttend(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
+        } else {
+          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
+        }
       }
 
     // }
   }
   ngOnInit() {
-
     this.attemptSubscription = this.quizSvc.secAttempted.subscribe(data => {
       this.attemptSubData = data
     })
@@ -511,7 +552,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const setStartIndex = this.noOfQuestionsPerSet * this.currentSetNumber
     const setEndIndex = setStartIndex + this.noOfQuestionsPerSet
     const secQuestions = qq.slice(setStartIndex, setEndIndex)
-    return secQuestions
+    return this.selectedAssessmentCompatibilityLevel < 6 ? qq : secQuestions
   }
 
   get hasNextSet(): boolean {
@@ -614,7 +655,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getMultiQuestions(ids: string[]) {
-    return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
+      return this.quizSvc.getQuestionsV4(ids, this.identifier).toPromise()
+    }
+      return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
   }
   getRhsValue(question: NSPractice.IQuestionV2) {
     if (question && question.qType) {
@@ -1262,8 +1306,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               questionLevel: sq.questionLevel,
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
-              editorState: { options: optionsAll },
+              editorState: { options: [] },
             }
+            
             if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
               const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
               ftbAns.forEach((ans: string, index) => {
@@ -1272,8 +1317,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                   selectedAnswer: ans,
                 })
               })
-            }
-            if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
+            } else if( this.questionAnswerHash[sq.questionId]) {
               const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
               ftbAns.forEach((ans: string, index) => {
                 ftb.editorState.options.push({
@@ -1285,6 +1329,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(ftb)
             break
           case 'mtf':
+            let optionAll:any = []
+            optionAll = _.compact(_.map(sq.options, (_o: any) => {
+              if (_o.userSelected && this.questionAnswerHash[sq.questionId]) {
+                return {
+                  index: (_o.optionId).toString(),
+                  selectedAnswer: _o.response,
+                } as NSPractice.IResponseOptions
+              }
+              return null
+
+            }))
             const mtf: NSPractice.IMCQ_MTF = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
@@ -1296,23 +1351,35 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
-                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
-                  if (_o.userSelected) {
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-                  }
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-
-                })),
+                options:  optionAll.filter((o:any) => { return o.hasOwnProperty('index'); }).length > 0 ? optionAll : [],
               },
             }
             responseQ.push(mtf)
             break
+          case 'mcq-sca-tf': 
+          const mcqScaTF: any = {
+            identifier: sq.questionId,
+            mimeType: NsContent.EMimeTypes.QUESTION,
+            objectType: 'Question',
+            question: sq.question,
+            primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
+            qType: 'MCQ-SCA-TF',
+            questionLevel: sq.questionLevel ? sq.questionLevel : '',
+            timeTaken: timeSpent.toString(),
+            timeSpent: timeSpent.toString(),
+            editorState: {
+              options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                if (_o.userSelected) {
+                  return {
+                    index: (_o.optionId).toString(),
+                    selectedAnswer: _o.userSelected,
+                  } as NSPractice.IResponseOptions
+                } return null
+              })),
+            },
+          }
+          responseQ.push(mcqScaTF)
+          break
         }
       })
     }
@@ -1338,28 +1405,51 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.viewState = 'answer'
     }
-    if (this.selectedAssessmentCompatibilityLevel < 6) {
-      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-          setTimeout(() => {
-            this.getQuizResult()
-          },         environment.quizResultTimeout)
-        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-          this.assignQuizResult(quizV4Res.result)
-        }
+    
+    let allPromiseResolvedCount = 0
+    if(this.paperSections && this.paperSections.length) {
+      for(let i =0 ; i< this.paperSections.length;i++) {
+        let section = this.paperSections[i];
+        const lst = _.chunk(section.childNodes || [], 1000)
+        const prom: any[] = []
+        _.each(lst, l => {
+          prom.push(this.getMultiQuestions(l))
+        })
+        Promise.all(prom).then(qqr => {
+          console.log('qqr', qqr)
+          allPromiseResolvedCount++;
+          const question = { questions: _.flatten(_.map(qqr, 'result.questions')) }
+          const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
+          // console.log(this.quizSvc.secAttempted.value)
+          _.eachRight(question.questions, q => {
+            // const qHtml = document.createElement('div')
+            // qHtml.innerHTML = q.editorState.question
+            if (codes.indexOf(section.identifier) === -1) {
+              this.quizJson.questions.push({
+                section: section.identifier,
+                question: q.body, // qHtml.textContent || qHtml.innerText || '',
+                multiSelection: ((q.qType || '').toLowerCase() === 'mcq-mca' ? true : false),
+                questionType: (q.qType || '').toLowerCase(),
+                questionId: q.identifier,
+                instructions: null,
+                options: this.getOptions(q),
+                editorState: q.editorState,
+                questionLevel: q.questionLevel,
+                marks: q.totalMarks,
+                rhsChoices: this.getRhsValue(q),
+              })
+            }
+          })
+         
+          
+          if(this.paperSections && this.paperSections.length === allPromiseResolvedCount) {
+            // console.log('this.quizJson',this.quizJson)
+            // console.log('this.generateRequest',this.generateRequest)
+            this.submitAfterAllPromiseResolved();
+          }
+        })
       }
-    } else {
-      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
-      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-          setTimeout(() => {
-            this.getQuizResult()
-          },         environment.quizResultTimeout)
-        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-          this.assignQuizResult(quizV4Res.result)
-        }
-      }
+           
     }
 
     // this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
@@ -1391,6 +1481,32 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //     this.snackbar.open(_error.error.params.errmsg)
     //   },
     // )
+  }
+
+  async submitAfterAllPromiseResolved() {
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
+      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    } else {
+      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    }
   }
   showAnswers() {
     this.showMtfAnswers()
@@ -1560,13 +1676,31 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   action($event: string) {
     switch ($event) {
       case 'retake':
-        // raise telemetry
+        this.raiseInteractTelemetry()
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.quizData)
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
-        this.init()
+        
+        // this.init()
+        if(this.selectedAssessmentCompatibilityLevel < 6) {
+          this.init()
+        } else {      
+          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
+            this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+              if (response) {
+                  this.canAttempt = response
+                //  this.canAttempt = {
+                //   attemptsAllowed: 1,
+                //   attemptsMade: 0,
+                // }
+              }
+            })
+          }          
+          this.retakeAssessment()
+        }
+        
         break
     }
   }
@@ -1760,6 +1894,23 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.events.dispatchEvent(event)
   }
 
+  raiseInteractTelemetry() {
+    this.events.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        id: 'reattempt-test',
+        subType: this.primaryCategory,
+      },
+      {
+         id: this.quizData.identifier,
+         type: this.assessmentType,
+         rollup: {
+            l1: this.activatedRoute.snapshot.queryParams.collectionId || '',
+        },
+      }
+    )
+  }
+
   openSectionPopup(submitAssessment = false, getTime = true) {
     const currentQuestionId = this.currentQuestion ? this.currentQuestion.questionId : ''
     if(currentQuestionId && this.secQuestions && this.currentQuestion.section === this.secQuestions[0]['section'] && getTime) {
@@ -1768,12 +1919,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.setQuestionStartTime()
     }
     const tableColumns: any[] = [
-      { header: 'Section', key: 'section' },
-      { header: 'No of Questions', key: 'NoOfQuestions' },
-      { header: 'Answered', key: 'answered' },
-      { header: 'Not answered', key: 'notAnswered' },
-      { header: 'Marked for Review', key: 'markedForReview' },
-      { header: 'Not Visited', key: 'notVisited' },
+      { header: 'practiceoverview.section', key: 'section' },
+      { header: 'practiceoverview.noOfQuestions', key: 'NoOfQuestions' },
+      { header: 'practiceoverview.answered', key: 'answered' },
+      { header: 'practiceoverview.notAnswered', key: 'notAnswered' },
+      { header: 'practiceoverview.markedForReview', key: 'markedForReview' },
+      { header: 'practiceoverview.notVisited', key: 'notVisited' },
     ]
     const tableData: any = []
     /* tslint:disable */
@@ -1818,16 +1969,16 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if(submitAssessment) {
-      popupData['warningNote']= 'Do you want to submit your test finally. After submitting test, you will have to start the test from beginning.',
+      popupData['warningNote']= 'practiceoverview.warningNoteForAssessmentSubmit',
       popupData['buttonsList'] =[
         {
           response: 'yes',
-          text: 'Yes',
+          text: 'practiceoverview.submitYes',
           classes: 'blue-outline',
         },
         {
           response: 'no',
-          text: 'No',
+          text: 'practiceoverview.submitNo',
           classes: 'blue-full',
         },
         // {
@@ -1840,12 +1991,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'back',
-          text: 'Back',
+          text: 'practiceoverview.back',
           classes: 'gray-full',
         },
         {
           response: 'submitAssessment',
-          text: 'Submit Test',
+          text: 'practiceoverview.submitTest',
           classes: 'blue-full',
         }
       ]
@@ -1854,12 +2005,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'next-section',
-          text: 'Next Section',
+          text: 'practiceoverview.nextSection',
           classes: 'blue-full',
         },
         {
           response: 'no',
-          text: 'Back to assessment',
+          text: 'practiceoverview.backToAssessment',
           classes: 'gray-full',
         }
       ]

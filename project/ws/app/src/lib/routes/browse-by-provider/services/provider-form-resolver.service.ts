@@ -21,10 +21,14 @@ resolve(
 ): Observable<IResolveResponse<any>> {
     const orgId = _route.params && _route.params.orgId || ''
     const provider = _route.params && _route.params.provider || ''
+    let subTypeValue: any = 'microsite'
+    if (_route && _route.data && _route.data.pageId && _route.data.pageId.includes('v2')) {
+      subTypeValue = 'microsite-v2'
+    }
     const requestData: any = {
       'request': {
           'type': 'ATI-CTI',
-          'subType': 'microsite',
+          'subType': subTypeValue,
           'action': 'page-configuration',
           'component': 'portal',
           'rootOrgId': orgId,

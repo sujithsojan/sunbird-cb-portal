@@ -96,6 +96,16 @@
   min-height:100svh;
 }
 
+.mweb-left-extreme {
+  justify-content: start;
+  margin-left: 8%;
+}
+
+.mweb-right-extreme {
+  justify-content: end;
+  margin-right: 30%;
+}
+
 @media only screen and (min-width : 769px) {
 
     .footer{
@@ -346,7 +356,72 @@
 }
 
 /*   smaller mobile screen view css */
-@media only screen and (max-width : 419px) {
+@media only screen and (min-width : 344px) and (max-width : 344px) {
+  .karmasahayogi {
+    top: -12.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+  .mweb-right-extreme {
+    justify-content: end;
+    margin-right: 18%;
+  }
+}
+@media only screen and (min-width : 360px) and (max-width : 360px) {
+  .karmasahayogi {
+    top: -14.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+  .mweb-right-extreme {
+    justify-content: end;
+    margin-right: 18%;
+  }
+}
+@media only screen and (min-width : 375px) and (max-width : 375px) {
+  .karmasahayogi {
+    top: -15.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+  .mweb-left-extreme {
+    justify-content: start;
+    margin-left: 3%;
+  }
+}
+@media only screen and (min-width : 390px) and (max-width : 390px) {
+  .karmasahayogi {
+    top: -12.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+  .mweb-left-extreme {
+    justify-content: start;
+    margin-left: 5%;
+  }
+}
+@media only screen and (min-width : 412px) and (max-width : 414px) {
+  .karmasahayogi {
+    top: -11.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+}
+@media only screen and (min-width : 430px) and (max-width : 430px) {
+  .karmasahayogi {
+    top: -11.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+}
+@media only screen and (min-width : 540px) and (max-width : 540px) {
+  .karmasahayogi {
+    top: -14.8vh !important;
+    width: 80px !important;
+    right: 42% !important;
+  }
+}
+@media only screen and (max-width : 767px) {
  // for nps 
  .nps-footer {
   bottom: 8vh !important;
@@ -360,15 +435,19 @@
     .cstext {
       font: 400 8px/12px Helvetica !important;
       display: inline-block !important;
-      width: 40px !important;
+      // width: 40px !important;
       vertical-align: middle !important;
     }
   }
 
   ul {
     margin: 0 !important;
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     li {
-      margin: 0 5px !important;
+      margin: 5px 10px !important;
     }
     .rating {
       width: 26px !important;
@@ -400,11 +479,11 @@
     width: 84% !important;
   }
 
-  .karmasahayogi {
-    top: -15.8vh !important;
-    width: 80px !important;
-    right: 42% !important;
-  }
+  // .karmasahayogi {
+  //   top: -12.8vh !important;
+  //   width: 80px !important;
+  //   right: 42% !important;
+  // }
 
   .ratingtitle {
     font: 400 14px/21px Helvetica !important;
@@ -604,7 +683,7 @@
       .cstext {
         font: 400 10px/12px Helvetica !important;
         display: inline-block !important;
-        width: 40px !important;
+        // width: 40px !important;
         vertical-align: middle !important;
       }
     }
@@ -640,11 +719,11 @@
       width: 84% !important;
     }
 
-    .karmasahayogi {
-      top: -15.8vh !important;
-      width: 80px !important;
-      right: 42% !important;
-    }
+    // .karmasahayogi {
+    //   top: -10.8vh !important;
+    //   width: 80px !important;
+    //   right: 42% !important;
+    // }
 
     .ratingtitle {
       font: 400 14px/21px Helvetica !important;
@@ -717,6 +796,10 @@
       width: 40px;
       height: 40px;
       display: block;
+    }
+    .rating-img img{     
+      width: 40px;
+      height: 40px;
     }
   }
 

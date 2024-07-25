@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, AfterViewChecked,
-  HostListener, ElementRef, ViewChild, ViewEncapsulation, Input } from '@angular/core'
+import {
+  Component, OnDestroy, OnInit, AfterViewInit, AfterViewChecked,
+  HostListener, ElementRef, ViewChild, ViewEncapsulation, Input,
+} from '@angular/core'
 import { SafeHtml, DomSanitizer, SafeStyle } from '@angular/platform-browser'
 import { ActivatedRoute, Event, Data, Router, NavigationEnd } from '@angular/router'
 import { FormControl, Validators } from '@angular/forms'
@@ -15,13 +17,17 @@ dayjs.extend(isSameOrBefore)
 import moment from 'moment'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
-import { NsContent, WidgetContentService, WidgetUserService,
-  viewerRouteGenerator, NsPlaylist, NsGoal } from '@sunbird-cb/collection'
+import {
+  NsContent, WidgetContentService, WidgetUserService,
+  viewerRouteGenerator, NsPlaylist, NsGoal,
+} from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
-import { ConfigurationsService, EventService,
+import {
+  ConfigurationsService, EventService,
   LoggerService, MultilingualTranslationsService,
   NsPage, TFetchStatus, TelemetryService,
-  UtilityService, WsEvents } from '@sunbird-cb/utils-v2'
+  UtilityService, WsEvents,
+} from '@sunbird-cb/utils-v2'
 
 import { NsAppToc } from '../../models/app-toc.model'
 import { AppTocService } from '../../services/app-toc.service'
@@ -85,6 +91,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   isInIframe = false
   cbPlanEndDate: any
   cbPlanDuration: any
+  enrolledCourseData: any
   @Input() forPreview: any = window.location.href.includes('/public/') || window.location.href.includes('/author/')
   // forPreview = window.location.href.includes('/author/')
   analytics = this.route.snapshot.data.pageData.data.analytics
@@ -177,6 +184,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   isClaimed = false
   monthlyCapExceed = false
   isCompletedThisMonth = false
+  startDate: any
+  endDate: any
+  startDateDifference: any
+  endDateDifference: any
   @ViewChild('rightContainer', { static: false }) rcElement!: ElementRef
   @ViewChild('bannerDetails', { static: true }) bannerElem!: ElementRef
   @ViewChild('contentSource', { static: false }) contentSource!: ElementRef
@@ -193,6 +204,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   rootOrgId: any
   certId: any
   mobile1200: any
+  assessmentStrip: any
+  learnAdvisoryData: any
+  // randomlearnAdvisoryObj: any
+  // learnAdvisoryDataLength: any
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
@@ -290,7 +305,15 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         }
       }
     })
+
+    if (this.route.snapshot.data.pageData && this.route.snapshot.data.pageData.data) {
+      this.learnAdvisoryData = this.route.snapshot.data.pageData.data.learnerAdvisory
+      // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
+
+    }
+
     this.getServerDateTime()
+    // this.displayRandomlearnAdvisoryData()
 
     this.selectedBatchSubscription = this.tocSvc.getSelectedBatch.subscribe(batchData => {
       this.selectedBatchData = batchData
@@ -440,6 +463,11 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       }
     }
   }
+
+  // displayRandomlearnAdvisoryData(): void {
+  //   const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
+  //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
+  // }
 
   getKarmapointsLimit() {
     if (!this.forPreview) {
@@ -651,33 +679,84 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   get getStartDate() {
-    if (this.content) {
-      const batch = _.first(_.filter(this.content['batches'], { batchId: this.currentCourseBatchId }) || [])
-      if (_.get(batch, 'startDate') && moment(_.get(batch, 'startDate')).isAfter()) {
-        return moment(_.get(batch, 'startDate')).fromNow()
+    if (this.enrolledCourseData) {
+      const now = new Date().getTime()
+      // const batch = _.first(_.filter(this.content['batches'], { batchId: this.currentCourseBatchId }) || [])
+      const batch = this.enrolledCourseData.batch
+      this.currentCourseBatchId = batch.batchId
+      if (batch && this.currentCourseBatchId) {
+        this.startDate = (_.get(batch, 'startDate'))
+        // const parsedDate = moment(this.startDate);
+        // const dateOnly = parsedDate.clone().startOf('day');
+        const startDateTime = this.startDate && new Date(this.startDate).getTime()
+        this.startDateDifference = startDateTime - now
+        if (this.startDateDifference && this.startDateDifference > 0) {
+          const days = Math.floor(this.startDateDifference / (1000 * 60 * 60 * 24))
+          const hours = Math.floor((this.startDateDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+          const minutes = Math.floor((this.startDateDifference % (1000 * 60 * 60)) / (1000 * 60))
+          return (`${days} Days : ${hours} Hours : ${minutes} Minutes`)
+        }
+          return 'NA'
       }
-      if (_.get(batch, 'endDate') && moment(_.get(batch, 'endDate')).isBefore()) {
         return 'NA'
-      }
-      return 'NA'
+      // if (_.get(batch, 'startDate') && moment(_.get(batch, 'startDate')).isAfter()) {
+      //   return moment(_.get(batch, 'startDate')).from(now)
+      // }
+      // if (_.get(batch, 'endDate') && moment(_.get(batch, 'endDate')).isBefore()) {
+      //   return 'NA'
+      // }
+      // if (startDateTime && moment(startDateTime).isAfter())  {
+      //   return moment(startDateTime).from(now)
+      // }
+      // if (endDateTime && moment(endDateTime).isBefore()) {
+      //     return 'NA'
+      //   }
+      // return 'NA'
     } return 'NA'
   }
 
   get isBatchInProgress() {
     // if (this.content && this.content['batches']) {
     // const batches = this.content['batches'] as NsContent.IBatch
-    if (this.currentCourseBatchId) {
-      const now = moment(this.serverDate).format('YYYY-MM-DD')
-      if (this.batchData && this.batchData.content) {
-        const batch = _.first(_.filter(this.batchData.content, { batchId: this.currentCourseBatchId }) || [])
-        if (batch) {
-          const startDate = moment(batch.startDate).format('YYYY-MM-DD')
-          const endDate = batch.endDate ? moment(batch.endDate).format('YYYY-MM-DD') : now
-          return (
-            // batch.status &&
-            moment(startDate).isSameOrBefore(now)
-            && moment(endDate).isSameOrAfter(now)
-          )
+    // if (this.currentCourseBatchId) {
+    //   // const now = moment().format('YYYY-MM-DD HH:mm:ss')
+    //   const now = new Date().getTime()
+    //   if (this.batchData && this.batchData.content) {
+    //     const batch = _.first(_.filter(this.batchData.content, { batchId: this.currentCourseBatchId }) || [])
+    //     if (batch) {
+    //       // const startDate = moment(batch.startDate).format('YYYY-MM-DD HH:mm:ss')
+    //       // const endDate = batch.endDate ? moment(batch.endDate).format('YYYY-MM-DD HH:mm:ss') : now
+    //       // return (
+    //       //   // batch.status &&
+    //       //   moment(startDate).isSameOrBefore(now)
+    //       //   && moment(endDate).isSameOrAfter(now)
+    //       // )
+    //       this.startDate = batch && (_.get(batch, 'startTime'))
+    //       this.endDate = batch && (_.get(batch, 'endTime'))
+    //       const endDateTime = new Date(this.endDate).getTime()
+    //       this.endDateDifference = endDateTime - now
+    //       if(this.endDateDifference > 0) {
+    //       return  batch.status
+    //       }
+    //     }
+    //     return false
+    //   }
+    //   return false
+    // } return false
+
+    if (this.enrolledCourseData) {
+      const now = new Date().getTime()
+      const batch = this.enrolledCourseData.batch
+      this.currentCourseBatchId = batch.batchId
+      if (batch && this.currentCourseBatchId) {
+        this.startDate = (_.get(batch, 'startDate'))
+        this.endDate = (_.get(batch, 'endDate'))
+        const startDateTime = this.startDate && new Date(this.startDate).getTime()
+        const endDateTime = this.endDate && new Date(this.endDate).getTime()
+        this.startDateDifference = now - startDateTime
+        this.endDateDifference = endDateTime - now
+        if (this.endDateDifference > 0 && this.startDateDifference > 0 && batch.status !== 2) {
+          return true
         }
         return false
       }
@@ -688,7 +767,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   private initData(data: Data) {
     const initData = this.tocSvc.initData(data, true)
     this.content = initData.content
-
     this.errorCode = initData.errorCode
     switch (this.errorCode) {
       case NsAppToc.EWsTocErrorCode.API_FAILURE: {
@@ -851,7 +929,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     },         250)
   }
 
-   private getUserEnrollmentList() {
+  private getUserEnrollmentList() {
     this.enrollBtnLoading = true
     this.tocSvc.contentLoader.next(true)
     this.userSvc.resetTime('enrollmentService')
@@ -874,7 +952,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     }
 
     this.userSvc.fetchUserBatchList(userId).toPromise().then(
-       async (result: any) => {
+      async (result: any) => {
         const courses: NsContent.ICourse[] = result && result.courses
         this.userEnrollmentList = courses
         let enrolledCourse: NsContent.ICourse | undefined
@@ -891,29 +969,31 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
           // If current course is present in the list of user enrolled course
           if (enrolledCourse && enrolledCourse.batchId) {
-            this.resumeDataSubscription =  this.tocSvc.resumeData.subscribe((res: any) => {
+            this.resumeDataSubscription = this.tocSvc.resumeData.subscribe((res: any) => {
               if (res) {
-                this.resumeData   =  res
+                this.resumeData = res
                 this.getLastPlayedResource()
                 this.generateResumeDataLinkNew()
               }
             })
             this.tocSvc.checkModuleWiseData(this.content)
+            this.enrolledCourseData = enrolledCourse
             this.currentCourseBatchId = enrolledCourse.batchId
             this.downloadCert(enrolledCourse.issuedCertificates)
+
             this.content.completionPercentage = enrolledCourse.completionPercentage || 0
             this.content.completionStatus = enrolledCourse.status || 0
             if (this.contentReadData && this.contentReadData.cumulativeTracking) {
-               await this.tocSvc.mapCompletionPercentageProgram(this.content, this.userEnrollmentList)
-               this.resumeDataSubscription =  this.tocSvc.resumeData.subscribe((res: any) => {
+              await this.tocSvc.mapCompletionPercentageProgram(this.content, this.userEnrollmentList)
+              this.resumeDataSubscription = this.tocSvc.resumeData.subscribe((res: any) => {
                 if (res) {
-                  this.resumeData   =  res
+                  this.resumeData = res
                   this.getLastPlayedResource()
                   this.generateResumeDataLinkNew()
                 }
-                })
+              })
 
-                this.enrollBtnLoading = false
+              this.enrollBtnLoading = false
               // this.tocSvc.contentLoader.next(false)
             } else {
               this.getContinueLearningData(this.content.identifier, enrolledCourse.batchId)
@@ -961,7 +1041,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         // console.log('calling ---------------- =========')
         // this.getLastPlayedResource()
       },
-       (error: any) => {
+      (error: any) => {
         this.loggerSvc.error('CONTENT HISTORY FETCH ERROR >', error)
       },
     )
@@ -1019,7 +1099,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   downloadCert(certIdArr: any) {
-    if (certIdArr.length) {
+    if (certIdArr && certIdArr.length && certIdArr.length > 0) {
       certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
       const certId = certIdArr[0].identifier
       this.certId = certId
@@ -1042,7 +1122,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       this.enrollBtnLoading = true
       this.changeTab = !this.changeTab
       this.userSvc.resetTime('enrollmentService')
-      const batchData = this.contentReadData && this.contentReadData.batches[0]
+      const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
       if (this.content && this.content.primaryCategory === NsContent.EPrimaryCategory.CURATED_PROGRAM) {
         this.autoEnrollCuratedProgram(NsContent.ECourseCategory.CURATED_PROGRAM, batchData)
       } else if (this.content && this.content.courseCategory === NsContent.ECourseCategory.MODERATED_PROGRAM) {
@@ -1059,7 +1139,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     }
   }
 
-  public autoEnrollCuratedProgram(programType: any,  batchData: any) {
+  public autoEnrollCuratedProgram(programType: any, batchData: any) {
     if (this.content && this.content.identifier) {
       let userId = ''
       if (this.configSvc.userProfile && this.configSvc.userProfile.userId) {
@@ -1082,16 +1162,16 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
                 content: [batchData],
                 enrolled: true,
               }
-                this.router.navigate(
-                              [],
-                              {
-                                relativeTo: this.route,
-                                queryParams: { batchId: batchData.batchId },
-                                queryParamsHandling: 'merge',
-                              })
-                              setTimeout(() => {
-              this.getUserEnrollmentList()
-            },                           2000)
+              this.router.navigate(
+                [],
+                {
+                  relativeTo: this.route,
+                  queryParams: { batchId: batchData.batchId },
+                  queryParamsHandling: 'merge',
+                })
+              setTimeout(() => {
+                this.getUserEnrollmentList()
+              },         2000)
             } else {
               this.navigateToPlayerPage(req.request.batchId)
             }
@@ -1138,12 +1218,12 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     if (this.content) {
       this.enrollBtnLoading = true
       const firstPlayableContent = this.contentSvc.getFirstChildInHierarchy(this.content)
-        let primaryCategory
-        if (this.content.secureSettings !== undefined) {
-          primaryCategory = 'Learning Resource'
-        } else {
-          primaryCategory = firstPlayableContent.primaryCategory || this.content.primaryCategory
-        }
+      let primaryCategory
+      if (this.content.secureSettings !== undefined) {
+        primaryCategory = 'Learning Resource'
+      } else {
+        primaryCategory = firstPlayableContent.primaryCategory || this.content.primaryCategory
+      }
       this.firstResourceLink = viewerRouteGenerator(
         firstPlayableContent.identifier,
         firstPlayableContent.mimeType,
@@ -1393,7 +1473,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       // tslint:disable-next-line:max-line-length
 
       const lastItem = resumeCopy && resumeCopy.sort((a: any, b: any) =>
-      new Date(b.lastAccessTime).getTime() - new Date(a.lastAccessTime).getTime()).shift()
+        new Date(b.lastAccessTime).getTime() - new Date(a.lastAccessTime).getTime()).shift()
       return {
         identifier: lastItem.contentId,
         mimeType: lastItem.progressdetails && lastItem.progressdetails.mimeType,
@@ -1800,7 +1880,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   translateLabel(label: string, type: any) {
-    if(label && type) {
+    if (label && type) {
       return this.langtranslations.translateLabel(label, type, '')
     }
   }
@@ -1830,4 +1910,5 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   programEnrollCall(batchData: any) {
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
   }
+
 }

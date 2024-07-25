@@ -40,9 +40,11 @@ import {
   CommonMethodsService,
   CommonStripModule,
   CompetencyPassbookModule,
+  CompetencyPassbookMdoModule,
   ContentStripWithTabsLibModule,
   DataPointsModule,
   SlidersLibModule,
+  MDOChannelModule,
 } from '@sunbird-cb/consumption'
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
@@ -53,9 +55,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MdoChannelDataService } from './service/mdo-channel-data.service'
 import { MdoChannelsAllContentComponent } from './mdo-channels-all-content/mdo-channels-all-content.component'
 import { AllContentService } from './service/all-content.service'
+import { MdoChannelsMicrositeV2Component } from './mdo-channels-microsite-v2/mdo-channels-microsite-v2.component'
 
 @NgModule({
-  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent, MdoChannelsAllContentComponent],
+  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent, MdoChannelsAllContentComponent, MdoChannelsMicrositeV2Component],
   imports: [
     CommonModule,
     FormsModule,
@@ -90,9 +93,11 @@ import { AllContentService } from './service/all-content.service'
     CardContentV2Module,
     ContentStripWithTabsLibModule,
     CompetencyPassbookModule,
+    CompetencyPassbookMdoModule,
     DataPointsModule,
     SlidersLibModule,
     CommonStripModule,
+    MDOChannelModule,
     CardsModule,
     AnnouncementsModule,
     MatMenuModule,
