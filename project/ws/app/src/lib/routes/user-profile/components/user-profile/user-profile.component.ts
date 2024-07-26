@@ -1793,7 +1793,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
   }
   public tabClicked(tabEvent: MatTabChangeEvent) {
-    // debugger
     this.ehrmsInfo = tabEvent.tab.textLabel
     if (tabEvent.tab.textLabel === 'e-HRMS details' || tabEvent.index === 2) {
       this.isSaveButtoDisable = true

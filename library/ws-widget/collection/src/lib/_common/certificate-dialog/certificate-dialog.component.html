@@ -8,7 +8,7 @@
     <mat-card-content class="certificate-img-content">
         <img #certificate [src]="url| pipeSafeSanitizer: 'url'" alt="Certificate" role="image" class="certificate-banner-image">
     </mat-card-content>
-    <mat-card-actions class="flex flex-row-reverse">
+    <mat-card-actions class="flex flex-row-reverse gap-4">
         <!-- <ws-widget-svg-to-pdf></ws-widget-svg-to-pdf> -->
         <a mat-button (click)="shareCert()" class="ws-mat-accent-border-active mat-accent btn-custom">
             <mat-icon class="mat-icon material-icons-outlined download_icon margin-right-xs">share</mat-icon>

@@ -73,6 +73,8 @@
 
     .mob-text {
         color: rgba($color: #000000, $alpha: 0.6);
+        word-wrap: break-word;
+        width: 100%;
     }
 }
 

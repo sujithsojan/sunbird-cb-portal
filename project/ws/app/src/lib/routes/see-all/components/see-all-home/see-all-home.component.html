@@ -8,9 +8,16 @@
         <div class="flex flex-row flex-wrap content-container" infinite-scroll [infiniteScrollDistance]="scrollDistance"
             [infiniteScrollThrottle]="throttle" (scrolled)="onScrollEnd()"
             *ngIf="tabResults.length === 0">
-            <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
-                <ws-widget-card-content-v2 [widgetData]="c.widgetData"> </ws-widget-card-content-v2>
-            </div>
+            <ng-container *ngIf="!isCoisContent">
+                <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
+                    <ws-widget-card-content-v2 [widgetData]="c.widgetData"> </ws-widget-card-content-v2>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isCoisContent">
+                <div class="mr-2" *ngFor="let c of contentDataList">
+                    <sb-uic-card-portrait-ext [widgetData]="c.widgetData" (contentData)="takeExtClickAction($event)"></sb-uic-card-portrait-ext>
+                </div>
+            </ng-container>
         </div>
         <div class="flex flex-row flex-wrap content-container"
             *ngIf="tabResults.length > 0">

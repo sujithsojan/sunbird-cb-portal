@@ -5,6 +5,7 @@ import {
 } from '@angular/core'
 import {
   ActivatedRoute,
+  Router,
 } from '@angular/router'
 // tslint:disable-next-line
 import * as _ from 'lodash'
@@ -13,6 +14,7 @@ import { SeeAllService } from '../../services/see-all.service'
 import { WidgetUserService } from '@sunbird-cb/collection/src/lib/_services/widget-user.service'
 import { MatTabChangeEvent } from '@angular/material'
 import { NsContentStripWithTabs } from '@sunbird-cb/collection/src/lib/content-strip-with-tabs/content-strip-with-tabs.model'
+import { WidgetContentService } from '@sunbird-cb/consumption'
 
 @Component({
   selector: 'ws-app-see-all-home',
@@ -33,15 +35,17 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
   tabResults: any[] = []
   tabSelected: any
   dynamicTabIndex = 0
+  isCoisContent = false
 
   constructor(
     private activated: ActivatedRoute,
-    // private router: Router,
+    private router: Router,
     private seeAllSvc: SeeAllService,
     private configSvc: ConfigurationsService,
     private userSvc: WidgetUserService,
     private eventSvc: EventService,
     private langtranslations: MultilingualTranslationsService,
+    public consumWidgetSvc: WidgetContentService,
   ) {
 
   }
@@ -91,6 +95,9 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       this.fetchFromTrendingContent(this.seeAllPageConfig)
     } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.enrollmentList) {
       this.fetchFromEnrollmentList(this.seeAllPageConfig)
+    } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.ciosContent) {
+      this.isCoisContent = true
+      this.fetchCiosContentData(this.seeAllPageConfig)
     }
   }
 
@@ -315,6 +322,30 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         () => {
         }
       )
+    }
+  }
+
+  async fetchCiosContentData(strip: any, calculateParentStatus = true) {
+    if (strip.request && strip.request.ciosContent && Object.keys(strip.request.ciosContent).length) {
+      // let originalFilters: any = [];
+      // if (strip.request &&
+      //   strip.request.ciosContent &&
+      //   strip.request.ciosContent.filterCriteriaMap) {
+      //   originalFilters = strip.request.ciosContent.filterCriteriaMap;
+      //   strip.request.ciosContent.filterCriteriaMap = this.postMethodFilters(strip.request.ciosContent.filterCriteriaMap);
+      // }
+      try {
+        const response = await this.postRequestMethod(strip, strip.request.ciosContent, strip.request.apiUrl, calculateParentStatus)
+        if (response && response.results) {
+          if (response.results.data && response.results.data.length) {
+            this.contentDataList = this.transformContentsToWidgets(response.results.data, strip)
+          }
+        }
+      } catch (error) {
+        // this.emptyResponse.emit(true)
+        // Handle errors
+        // console.error('Error:', error);
+      }
     }
   }
 
@@ -578,6 +609,44 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
 
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabel(label.toLowerCase(), type, '')
+  }
+  async postRequestMethod(strip: NsContentStripWithTabs.IContentStripUnit,
+                          request: NsContentStripWithTabs.IContentStripUnit['request'],
+                          apiUrl: string,
+                          _calculateParentStatus: boolean
+  ): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (request && request) {
+        this.consumWidgetSvc.postApiMethod(apiUrl, request).subscribe(results => {
+          if (results && results.data) {
+            const showViewMore = Boolean(
+              results.data && results.data.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
+            )
+            const viewMoreUrl = showViewMore ? {
+              path: strip.viewMoreUrl && strip.viewMoreUrl.path || '',
+              queryParams: {
+                tab: 'Learn',
+                q: strip.viewMoreUrl && strip.viewMoreUrl.queryParams,
+                f: {},
+              },
+            }
+              : null
+            resolve({ results, viewMoreUrl })
+          }
+        },                                                            (error: any) => {
+          // this.processStrip(strip, [], 'error', calculateParentStatus, null);
+          reject(error)
+        },
+        )
+      }
+    })
+  }
+
+  takeExtClickAction(_item: any) {
+    if (_item.externalId) {
+      this.router.navigate(
+        [`app/toc/ext/${_item.contentId}`])
+    }
   }
 
 }

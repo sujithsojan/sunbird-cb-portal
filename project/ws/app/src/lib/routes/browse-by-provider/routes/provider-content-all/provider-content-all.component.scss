@@ -47,3 +47,13 @@
     border-radius: 12px;
     border: 1px;
 }
+
+.custom-width {
+  width: 99%;
+}
+
+@media screen and (max-width: 768px) {
+  .mob-padding {
+    padding-left: 15px;
+  }
+}

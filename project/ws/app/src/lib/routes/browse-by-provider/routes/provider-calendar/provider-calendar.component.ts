@@ -16,7 +16,7 @@ export class ProviderCalendarComponent implements OnInit {
     titles = [
       { title: `Providers`,
         url: `/app/learn/browse-by/provider/all-providers`,
-        textClass: 'ws-mat-black60-text',
+        textClass: 'ws-mat-default-text',
         icon: '', disableTranslate: true,
       },
     ]
@@ -46,7 +46,7 @@ export class ProviderCalendarComponent implements OnInit {
           title: this.providerName, icon: '',
           url: `/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/micro-sites`,
           disableTranslate: true,
-          textClass: 'ws-mat-black60-text',
+          textClass: 'ws-mat-default-text',
         })
         this.titles.push({
           title: 'Full calendar view', icon: '', url: 'none', disableTranslate: true,

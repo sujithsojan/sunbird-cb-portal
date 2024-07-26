@@ -63,6 +63,7 @@
 
     .banner-text {
       color: rgba(255, 255, 255, 0.95);
+      word-wrap: break-word;
     }
   }
 
@@ -748,6 +749,10 @@ mat-divider {
 //   }
 // }
 
+.certificate-loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #ffffff;
+}
+
 .cb-plan-wrap {
   opacity: 1;
   color: rgba(27,76,161,1);
@@ -816,7 +821,13 @@ ul{
   text-align: center;
 }
 
-.kpi-values[_ngcontent-feq-c30] img[_ngcontent-feq-c30] {
+.kpi-values img {
   height: 24px;
   width: 24px;
+}
+
+.position-bottom {
+  position: fixed;
+  width: 88%;
+  bottom: 0;
 }

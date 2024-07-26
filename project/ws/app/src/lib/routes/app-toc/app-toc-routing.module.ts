@@ -15,6 +15,7 @@ import { AppTocHomeComponent } from './routes/app-toc-home/app-toc-home.componen
 import { AppTocSinglePageComponent as AppTocSinglePageRootComponent } from './routes/app-toc-single-page/app-toc-single-page.component'
 import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
 import { AppTocCiosResolverService } from './resolvers/app-toc-cios-resolver.service'
+import { AppTocCiosUserEnrollResolverService } from './resolvers/app-toc-cios-user-enroll-resolver.service'
 
 const routes: Routes = [
   {
@@ -102,6 +103,7 @@ const routes: Routes = [
     component: AppTocCiosHomeComponent,
     resolve: {
       extContent: AppTocCiosResolverService,
+      userEnrollContent: AppTocCiosUserEnrollResolverService,
     },
   },
 ]
