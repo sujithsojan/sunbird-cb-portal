@@ -120,7 +120,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
         // this.matSnackBar.open(this.handleTranslateTo('transferRequestSent'))
         this.enableWithdraw.emit(true)
         this.handleCloseModal()
-      }, (error: HttpErrorResponse) => {
+      },         (error: HttpErrorResponse) => {
         if (!error.ok) {
           this.matSnackBar.open(this.handleTranslateTo('transferRequestFailed'))
         }
@@ -134,7 +134,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
         this.departmentData = res.sort((a: any, b: any) => {
           return a.toLowerCase().localeCompare(b.toLowerCase())
         })
-      }, (error: HttpErrorResponse) => {
+      },         (error: HttpErrorResponse) => {
         if (!error.ok) {
           this.matSnackBar.open(this.handleTranslateTo('orgFetchDataFailed'))
         }
