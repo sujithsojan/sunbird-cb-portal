@@ -1,10 +1,10 @@
-<div class="top_footer_box" >
+<div class="top_footer_box">
     <div class="footer_logo">
         <img alt="igot-logo" src="/assets/instances/eagle/app_logos/KarmayogiBharat_Logo_Horizontal.svg"
             class=" margin-top-xl">
     </div>
-    <div class="top_footer_inner flex flex-row justify-between nav-footer">
-        <!-- <div class="flex flex-col justify-start nav-footer-item nav col-sm-3" (click)="onClick($event)">
+    <!-- <div class="top_footer_inner flex flex-row justify-between nav-footer"> -->
+    <!-- <div class="flex flex-col justify-start nav-footer-item nav col-sm-3" (click)="onClick($event)">
             <h4 class="footer_heading mat-subheading-1 margin-bottom-m">Hubs</h4>
             <ul>
                 <ng-container *ngFor="let hub of (hubsList || [])">
@@ -59,10 +59,12 @@
                 </div>
             </div>
         </div> -->
-        <ng-container *ngFor="let item of footerSectionConfig">
+    <!-- <ng-container *ngFor="let item of footerSectionConfig">
             <div *ngIf="item?.active" class="flex flex-col justify-start nav-footer-item nav" (click)="onClick($event)">
-                <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') !== 'relatedLinks'">{{ translateLabels(item?.sectionHeading, 'footer') }}</h4>
-                <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') === 'relatedLinks' && environment.portals.length">{{ translateLabels(item?.sectionHeading, 'footer') }}</h4>
+                <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') !== 'relatedLinks' && environment.portals.length > 0 ">{{ translateLabels(item?.sectionHeading, 'footer') }}  ///</h4>
+                <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') === 'relatedLinks' && environment.portals.length > 0">{{ translateLabels(item?.sectionHeading, 'footer') }} +++ </h4>
+                {{ environment.portals.length }} ////
+                {{ translateLabels(item?.sectionHeading, 'footer')}} ---
                 <ul *ngIf="item?.slug === 'hub'">
                     <ng-container *ngFor="let hub of (hubsList || [])">
                         <li>
@@ -76,7 +78,7 @@
                         </li>
                     </ng-container>
                 </ul>
-                <ul *ngIf="item?.slug === 'link' && environment.portals.length">
+                <ul *ngIf="item?.slug === 'link' && environment.portals.length > 0">
                     <ng-container *ngFor="let portal of environment.portals | orderBy: 'sr'">
                         <ng-container *ngIf="(portal.isPublic || isAllowed(portal.id)) && portal.name !== 'Frac Dictionary'">
                             <li><a class="footer_sub_text mat-body" [attr.href]="portal.uriPath"
@@ -100,8 +102,83 @@
                     </div>                    
                 </ng-container>
             </div>
+
+          
+        </ng-container> -->
+    <div class="top_footer_inner flex flex-row justify-between nav-footer">
+        <ng-container *ngFor="let item of footerSectionConfig">
+            <ng-container *ngIf="item?.active">
+                <div *ngIf="item?.slug === 'hub'" class="flex flex-col justify-start nav-footer-item nav"
+                    (click)="onClick($event)">
+                    <!-- <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') !== 'relatedLinks' && environment.portals.length > 0 ">{{ translateLabels(item?.sectionHeading, 'footer') }}  ///</h4> -->
+                    <!-- <h4 class="footer_heading mat-subheading-1 margin-bottom-m" *ngIf="translateLabels(item?.sectionHeading, 'footer') === 'relatedLinks' && environment.portals.length > 0">{{ translateLabels(item?.sectionHeading, 'footer') }} </h4> -->
+                    <h4 class="footer_heading mat-subheading-1 margin-bottom-m">
+                        {{ translateLabels(item?.sectionHeading, 'footer') }} </h4>
+                        <ul>
+                    <ng-container *ngFor="let hub of (hubsList || [])">
+                        <li>
+                            <ng-container *ngIf="hub.hubname == ('discuss' || 'Learn' || 'Network')">
+                                <a class="footer_sub_text mat-body cursor-pointer" (click)="navigate()">{{
+                                    translateLabels(hub.hubname, 'common') }}</a>
+                            </ng-container>
+                            <ng-container *ngIf="hub.hubname != ('discuss' || 'Learn' || 'Network')">
+                                <a class="footer_sub_text mat-body cursor-pointer" [routerLink]="hub.path">{{
+                                    translateLabelsWithSpace(hub.hubname, 'common') }}</a>
+                            </ng-container>
+                        </li>
+                    </ng-container>
+                    </ul>
+                </div>
+                <div *ngIf="item?.slug === 'link' && environment.portals.length > 0"
+                    class="flex flex-col justify-start nav-footer-item nav" (click)="onClick($event)">
+                    <h4 class="footer_heading mat-subheading-1 margin-bottom-m">
+                        {{
+                        translateLabels(item?.sectionHeading, 'footer') }} </h4>
+                    <ul>
+                        <ng-container *ngFor="let portal of environment.portals | orderBy: 'sr'">
+                            <ng-container
+                                *ngIf="(portal.isPublic || isAllowed(portal.id)) && portal.name !== 'Frac Dictionary'">
+                                <li><a class="footer_sub_text mat-body" [attr.href]="portal.uriPath" target="_blank">{{
+                                        translateLabelsWithSpace(portal.name, 'common')}} </a>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                    </ul>
+                </div>
+                <div *ngIf="item?.slug === 'support'" class="flex flex-col justify-start nav-footer-item nav"
+                    (click)="onClick($event)">
+                    <h4 class="footer_heading mat-subheading-1 margin-bottom-m">
+                        {{
+                        translateLabels(item?.sectionHeading, 'footer') }} </h4>
+                    <ul>
+                        <li><a class="footer_sub_text mat-body" routerLink="/public/faq"> {{
+                                'footer.frequentlyAskedQuestions' |
+                                translate }}</a></li>
+                        <li><a class="footer_sub_text mat-body" routerLink="/public/contact"> {{ 'footer.contactUs' |
+                                translate
+                                }}</a></li>
+                        <li><a class="footer_sub_text mat-body" target='_blank' href="/public/privacy-policy">
+                                {{'footer.privacyPolicy' | translate }}</a></li>
+                    </ul>
+                </div>
+                <div *ngIf="item?.slug === 'about'" class="flex flex-col justify-start nav-footer-item nav"
+                    (click)="onClick($event)">
+                    <h4 class="footer_heading mat-subheading-1 margin-bottom-m">
+                        {{
+                        translateLabels(item?.sectionHeading, 'footer') }} </h4>
+                    <ng-container>
+                        <ul>
+                            <li><a class="footer_sub_text mat-body" rel="noreferrer"
+                                    href="https://karmayogibharat.gov.in/" target="_blank"> {{ 'common.karmayogiBharat'
+                                    | translate }}</a></li>
+                        </ul>
+                        <div class="desktop-social">
+                            <ws-social-link [socialLinks]="headerFooterConfigData"></ws-social-link>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
         </ng-container>
-        
     </div>
     <div class="mobile-social">
         <ws-social-link [socialLinks]="headerFooterConfigData"></ws-social-link>
