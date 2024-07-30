@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { KarmaProgramsComponent } from './karma-programs/karma-programs.component'
-import { KarmaProgramsMicrositeComponent } from './karma-programs-microsite/karma-programs-microsite.component'
+import { KarmaProgramsMicrositeV1Component } from './karma-programs-microsite-v1/karma-programs-microsite-v1.component'
 import { KarmaProgramsRoutingModule } from './karma-programs-routing.module'
 import { CardsModule, CommonMethodsService, SlidersLibModule } from '@sunbird-cb/consumption'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -13,9 +12,16 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import { KarmaProgramDataService } from './service/karma-program-data.service'
+import { KarmaProgramsV1Component } from './karma-programs-v1/karma-programs-v1.component'
+import { KarmaProgramsV2Component } from './karma-programs-v2/karma-programs-v2.component'
+import { KarmaProgramsMicrositeV2Component } from './karma-programs-microsite-v2/karma-programs-microsite-v2.component'
 
 @NgModule({
-  declarations: [KarmaProgramsComponent, KarmaProgramsMicrositeComponent],
+  declarations: [
+    KarmaProgramsV1Component,
+    KarmaProgramsMicrositeV1Component,
+    KarmaProgramsV2Component,
+    KarmaProgramsMicrositeV2Component],
   imports: [
     CommonModule,
     FormsModule,

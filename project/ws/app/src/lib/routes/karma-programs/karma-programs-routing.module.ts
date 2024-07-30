@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
-import { KarmaProgramsFormService } from './service/karma-programs-form.service'
-import { KarmaProgramsComponent } from './karma-programs/karma-programs.component'
-import { KarmaProgramsMicrositeComponent } from './karma-programs-microsite/karma-programs-microsite.component'
+import { KarmaProgramsFormV1Service } from './service/karma-programs-form-v1.service'
+import { KarmaProgramsV1Component } from './karma-programs-v1/karma-programs-v1.component'
+import { KarmaProgramsMicrositeV1Component } from './karma-programs-microsite-v1/karma-programs-microsite-v1.component'
 import { KarmaProgramDataService } from './service/karma-program-data.service'
+import { KarmaProgramsV2Component } from './karma-programs-v2/karma-programs-v2.component'
+import { KarmaProgramsMicrositeV2Component } from './karma-programs-microsite-v2/karma-programs-microsite-v2.component'
+import { KarmaProgramsFormV2Service } from './service/karma-programs-form-v2.service.'
 
 const routes: Routes = [
     {
@@ -13,7 +16,7 @@ const routes: Routes = [
     },
     {
         path: 'all-programs',
-        component: KarmaProgramsComponent,
+        component: KarmaProgramsV1Component,
         data: {
             pageId: 'all-programs',
             module: 'Learn',
@@ -24,13 +27,35 @@ const routes: Routes = [
     },
     {
         path: ':programName/:playListKey/:orgId/micro-sites',
-        component: KarmaProgramsMicrositeComponent,
+        component: KarmaProgramsMicrositeV1Component,
         data: {
             pageId: ':programName/:playListKey/:orgId/micro-sites',
             module: 'Learn',
         },
         resolve: {
-            formData: KarmaProgramsFormService,
+            formData: KarmaProgramsFormV1Service,
+        },
+    },
+    {
+        path: 'all-programs/v2',
+        component: KarmaProgramsV2Component,
+        data: {
+            pageId: 'all-programs',
+            module: 'Learn',
+        },
+        resolve: {
+            programData: KarmaProgramDataService,
+        },
+    },
+    {
+        path: ':programName/:playListKey/:orgId/micro-sites/v2',
+        component: KarmaProgramsMicrositeV2Component,
+        data: {
+            pageId: ':programName/:playListKey/:orgId/micro-sites',
+            module: 'Learn',
+        },
+        resolve: {
+            formData: KarmaProgramsFormV2Service,
         },
     },
 ]

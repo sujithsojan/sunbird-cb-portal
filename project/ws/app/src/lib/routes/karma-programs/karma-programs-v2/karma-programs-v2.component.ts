@@ -11,11 +11,11 @@ import _ from 'lodash'
 import { ActivatedRoute } from '@angular/router'
 
 @Component({
-  selector: 'ws-app-karma-programs',
-  templateUrl: './karma-programs.component.html',
-  styleUrls: ['./karma-programs.component.scss']
+  selector: 'ws-app-karma-programs-v2',
+  templateUrl: './karma-programs-v2.component.html',
+  styleUrls: ['./karma-programs-v2.component.scss']
 })
-export class KarmaProgramsComponent implements OnInit {
+export class KarmaProgramsV2Component implements OnInit {
 
   public displayLoader!: Observable<boolean>
   provider = 'JPAL'
