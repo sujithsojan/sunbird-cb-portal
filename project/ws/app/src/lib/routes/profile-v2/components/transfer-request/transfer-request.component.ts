@@ -4,7 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
 
-import { Subject } from 'rxjs'
+import {  Subject } from 'rxjs'
+// import { debounceTime, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators'
 import { takeUntil } from 'rxjs/operators'
 
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
@@ -27,6 +28,10 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   departmentData: any[] = []
   designationData: any[] = []
   otherDetails = false
+  filteredDesignation: any[] = []
+  searchControl: FormControl = new FormControl();
+  
+  // designationFilteredOptions: Observable<string[]>;
 
   private destroySubject$ = new Subject()
 
@@ -57,8 +62,28 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAllDeptData()
+    // this.searchDesg()
     this.searchDesignation('')
+   
   }
+
+  // searchDesg() {
+  //   const designonData = this.data && this.data.designationsMeta
+  //   if(this.transferRequestForm.get('designation')) {
+  //      this.transferRequestForm.get('designation')!.valueChanges.pipe(
+  //       debounceTime(250),
+  //       distinctUntilChanged(),
+  //       startWith(''),
+  //     ).subscribe(res=> {
+  //       if(res) {
+  //         this.designationData = designonData.filter((val: any) =>
+  //         val && val.name.toLowerCase().includes(res)
+  //       )
+  //       }
+  //     })
+  //   }
+  // }
+
 
   handleCloseModal(): void {
     this.dialogRef.close()
@@ -77,7 +102,30 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     }
   }
 
+  // private filterOptions(searchTerm: string) {
+  //   if (!searchTerm) {
+  //     this.filteredDesignation = this.data && this.data.designationsMeta
+  //   } else {
+  //     const lowerCaseSearchTerm = searchTerm.toLowerCase();
+  //     this.filteredDesignation = this.data.designationsMetas.filter((option:any) =>
+  //       option.toLowerCase().includes(lowerCaseSearchTerm)
+  //     );
+  //   }
+  // }
+
   designationSearch(value: any) {
+    // let filterDesignation: any
+    // const designonData = this.data && this.data.designationsMeta
+    // const filterVal = value && value.toLowerCase()
+    // if (!value) {
+    //   this.filteredDesignation = designonData
+    // } else {
+    // this.filteredDesignation = designonData.filter((val: any) =>
+    //   val && val.name.toLowerCase().includes(filterVal)
+    // )
+    // }
+    // console.log(this.filteredDesignation, "this.filteredDesignation=========")
+    // return filterDesignation
     let filterDesignation: any
     const designonData = this.data && this.data.designationsMeta
     const filterVal = value && value.toLowerCase()
@@ -87,12 +135,16 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     return filterDesignation
   }
 
-  searchDesignation(value: any) {
+  searchDesignation(value:any) {
     if (value && value.length && value.length > 0) {
       this.designationData = this.designationSearch(value)
-    } else {
+    } 
+    else {
       this.designationData = this.data && this.data.designationsMeta
     }
+    // this.searchControl.valueChanges.subscribe(searchTerm => {
+    //   this.designationSearch(searchTerm);
+    // });
   }
 
   handleSubmitRequest(): void {

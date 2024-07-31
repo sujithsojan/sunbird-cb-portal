@@ -1,3 +1,4 @@
+$border-color: rgba($color: #000000, $alpha: 0.16);
 .info-div {
     background-color: #EBEBEB;
     border: 1px solid #00000014;
@@ -13,6 +14,54 @@
         color: #212121;
     }
 }
+
+.mat-select-panel-wrap {
+    margin-top: 100px;
+}
+.mat-select-panel {
+    margin-top: 100px!important;
+}
+
+.mat-select-trigger {
+    display: flex;
+    align-items: center;
+  }
+ .autocomplete-box{
+    padding: 1px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 4px;
+    width: calc(100% - 36px);
+    background-color: #fff;
+    margin-top: 8px;
+ }
+
+ .mat-autocomplete-panel {
+    width:  calc(100% - 36px)!important; 
+  }
+//  .autocomplete-box .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+//     padding:0!important;
+//  }
+
+// .auto-complete-row {
+//     border: 1px solid $border-color;
+//     border-radius: 4px;
+  
+//     input {
+//       border: none;
+//     }
+  
+//     .mat-icon {
+//       display: flex;
+//       align-items: center;
+//       position: relative;
+//       top: 12px;
+//       left: -16px;
+//       font-size: 24px;
+//       width: 20px;
+//       height: 18px;
+//       color: rgba(0, 0, 0, 0.54);
+//     }
+//   }
 
 .profile-form-field {
     .mat-select {
@@ -32,7 +81,7 @@ required::after {
 }
 .search-box-span {
     padding: 4px 0px 0px 0px;
-    position: fixed;
+    position: absolute;
     top: 0;
     display: block;
     width: 100%;
@@ -40,6 +89,21 @@ required::after {
     background-color: #fff;
     z-index: 9;
 }
+.mat-select-panel.custom-select-panel {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mat-option.search-box-span {
+    pointer-events: none;
+    height: auto;
+  }
+  
+  .mat-select-panel.custom-select-panel .mat-option-disabled {
+    background: transparent;
+    opacity: 1;
+    pointer-events: none;
+  }
 .dept-seach-input {
     width: 90%;
     margin: 8px auto;
