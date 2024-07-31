@@ -6,7 +6,7 @@ import { CardsModule, CommonMethodsService, SlidersLibModule } from '@sunbird-cb
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule } from '@angular/material'
 import { KarmaProgramsService } from './service/karma-programs.service'
-import { PipeFilterV2Module, PipeOrderByModule } from '@sunbird-cb/utils-v2'
+import { ImageResponsiveModule, PipeFilterV2Module, PipeOrderByModule } from '@sunbird-cb/utils-v2'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
@@ -38,6 +38,7 @@ import { KarmaProgramsMicrositeV2Component } from './karma-programs-microsite-v2
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    ImageResponsiveModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
