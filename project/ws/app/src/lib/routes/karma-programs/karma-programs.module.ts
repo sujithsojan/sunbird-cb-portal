@@ -12,15 +12,13 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import { KarmaProgramDataService } from './service/karma-program-data.service'
-import { KarmaProgramsV1Component } from './karma-programs-v1/karma-programs-v1.component'
-import { KarmaProgramsV2Component } from './karma-programs-v2/karma-programs-v2.component'
+import { KarmaProgramsComponent } from './karma-programs/karma-programs.component'
 import { KarmaProgramsMicrositeV2Component } from './karma-programs-microsite-v2/karma-programs-microsite-v2.component'
 
 @NgModule({
   declarations: [
-    KarmaProgramsV1Component,
+    KarmaProgramsComponent,
     KarmaProgramsMicrositeV1Component,
-    KarmaProgramsV2Component,
     KarmaProgramsMicrositeV2Component],
   imports: [
     CommonModule,

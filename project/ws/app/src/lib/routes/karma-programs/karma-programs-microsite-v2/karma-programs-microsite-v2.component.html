@@ -26,62 +26,71 @@
 
 <!-- banner start -->
 <ng-template #banner let-data="data">
-    <div class="hidden md:block">
-        <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
-            <div class="container">
-                <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
-                    <div class="col-span-12 md:col-span-6">
-                        <div class="flex-1 flex flex-col mr-4 ws-mat-white-text">
-                            <div class="mt-6 pt-6">
-                                <h1  class=" txt-ellipsis-2 break-words">{{data.title || programName}}</h1>
-                                <p class="mat-body-1">
-                                    {{data?.description | slice:0:descriptionMaxLength}}
-                                    <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
-                                </p>
-                                <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
-                                    <ng-container *ngFor="let ref of data?.referenceLinks">
-                                        <p >
-                                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links " target="_blank"> {{'contentstripmultiple.clickHere' | translate}}</a>
-                                        </p>
+    <ng-container *ngIf="!data?.versioning">
+        <div class="hidden md:block">
+            <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
+                <div class="container">
+                    <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                        <div class="col-span-12 md:col-span-6">
+                            <div class="flex-1 flex flex-col mr-4 ws-mat-white-text">
+                                <div class="mt-6 pt-6">
+                                    <h1  class=" txt-ellipsis-2 break-words">{{data.title || programName}}</h1>
+                                    <p class="mat-body-1">
+                                        {{data?.description | slice:0:descriptionMaxLength}}
+                                        <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
+                                    </p>
+                                    <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
+                                        <ng-container *ngFor="let ref of data?.referenceLinks">
+                                            <p >
+                                                {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links " target="_blank"> {{'contentstripmultiple.clickHere' | translate}}</a>
+                                            </p>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 zindex">
+                            <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                                <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-12 md:col-span-6 zindex">
-                        <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
-                            <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
-                        </div>
-                    </div>
+                </div>
+                <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt="">
+            </div>
+        </div>
+        <div class="block md:hidden">
+            <div class="col-span-12">
+                <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
+                    <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
                 </div>
             </div>
-            <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt="">
-        </div>
-    </div>
-    <div class="block md:hidden">
-        <div class="col-span-12">
-            <div class="slider slider-box" *ngIf="data.sliderData && data.sliderData.sliders">
-                <sb-uic-sliders [widgetData]="data.sliderData.sliders" [styleData]="data.sliderData.styleData" ></sb-uic-sliders>
-            </div>
-        </div>
-        <div class="container px-4 py-4 flex flex-col mob-comp-back-img">
-            <div class="w-full md:w-9/12 flex-1 flex flex-col ws-mat-white-text">
-                <h1 class=" txt-ellipsis-2 break-words">{{data?.title}}</h1>
-                <p class="mat-body-2">
-                    {{data?.description | slice:0:descriptionMaxLength}}
-                    <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
-                </p>
-                <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
-                    <ng-container *ngFor="let ref of data?.referenceLinks">
-                        <p >
-                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links "  target="_blank">{{'contentstripmultiple.clickHere' | translate}}</a>
-                        </p>
+            <div class="container px-4 py-4 flex flex-col mob-comp-back-img">
+                <div class="w-full md:w-9/12 flex-1 flex flex-col ws-mat-white-text">
+                    <h1 class=" txt-ellipsis-2 break-words">{{data?.title}}</h1>
+                    <p class="mat-body-2">
+                        {{data?.description | slice:0:descriptionMaxLength}}
+                        <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
+                    </p>
+                    <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
+                        <ng-container *ngFor="let ref of data?.referenceLinks">
+                            <p >
+                                {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links "  target="_blank">{{'contentstripmultiple.clickHere' | translate}}</a>
+                            </p>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
-                
+                    
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="data?.versioning">
+        <div class="banner-new" [ngStyle]="{'background-image': 'url(' + data?.backgroundImageV2 + ')'}">
+
+        </div>
+    </ng-container>
+    
 </ng-template>
 <!-- banner end -->
 

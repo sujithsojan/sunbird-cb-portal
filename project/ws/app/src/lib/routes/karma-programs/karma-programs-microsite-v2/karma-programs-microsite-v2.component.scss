@@ -102,3 +102,11 @@
     position: relative;
     z-index: 999999;
   }
+
+  .banner-new {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 457px;
+  }
