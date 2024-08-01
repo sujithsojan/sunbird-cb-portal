@@ -44,6 +44,7 @@ export const environment: IEnvironment = {
   spvorgID: (window as { [key: string]: any })['env']['spvorgID'] || '',
   mdoChannelsBookmarkId: (window as { [key: string]: any })['env']['mdoChannelsBookmarkId'] || '',
   providerDataKey: (window as { [key: string]: any })['env']['providerDataKey'] || '',
+  bucketName: (window as { [key: string]: any })['env']['bucketName'] || '',
 }
 interface IEnvironment {
   name: string,
@@ -83,6 +84,7 @@ interface IEnvironment {
   spvorgID: number,
   mdoChannelsBookmarkId: string
   providerDataKey: string,
+  bucketName:string
 }
 
 // import { AnyCnameRecord } from 'dns'
