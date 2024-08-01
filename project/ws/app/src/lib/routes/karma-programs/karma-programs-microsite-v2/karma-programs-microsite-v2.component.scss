@@ -115,38 +115,3 @@
     width: 100%;
     height: 100%;
   }
-
-  @media screen and (min-width: 344px) and (max-width: 882px) {
-    .banner-new {
-      height: 250px;
-    }
-    .description-v2 {
-      padding: 0 15px;
-    }
-  }
-
-  @media screen and (min-width: 430px) and (max-width: 932px) {
-    .banner-new {
-      height: 260px;
-    }
-    .description-v2 {
-      padding: 0 15px;
-    }
-  }
-  @media screen and (min-width: 540px) and (max-width: 720px) {
-    .banner-new {
-      height: 325px;
-    }
-    .description-v2 {
-      padding: 0 15px;
-    }
-  }
-
-  @media screen and (min-width: 768px) and (max-width: 1180px) {
-    .banner-new {
-      height: 320px;
-    }
-    .description-v2 {
-      padding: 0 15px;
-    }
-  }

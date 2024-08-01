@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
@@ -65,50 +65,15 @@ export class KarmaProgramsMicrositeV2Component implements OnInit {
       && this.route.snapshot.data.formData.data.result.form.data.sectionList
     ) {
       this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList
-      let bannerSection = this.sectionList.find((ele: any) => ele.key === 'bannerSection' && ele.enabled)
-      if (bannerSection && bannerSection.column[0] &&
-        bannerSection.column[0].data && bannerSection.column[0].data.versioning) {
-          this.bannerImages = this.sectionList[0].column[0].data.bannerImagesV2
-          if (this.bannerImages) {
-            this.setBackgroundImage()
-          }
-      }
-      // if (this.sectionList[0] && this.sectionList[0].enabled && this.sectionList[0].column[0] &&
-      //     this.sectionList[0].column[0].data &&
-      //     this.sectionList[0].column[0].data.versioning) {
-      //   this.bannerImages = this.sectionList[0].column[0].data.bannerImagesV2
-      //   if (this.bannerImages) {
-      //     this.setBackgroundImage()
-      //   }
-      // }
       this.getDataFromSearch()
     }
 
   }
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.setBackgroundImage();
-  }
-
+ 
   richTextContent(content: any) {
     return this.sanitizer.bypassSecurityTrustHtml(content)
   }
 
-  setBackgroundImage() {
-    const width = window.innerWidth;
-    if (width < 380) {
-      this.currentImageUrl = this.bannerImages.s;
-    } else if (width >= 380 && width < 600) {
-      this.currentImageUrl = this.bannerImages.m;
-    } else if (width >= 600 && width < 900) {
-      this.currentImageUrl = this.bannerImages.l;
-    } else if (width >= 900 && width < 1200) {
-      this.currentImageUrl = this.bannerImages.xl;
-    } else {
-      this.currentImageUrl = this.bannerImages.xxl;
-    }
-  }
   async getDataFromSearch(requestData?: any) {
     const request  = requestData || this.formRequest()
     const sectionData = this.sectionList.filter((ele: any) => ele.key === 'contentSearch')

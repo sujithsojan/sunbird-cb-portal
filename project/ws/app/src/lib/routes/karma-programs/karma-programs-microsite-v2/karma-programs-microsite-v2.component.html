@@ -86,14 +86,12 @@
     </ng-container>
 
     <ng-container *ngIf="data?.versioning">
-        <!-- <div class="banner-new" [ngStyle]="{'background-image': 'url(' + currentImageUrl + ')'}">
-        </div> -->
         <div>
             <img i18n-alt alt="Page Banner"
                 [src]="data.bannerImagesV2"
                 wsUtilsImageResponsive
                 class="banner-image-v2"/>
-            </div>
+        </div>
         <div class="container-balanced pt-8">
             <div class="description-v2" [innerHTML]="richTextContent(data?.descriptionV2)"></div>
         </div>
