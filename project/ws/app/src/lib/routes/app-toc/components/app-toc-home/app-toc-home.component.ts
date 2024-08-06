@@ -979,8 +979,20 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
             this.tocSvc.checkModuleWiseData(this.content)
             this.enrolledCourseData = enrolledCourse
             this.currentCourseBatchId = enrolledCourse.batchId
-            this.downloadCert(enrolledCourse.issuedCertificates)
-
+            // this.downloadCert(enrolledCourse.issuedCertificates)
+            if (enrolledCourse && enrolledCourse.issuedCertificates &&
+              enrolledCourse.issuedCertificates.length) {
+              const certificate: any = enrolledCourse.issuedCertificates.sort((a: any, b: any) =>
+                 new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+              const certId = certificate[0].identifier
+              this.certId = certId
+              if (this.content) {
+                this.content['certificateObj'] = {
+                  certId,
+                  certData: '',
+                }
+              }
+            }
             this.content.completionPercentage = enrolledCourse.completionPercentage || 0
             this.content.completionStatus = enrolledCourse.status || 0
             if (this.contentReadData && this.contentReadData.cumulativeTracking) {
@@ -1098,22 +1110,22 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     return batchId
   }
 
-  downloadCert(certIdArr: any) {
-    if (certIdArr && certIdArr.length && certIdArr.length > 0) {
-      certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
-      const certId = certIdArr[0].identifier
-      this.certId = certId
+  // downloadCert(certIdArr: any) {
+  //   if (certIdArr && certIdArr.length && certIdArr.length > 0) {
+  //     certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+  //     const certId = certIdArr[0].identifier
+  //     this.certId = certId
 
-      this.contentSvc.downloadCert(certId).subscribe(response => {
-        if (this.content) {
-          this.content['certificateObj'] = {
-            certData: response.result.printUri,
-            certId: this.certId,
-          }
-        }
-      })
-    }
-  }
+  //     this.contentSvc.downloadCert(certId).subscribe(response => {
+  //       if (this.content) {
+  //         this.content['certificateObj'] = {
+  //           certData: response.result.printUri,
+  //           certId: this.certId,
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
   public handleAutoBatchAssign() {
     if (this.forPreview) {
