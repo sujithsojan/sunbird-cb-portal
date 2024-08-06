@@ -82,7 +82,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     public router: Router,
     private reviewDataService: ReviewComponentDataService,
     private handleClaimService: HandleClaimService,
-    private resetRatingsService: ResetRatingsService
+    private resetRatingsService: ResetRatingsService,
   ) {
     this.resetRatingsService.resetRatings$.subscribe((_res: any) => {
       this.fetchRatingSummary()
