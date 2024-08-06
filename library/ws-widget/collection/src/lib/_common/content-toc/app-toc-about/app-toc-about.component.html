@@ -50,7 +50,7 @@
                                 alt="certificate image" />
                                 <div [ngClass]="{'view-certificate': downloadCertificateBool, 'view-cert': !downloadCertificateBool}">
                                     <button type="button" (click)="handleOpenCertificateDialog()">
-                                        <span *ngIf="!downloadCertificateBool">View Certificate</span>
+                                        <span *ngIf="!downloadCertificateBool">{{ 'apptoccontentcard.viewCertificate' | translate }}</span>
                                         <div *ngIf="downloadCertificateBool" class="uploader-status">
                                             <mat-spinner></mat-spinner>
                                         </div>
