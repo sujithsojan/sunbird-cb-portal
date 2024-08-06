@@ -17,8 +17,8 @@ import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { NsContentStripWithTabs } from '../../../content-strip-with-tabs/content-strip-with-tabs.model'
 
 import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
-import { NsContent, RatingService, WidgetContentService } from '@sunbird-cb/collection/src/public-api'
-import { LoggerService, ConfigurationsService } from '@sunbird-cb/utils-v2'
+import { NsContent, RatingService } from '@sunbird-cb/collection/src/public-api'
+import { LoggerService, ConfigurationsService, WidgetContentService } from '@sunbird-cb/utils-v2'
 import { TimerService } from '@ws/app/src/lib/routes/app-toc/services/timer.service'
 import { HandleClaimService } from '../content-services/handle-claim.service'
 import { LoadCheckService } from '@ws/app/src/lib/routes/app-toc/services/load-check.service'
@@ -699,7 +699,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   handleOpenCertificateDialog() {
     this.downloadCertificateBool = true
     const certId = this.content && this.content.certificateObj.certId
-    if (this.content && this.content.certificateObj && this.content.certificateObj.certData) {
+    if (this.content && this.content.certificateObj && !this.content.certificateObj.certData) {
       this.contentSvc.downloadCert(certId).subscribe(response => {
         if (this.content) {
           this.downloadCertificateBool = false
@@ -715,6 +715,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
         this.matSnackBar.open('Unable to View Certificate, due to some error!')
       })
     } else {
+      this.downloadCertificateBool = false
       this.dialog.open(CertificateDialogComponent, {
         width: '1200px',
         data: { cet: this.content && this.content.certificateObj.certData, certId: this.content && this.content.certificateObj.certId },
