@@ -5,13 +5,13 @@
         </a>
         <a class="survey-img-link desktop-img" href={{surveyPopup.surveyUrl}}>
             <!-- <img class="survey-img" src={{surveyPopupData.l}} /> -->
-            <img i18n-alt alt="Page Banner" width="100%" height="100%" [src]="surveyPopup.banners"
+            <img i18n-alt alt="Page Banner"  [src]="surveyPopup.banners"
                 wsUtilsImageResponsive class="banner-image-solo" />
         </a>
 
         <div class="mobile-img-box flex flex-col items-center justify-center">
-            <img i18n-alt alt="Page Banner" width="100%" height="100%" [src]="surveyPopup.banners"
-                wsUtilsImageResponsive class="banner-image-solo" />
+            <img i18n-alt alt="Page Banner" [src]="surveyPopup.banners"
+                wsUtilsImageResponsive class="mobile-banner-image-solo" />
             <a class="mobile-survey-link" href={{surveyPopup.surveyUrl}}>{{surveyPopup.buttonName}} </a>
         </div>
 

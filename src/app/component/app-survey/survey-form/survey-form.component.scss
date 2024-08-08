@@ -1,6 +1,5 @@
 .main-survey {
     background-color: rgba(0, 0, 0, 0.4);
-    position: relative;
     height: 100vh;
     width: 100%;
     z-index: 9999;
@@ -10,19 +9,14 @@
     left: 0px;
     right: 0px;
     margin: 0px;
-    box-sizing: border-box;
-    @media screen and (max-width:768px) {
-        // overflow-y: auto;
-        // overflow-x: hidden;
-    }
+    padding: 0;
+    overflow: hidden;
 }
-.survey-img {
-    // width: 400px;
-    height: 400px;
 
-}
 .survey-img-link {
     cursor: pointer;
+    width: 80%;
+    margin: auto;
 }
 .close-button {
     cursor: pointer;
@@ -47,28 +41,14 @@
   }
   .mobile-img-box {
     display: none !important;
-    border: 2px solid red;
-    // @media screen and (max-width:768px) {
-     @media (min-width: 425px) and (max-width: 768px) {
+    margin:auto;
+     @media (min-width: 476px) and (max-width: 768px) {
         display: flex !important;
-        margin-top: 0px;
-        width: 90% !important;
-        height: 90% !important;
-        margin-left: 5% !important;
+        width: 80%;
     }
-     @media screen and (max-width:475) {
+     @media screen and (max-width:475px) {
         display: flex !important;
-        margin-top: 0px;
-        width: 90% !important;
-        height: 90% !important;
-        margin-left: 5% !important;
-    }
-    @media (min-width: 300px) and (max-width: 424px) {
-        display: flex !important;
-        margin-top: 0px;
-        width: 90% !important;
-        height: 90% !important;
-        margin-left: 5% !important;
+        width: 90%;
     }
   }
   .mobile-survey-link {
@@ -80,21 +60,28 @@
     border-radius: 16px;
     margin-bottom: 16px;
     line-height: 30px;
-    @media (min-width: 425px) and (max-width: 768px) {
-        width: 339px !important;
-    }
-    @media (min-width: 300px) and (max-width: 424px) {
-        width: 339px !important;
-    }
 
+    @media screen and (max-width:768px) {
+        width: 94%;
+        margin: auto;
+    }
 
   }
-//   .surver-inner {
-//     box-sizing: border-box;
-//     padding: 16px 16px;
-//     position: relative;
-//     width: 100%;
-//   }
+  .surver-inner {
+    padding:0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .banner-image-solo {
+    width: 100%;
+    height: auto;
+  }
+
+  .mobile-banner-image-solo {
+    width: 100%;
+    height: auto;
+  }
 
   
   
