@@ -10,7 +10,7 @@ import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 export class SurveyFormComponent implements OnInit {
   surveyPopupData: any
   surveyPopup: any
-  IsSurveyPopup = true
+  isSurveyPopup = true
   widgetData: any
   userRead: any
   isTourDone: any
@@ -43,7 +43,7 @@ export class SurveyFormComponent implements OnInit {
   }
 
   closeCard() {
-   this.IsSurveyPopup = false
+   this.isSurveyPopup = false
    if (this.localStorageFlag) {
     localStorage.setItem('surveyPopup', 'false')
     this.localStorageFlag = false
