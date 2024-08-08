@@ -3,16 +3,16 @@
         <a mat-icon-button class="close-button flex" (click)="closeCard()">
             <mat-icon>close</mat-icon>
         </a>
-        <a class="survey-img-link desktop-img" href={{surveyPopup.surveyUrl}}>
+        <a class="survey-img-link desktop-img" href={{surveyPopup?.surveyUrl}}>
             <!-- <img class="survey-img" src={{surveyPopupData.l}} /> -->
-            <img i18n-alt alt="Page Banner"  [src]="surveyPopup.banners"
+            <img i18n-alt alt="Page Banner"  [src]="surveyPopup?.banners"
                 wsUtilsImageResponsive class="banner-image-solo" />
         </a>
 
         <div class="mobile-img-box flex flex-col items-center justify-center">
-            <img i18n-alt alt="Page Banner" [src]="surveyPopup.banners"
+            <img i18n-alt alt="Page Banner" [src]="surveyPopup?.banners"
                 wsUtilsImageResponsive class="mobile-banner-image-solo" />
-            <a class="mobile-survey-link" href={{surveyPopup.surveyUrl}}>{{surveyPopup.buttonName}} </a>
+            <a class="mobile-survey-link" href={{surveyPopup?.surveyUrl}}>{{surveyPopup?.buttonName}} </a>
         </div>
 
 
