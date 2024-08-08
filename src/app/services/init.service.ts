@@ -858,7 +858,12 @@ export class InitService {
         })
       }
     })
-    localStorage.setItem('surveyPopup', 'true')
+    const checkSurvey = localStorage.getItem('surveyPopup')
+    if (checkSurvey && checkSurvey === 'false') {
+      localStorage.setItem('surveyPopup', 'false')
+    } else {
+      localStorage.setItem('surveyPopup', 'true')
+    }
   }
 
   // get default url
