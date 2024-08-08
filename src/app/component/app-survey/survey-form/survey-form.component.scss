@@ -1,0 +1,100 @@
+.main-survey {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    z-index: 9999;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    @media screen and (max-width:768px) {
+        // overflow-y: auto;
+        // overflow-x: hidden;
+    }
+}
+.survey-img {
+    // width: 400px;
+    height: 400px;
+
+}
+.survey-img-link {
+    cursor: pointer;
+}
+.close-button {
+    cursor: pointer;
+    vertical-align: top;
+    color: #000000; 
+    font-size: 20px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin-top: 40px;
+    margin-right: 40px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    padding: 4px 4px;
+  }
+
+  .desktop-img {
+    display: flex !important;
+    @media screen and (max-width:768px) {
+        display: none !important;
+    }
+  }
+  .mobile-img-box {
+    display: none !important;
+    border: 2px solid red;
+    // @media screen and (max-width:768px) {
+     @media (min-width: 425px) and (max-width: 768px) {
+        display: flex !important;
+        margin-top: 0px;
+        width: 90% !important;
+        height: 90% !important;
+        margin-left: 5% !important;
+    }
+     @media screen and (max-width:475) {
+        display: flex !important;
+        margin-top: 0px;
+        width: 90% !important;
+        height: 90% !important;
+        margin-left: 5% !important;
+    }
+    @media (min-width: 300px) and (max-width: 424px) {
+        display: flex !important;
+        margin-top: 0px;
+        width: 90% !important;
+        height: 90% !important;
+        margin-left: 5% !important;
+    }
+  }
+  .mobile-survey-link {
+    background-color: #F3962F;
+    text-align: center;
+    color: #fff !important;
+    width: 360px;
+    height: 32px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    line-height: 30px;
+    @media (min-width: 425px) and (max-width: 768px) {
+        width: 339px !important;
+    }
+    @media (min-width: 300px) and (max-width: 424px) {
+        width: 339px !important;
+    }
+
+
+  }
+//   .surver-inner {
+//     box-sizing: border-box;
+//     padding: 16px 16px;
+//     position: relative;
+//     width: 100%;
+//   }
+
+  
+  

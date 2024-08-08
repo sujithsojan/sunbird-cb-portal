@@ -858,6 +858,7 @@ export class InitService {
         })
       }
     })
+    localStorage.setItem('surveyPopup', 'true')
   }
 
   // get default url
