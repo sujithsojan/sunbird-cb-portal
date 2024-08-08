@@ -43,6 +43,7 @@ import { MicrositesModule } from './routes/microsites/microsites.module'
 import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
+import { AppHomePageResolverService } from './services/app-home-page-resolver.service'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -788,12 +789,12 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     data: {
       pageType: 'page',
-      pageKey: 'home',
+      pageKey: 'homee',
       pageId: 'page/home',
       module: 'Home',
     },
     resolve: {
-      pageData: PageResolve,
+      pageData: AppHomePageResolverService,
       // module: ModuleNameResolve,
       // pageId: PageNameResolve,
     },
