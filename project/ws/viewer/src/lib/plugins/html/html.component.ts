@@ -361,7 +361,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
             )
           } else {
             // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
-            if(this.forPreview) {
+            if (this.forPreview) {
               this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
                 // tslint:disable-next-line:max-line-length
                 `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
@@ -372,7 +372,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
                 `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
               )
             }
-           
+
           }
         } else {
           if (environment.production) {
@@ -553,5 +553,4 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     return this.forPreview ? oldUrl : newUrl
   }
 
-  
 }
