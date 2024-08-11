@@ -439,7 +439,7 @@
                     <div class="text-xs font-bold text-white leading-3">{{ translateLabel(content?.primaryCategory, 'searchfilters') }}</div>
                   </ng-container>
                 </div>
-                <div (click)="onClickOfShare()" class="flex flex-row items-center justify-end gap-2 share-tag" *ngIf="canShare">
+                <div (click)="onClickOfShare()" class="flex flex-row items-center justify-end gap-2 share-tag" *ngIf="canShare && !forPreview">
                   <mat-icon>share</mat-icon>
                   <div>{{ 'apptocsinglepage.share' | translate }}</div>
                 </div>
