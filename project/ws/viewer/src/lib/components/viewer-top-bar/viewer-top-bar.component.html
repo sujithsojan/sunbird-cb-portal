@@ -75,9 +75,9 @@
       </ng-container>
 
       <div color="secondary" class="flex mat-body-2 flex-middle font-bold-imp px-2 cursor-pointer" (click)="openFeedbackDialog()">
-        <mat-icon
+        <mat-icon *ngIf="!forPreview"
           class=" icon-margin mat-icon notranslate material-icons mat-icon-no-color mr-2 blue-color">star</mat-icon>
-        <ng-container *ngIf="!userRating">
+        <ng-container *ngIf="!userRating && !forPreview">
           <span class="mr-1 blue-color">{{'apptocsinglepage.rateNow' | translate}}</span>
           <!-- <span class="lowercase">
             <ng-container *ngIf="content?.primaryCategory === primaryCategory.PROGRAM">
@@ -89,11 +89,11 @@
             </ng-container>
           </span> -->
         </ng-container>
-        <ng-container *ngIf="userRating">
+        <ng-container *ngIf="userRating && !forPreview">
           <span class="mr-1 blue-color"> {{'apptocsinglepage.editRating' | translate}} </span>
         </ng-container>
       </div>
-      <div (click)="onClickOfShare()" *ngIf="canShare"
+      <div (click)="onClickOfShare()" *ngIf="canShare && !forPreview"
         class="flex flex-row cursor-pointer items-center justify-end gap-2 share-tag margin-left-l">
         <mat-icon class="blue-color">share</mat-icon>
         <span class="blue-color">{{'apptocsinglepage.share' | translate}}</span>
@@ -152,7 +152,7 @@
       <div color="secondary" class="flex mat-body-2 flex-middle font-bold-imp px-2" (click)="openFeedbackDialog()">
         <mat-icon
           class=" icon-margin mat-icon notranslate material-icons mat-icon-no-color mr-2 blue-color">star</mat-icon>
-        <ng-container *ngIf="!userRating">
+        <ng-container *ngIf="!userRating && !forPreview">
           <span class="mr-1 blue-color">{{'apptocsinglepage.rateNow' | translate}}</span>
           <!-- <span class="lowercase">
             <ng-container *ngIf="content?.primaryCategory === primaryCategory.PROGRAM">
@@ -164,7 +164,7 @@
             </ng-container>
           </span> -->
         </ng-container>
-        <ng-container *ngIf="userRating">
+        <ng-container *ngIf="userRating && !forPreview">
           <span> {{'apptocsinglepage.editRating' | translate}} </span>
         </ng-container>
       </div>

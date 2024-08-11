@@ -133,7 +133,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     //   this.fireRealTimeProgress(this.htmlContent)
     //   // this.store.clearAll()
     // }
-    this.sub.unsubscribe()
+    if(this.sub) {
+      this.sub.unsubscribe()
+    }    
   }
 
   private fireRealTimeProgress(htmlContent: any) {
@@ -250,7 +252,10 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         // }
         // call fireRealTimeProgress func for LMS data and non-LMS data also
         this.fireRealTimeProgress(this.oldData)
-        this.sub.unsubscribe()
+        if(this.sub) {
+          this.sub.unsubscribe()
+        }
+        
         this.ticks = 0
         this.timer = timer(1000, 1000)
         // subscribing to a observable returns a subscription object
@@ -358,7 +363,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
             // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
             this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
               // tslint:disable-next-line:max-line-length
-              `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
+              `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
             )
           }
         } else {
@@ -536,7 +541,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         newLink.push(chunk[i])
       }
     }
-    const newUrl = newLink.join('/')
-    return newUrl
+    // const newUrl = newLink.join('/')
+    return oldUrl
   }
 }
