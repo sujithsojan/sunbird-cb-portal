@@ -133,9 +133,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     //   this.fireRealTimeProgress(this.htmlContent)
     //   // this.store.clearAll()
     // }
-    if(this.sub) {
+    if (this.sub) {
       this.sub.unsubscribe()
-    }    
+    }
   }
 
   private fireRealTimeProgress(htmlContent: any) {
@@ -252,10 +252,10 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         // }
         // call fireRealTimeProgress func for LMS data and non-LMS data also
         this.fireRealTimeProgress(this.oldData)
-        if(this.sub) {
+        if (this.sub) {
           this.sub.unsubscribe()
         }
-        
+
         this.ticks = 0
         this.timer = timer(1000, 1000)
         // subscribing to a observable returns a subscription object
