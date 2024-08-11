@@ -361,10 +361,18 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
             )
           } else {
             // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
-            this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-              // tslint:disable-next-line:max-line-length
-              `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
-            )
+            if (this.forPreview) {
+              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+                // tslint:disable-next-line:max-line-length
+                `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
+              )
+            } else {
+              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+                // tslint:disable-next-line:max-line-length
+                `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
+              )
+            }
+
           }
         } else {
           if (environment.production) {
@@ -541,7 +549,8 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         newLink.push(chunk[i])
       }
     }
-    // const newUrl = newLink.join('/')
-    return oldUrl
+    const newUrl = newLink.join('/')
+    return this.forPreview ? oldUrl : newUrl
   }
+
 }
