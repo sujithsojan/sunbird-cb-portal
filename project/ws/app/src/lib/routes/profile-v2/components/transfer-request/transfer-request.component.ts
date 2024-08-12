@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
 
 import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { debounceTime, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators'
 
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
@@ -26,6 +26,8 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   })
   departmentData: any[] = []
   otherDetails = false
+  deptFilterData: any[] = []
+  designationData: any[] = []
   private destroySubject$ = new Subject()
 
   constructor(
@@ -51,6 +53,44 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
         this.otherDetails = false
       }
     })
+
+    if (this.transferRequestForm.get('organization')) {
+        this.transferRequestForm.get('organization')!.valueChanges
+        .pipe(
+          debounceTime(250),
+          distinctUntilChanged(),
+          startWith(''),
+        )
+        .subscribe(res => {
+          if (res) {
+            this.deptFilterData = this.departmentData && this.departmentData.filter(item => item.toLowerCase().includes(res && res.toLowerCase()))
+          }
+          else {
+            this.deptFilterData = this.departmentData
+          }
+        })
+      }
+
+       if (this.transferRequestForm.get('designation')) {
+        this.transferRequestForm.get('designation')!.valueChanges
+        .pipe(
+          debounceTime(250),
+          distinctUntilChanged(),
+          startWith(''),
+        )
+        .subscribe(res => {
+          if (res) {
+            // this.deptFilterData = this.data && this.data.designationsMeta.filter(item => item.toLowerCase().includes(res && res.toLowerCase()))
+            const designonData = this.data && this.data.designationsMeta
+            this.designationData = designonData.filter((val: any) =>
+              val && val.name.toLowerCase().includes(res && res.toLowerCase())
+            )
+          }
+          else {
+            this.designationData = this.data && this.data.designationsMeta
+          }
+        })
+      }
   }
 
   ngOnInit() {

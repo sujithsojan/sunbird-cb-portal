@@ -5,14 +5,22 @@
         <div class="flex flex-col">
             <div class="text-sm font-bold required">{{ 'profileInfo.organization' | translate }}</div>
             <mat-form-field class="profile-form-field">
-                <mat-select formControlName="organization">
+                <!-- <mat-select formControlName="organization">
                     <span class="search-box-span">
                         <input (keyup)="searchOrg($event.target.value)" class="dept-seach-input" placeholder="Search organization">
                     </span>
                     
                     <mat-option value="" disabled>{{ 'profileInfo.chooseOrganization' | translate }}</mat-option>
                     <mat-option *ngFor="let dept of departmentData" value="{{ dept }}">{{ dept }}</mat-option>
-                </mat-select>
+                </mat-select> -->
+                <div class="flex flex-row auto-complete-row">
+                    <input type="text" class="input-text" matInput formControlName="organization"
+                        [matAutocomplete]="departmentAuto">
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </div>
+                <mat-autocomplete class="mat-autocomplete" #departmentAuto="matAutocomplete">
+                    <mat-option *ngFor="let dept of deptFilterData" value="{{ dept }}">{{ dept }}</mat-option>
+                </mat-autocomplete>
             </mat-form-field>
         </div>
     
@@ -30,10 +38,18 @@
             <div class="flex flex-col">
                 <div class="text-sm font-bold required">{{ 'profileInfo.designation' | translate }}</div>
                 <mat-form-field class="profile-form-field">
-                    <mat-select formControlName="designation">
+                    <!-- <mat-select formControlName="designation">
                         <mat-option value="" disabled>{{ 'profileInfo.chooseADesignation' | translate }}</mat-option>
                         <mat-option *ngFor="let designation of data?.designationsMeta" value="{{ designation?.name }}">{{ designation?.name }}</mat-option>
-                    </mat-select>
+                    </mat-select> -->
+                    <div class="flex flex-row auto-complete-row">
+                        <input type="text" class="input-text" matInput formControlName="designation"
+                            [matAutocomplete]="designationAuto">
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </div>
+                    <mat-autocomplete class="mat-autocomplete" #designationAuto="matAutocomplete">
+                        <mat-option *ngFor="let designation of designationData" value="{{ designation?.name }}">{{ designation?.name }}</mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
         </ng-container>
