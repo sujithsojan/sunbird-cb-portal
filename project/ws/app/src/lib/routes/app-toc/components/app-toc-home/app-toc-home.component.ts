@@ -751,7 +751,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       if (batch && this.currentCourseBatchId) {
         this.startDate = (_.get(batch, 'startDate'))
         this.endDate = (_.get(batch, 'endDate'))
-        if(this.endDate) {
+        if (this.endDate) {
           const startDateTime = this.startDate && new Date(this.startDate).getTime()
           const endDateTime = this.endDate && new Date(this.endDate).getTime()
           this.startDateDifference = now - startDateTime
@@ -764,7 +764,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         return true
       }
       return false
-    } 
+    }
     return false
   }
 
