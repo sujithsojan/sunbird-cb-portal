@@ -4,7 +4,7 @@
     <form class="flex flex-col gap-4" [formGroup]="transferRequestForm">
         <div class="flex flex-col">
             <div class="text-sm font-bold required">{{ 'profileInfo.organization' | translate }}</div>
-            <mat-form-field class="profile-form-field">
+            <mat-form-field class="profile-form-field mat-drop-down-select">
                 <!-- <mat-select formControlName="organization">
                     <span class="search-box-span">
                         <input (keyup)="searchOrg($event.target.value)" class="dept-seach-input" placeholder="Search organization">
@@ -27,7 +27,7 @@
         <ng-container *ngIf="otherDetails">
             <div class="flex flex-col">
                 <div class="text-sm font-bold required">{{ 'profileInfo.group' | translate }}</div>
-                <mat-form-field class="profile-form-field">
+                <mat-form-field class="profile-form-field mat-drop-down-select">
                     <mat-select formControlName="group">
                         <mat-option value="" disabled>{{ 'profileInfo.chooseAGroup' | translate }}</mat-option>
                         <mat-option *ngFor="let group of data?.groupData" value="{{group}}">{{ group }}</mat-option>
