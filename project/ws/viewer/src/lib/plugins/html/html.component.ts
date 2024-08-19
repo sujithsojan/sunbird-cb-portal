@@ -355,24 +355,6 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         //   )
         // }
         if (this.htmlContent.streamingUrl && this.htmlContent.initFile) {
-          // if (this.htmlContent.streamingUrl.includes('latest') && !this.htmlContent.initFile) {
-          //   this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          //     // tslint:disable-next-line:max-line-length
-          //     `${environment.azureHost}/${environment.azureBucket}/content/html/${this.htmlContent.identifier}-latest/index.html?timestamp='${new Date().getTime()}`
-          //   )
-          // } else {
-          //   // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
-          //   if (this.forPreview) {
-
-          //     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          //       // tslint:disable-next-line:max-line-length
-          //       `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
-          //     )
-          //   } else {
-             
-          //   }
-
-          // }
           this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
             // tslint:disable-next-line:max-line-length
             `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
