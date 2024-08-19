@@ -362,11 +362,11 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
             )
           } else {
             // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
-            if (this.forPreview &&  !window.location.href.includes('/mobile/html/')) {
+            if (this.forPreview) {
 
               this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
                 // tslint:disable-next-line:max-line-length
-                `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
+                `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
               )
             } else {
               this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
@@ -552,7 +552,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     const newUrl = newLink.join('/')
-    return (this.forPreview && !window.location.href.includes('/mobile/html/')) ? oldUrl : newUrl
+    return  newUrl
   }
 
 }
