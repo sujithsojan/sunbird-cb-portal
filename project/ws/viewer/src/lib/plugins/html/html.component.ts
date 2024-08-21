@@ -127,7 +127,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     // this.fireRealTimeProgress()
 
     // call for both LMS and duration calculation content
-    this.fireRealTimeProgress(this.htmlContent)
+    if (!this.forPreview) {
+      this.fireRealTimeProgress(this.htmlContent)
+    }
 
     // if (!this.store.getItem('Initialized')) {
     //   this.fireRealTimeProgress(this.htmlContent)
@@ -243,6 +245,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       ? this.configSvc.instanceConfig.intranetIframeUrls
       : []
     // For successive scorm resources, when switched to next content -  start
+
     if (!this.oldData) {
       this.oldData = this.htmlContent
     } else {
@@ -251,7 +254,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         //   this.fireRealTimeProgress(this.oldData)
         // }
         // call fireRealTimeProgress func for LMS data and non-LMS data also
-        this.fireRealTimeProgress(this.oldData)
+        if (!this.forPreview) {
+          this.fireRealTimeProgress(this.oldData)
+        }
         if (this.sub) {
           this.sub.unsubscribe()
         }
@@ -354,26 +359,10 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         //   )
         // }
         if (this.htmlContent.streamingUrl && this.htmlContent.initFile) {
-          if (this.htmlContent.streamingUrl.includes('latest') && !this.htmlContent.initFile) {
-            this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-              // tslint:disable-next-line:max-line-length
-              `${environment.azureHost}/${environment.azureBucket}/content/html/${this.htmlContent.identifier}-latest/index.html?timestamp='${new Date().getTime()}`
-            )
-          } else {
-            // `${this.htmlContent.streamingUrl}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`)
-            if (this.forPreview) {
-              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                // tslint:disable-next-line:max-line-length
-                `${this.generateUrl(this.htmlContent.streamingUrl)}?timestamp='${new Date().getTime()}`
-              )
-            } else {
-              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                // tslint:disable-next-line:max-line-length
-                `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
-              )
-            }
-
-          }
+          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            // tslint:disable-next-line:max-line-length
+            `${this.generateUrl(this.htmlContent.streamingUrl)}/${this.htmlContent.initFile}?timestamp='${new Date().getTime()}`
+          )
         } else {
           if (environment.production) {
             this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
@@ -550,7 +539,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     const newUrl = newLink.join('/')
-    return this.forPreview ? oldUrl : newUrl
+    return  newUrl
   }
 
 }

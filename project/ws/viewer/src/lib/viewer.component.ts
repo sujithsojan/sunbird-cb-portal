@@ -209,8 +209,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
     })
-
-    this.getAuthDataIdentifer()
+    if (this.collectionId) {
+      this.getAuthDataIdentifer()
+    }
     // this.getEnrollmentList()
     this.isNotEmbed = !(
       window.location.href.includes('/embed/') ||
