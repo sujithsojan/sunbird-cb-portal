@@ -1,13 +1,28 @@
 <div class="margin-top-m">
+    <div class="nlw-container">
+        <div class="flex">
+            <div class="nlw-title gap-3">
+                Celebrate National Learning Week
+            </div>
+            <div class="nlw-title">
+                <img class="nlw-animation" src="assets/images/national-learning/nlw.gif"/>
+            </div>
+        </div>
+        <div class="flex nlw-description">
+            Digital Marketing conference dedicated to delivering actionable methods and strategies covering all aspects of online marketing
+        </div>
+        <div class="flex flex-align-end nlw-redirect margin-top-l">
+            <button (click)="navigateToNationalLearning()"
+                class="nlw-view-more-btn mat-button mat-button-base text-white">View More
+            </button>
+        </div>
+    </div>
+</div>
+<div class="margin-top-m">
     <ws-widget-profile-card-stats (expandCollapse)="expandCollapse($event)" (activity)="goToActivity($event)"
         [profileData]="homePageData.profileCard" [insightsData]="insightsData"
         [isLoading]="profileDataLoading"></ws-widget-profile-card-stats>
 </div>
-
-
-
-
-
 <section class="hidden md:block" style="position: relative;" [ngClass]="{'':!collapsed, 'margin-bottom-m': collapsed}">
     <div class="collapsible margin-top-m" [@collapse]="collapsed" *ngIf="surveyForm && surveyForm.active">
         <ws-widget-survey-form-section [surveyFormData]="surveyForm.surveyFormData"></ws-widget-survey-form-section>

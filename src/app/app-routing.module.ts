@@ -286,6 +286,19 @@ const routes: Routes = [
     },
   },
   {
+    path: 'app/learn/national-learning-week',
+    loadChildren: () =>
+      import('./routes/route-national-learning-week.module').then(u => u.RouteNationalLearningWeekModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageId: 'app/learn/national-learning-week',
+      module: 'explore',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
     path: 'app/learn/mdo-channels',
     loadChildren: () =>
       import('./routes/route-mdo-channels.module').then(u => u.RouteMdoChannelsModule),

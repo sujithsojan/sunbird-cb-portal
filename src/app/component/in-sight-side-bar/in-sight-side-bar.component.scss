@@ -218,3 +218,50 @@
     border-radius: 5px;
     text-align: center;
  }
+
+ .nlw-container {
+    background: linear-gradient(180deg, #2C77A6 0%, #07446B 100%);
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 32px;
+    overflow: hidden;
+    width: 385px;
+    box-sizing: border-box;
+    color: white;
+ }
+ .nlw-title {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24.38px;
+  text-align: left;
+ }
+ .nlw-description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+
+ }
+ .nlw-animation {
+  width: 64px;
+  height: 64px;
+ }
+ .nlw-redirect {
+  justify-content: flex-end;
+ }
+ .nlw-view-more-btn {
+  background-color: #F3962F!important;
+  color: white;
+  border-radius: 25px;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.8px;
+  text-align: center;
+  padding: 12px 24px;
+
+ }
