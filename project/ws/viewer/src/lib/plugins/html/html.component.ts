@@ -127,7 +127,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     // this.fireRealTimeProgress()
 
     // call for both LMS and duration calculation content
-    this.fireRealTimeProgress(this.htmlContent)
+    if (!this.forPreview) {
+      this.fireRealTimeProgress(this.htmlContent)
+    }
 
     // if (!this.store.getItem('Initialized')) {
     //   this.fireRealTimeProgress(this.htmlContent)
@@ -252,7 +254,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         //   this.fireRealTimeProgress(this.oldData)
         // }
         // call fireRealTimeProgress func for LMS data and non-LMS data also
-        this.fireRealTimeProgress(this.oldData)
+        if (!this.forPreview) {
+          this.fireRealTimeProgress(this.oldData)
+        }
         if (this.sub) {
           this.sub.unsubscribe()
         }
