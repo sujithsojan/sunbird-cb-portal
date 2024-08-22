@@ -66,6 +66,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             isCorrect: false,
           },
         ],
+        choices: [],
       },
     ],
     isAssessment: false,
@@ -623,6 +624,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 questionLevel: q.questionLevel,
                 marks: q.totalMarks,
                 rhsChoices: this.getRhsValue(q),
+                choices: q.choices ? q.choices : [],
               })
             }
           })
@@ -1437,6 +1439,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 questionLevel: q.questionLevel,
                 marks: q.totalMarks,
                 rhsChoices: this.getRhsValue(q),
+                choices: q.choices ? q.choices : []
               })
             }
           })
