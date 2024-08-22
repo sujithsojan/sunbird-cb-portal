@@ -32,7 +32,7 @@ import { DesignationRequestComponent } from '../../components/designation-reques
 import { HomePageService } from 'src/app/services/home-page.service'
 import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
 import { ConfirmDialogComponent } from '@sunbird-cb/collection/src/lib/_common/confirm-dialog/confirm-dialog.component'
-
+import { environment } from 'src/environments/environment'
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -160,7 +160,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   designationApprovedTime = 0
   currentDate = new Date()
   designationsMeta: any
-
+  isMentor = false  
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -245,6 +245,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
+
+    if(this.configService && this.configService.userRoles) {
+      this.isMentor = this.configService.userRoles.has('MENTOR') ? true : false
+    }
 
     this.route.queryParams.subscribe((params: Params) => {
       this.params = params
@@ -1272,6 +1276,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       width: '500px',
       maxWidth: '90vw',
     })
+  }
+
+  viewMentorProfile() {
+    window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
+    //this.router.navigateByUrl('mentorship')
+    window.open(`${environment.contentHost}/mentorship`,'_blank')
   }
 
   // isEmailAllowed(email: string): boolean {

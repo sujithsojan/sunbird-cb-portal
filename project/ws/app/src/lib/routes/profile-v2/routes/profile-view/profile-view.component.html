@@ -616,10 +616,20 @@
             <mat-icon>info_outline</mat-icon>
           </div>
         </div>
-        <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
-          <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
-          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
-          <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
+            <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
+            <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
+            <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
+            <div *ngIf="isMentor" class="blue-bg-mentor">
+              Mentor
+            </div>
+          </div>
+          <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile" (click)="viewMentorProfile()">
+            <div class="text-sm blue-background-outline">
+              {{ 'profileInfo.viewMentorProfile' | translate }}
+            </div>          
+          </div>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <!--  pattern="/^[a-z0-9._-]+$/i" -->
@@ -666,6 +676,11 @@
                   </div>
                 </ng-container>
               </ng-container>
+            </div>
+            <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile-mob" (click)="viewMentorProfile()">
+              <div class="text-sm blue-background-outline">
+                {{ 'profileInfo.viewMentorProfile' | translate }}
+              </div>          
             </div>
           </div>
         </ng-container>
