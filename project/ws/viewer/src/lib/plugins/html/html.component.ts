@@ -344,7 +344,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       //   a.click()
       //   URL.revokeObjectURL(objectUrl)
       // })
-      if (this.htmlContent.mimeType !== 'text/x-url' && this.htmlContent.mimeType !== 'video/x-youtube') {
+      if (this.htmlContent && 
+        this.htmlContent.mimeType !== 'text/x-url' &&
+        this.htmlContent.mimeType !== 'video/x-youtube') {
         // if (this.htmlContent.status === 'Live') {
         //   this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
         //     // `https://igot.blob.core.windows.net/content/content/html/${this.htmlContent.identifier}-latest/index.html`
