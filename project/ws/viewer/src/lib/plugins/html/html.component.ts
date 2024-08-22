@@ -344,7 +344,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       //   a.click()
       //   URL.revokeObjectURL(objectUrl)
       // })
-      if (this.htmlContent && 
+      if (this.htmlContent &&
         this.htmlContent.mimeType !== 'text/x-url' &&
         this.htmlContent.mimeType !== 'video/x-youtube') {
         // if (this.htmlContent.status === 'Live') {
