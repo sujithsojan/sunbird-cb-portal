@@ -882,4 +882,18 @@ export class AppTocService {
       })
     }
   }
+  async fetchCourseHeirarchy(contentData: any) {
+    if(contentData && contentData.children) {
+      for(let ele of contentData.children) {
+        if(ele.primaryCategory === NsContent.ECourseCategory.COURSE) {
+           await this.widgetSvc.fetchContent(ele.identifier).toPromise().then(async (subEle: any)=> {
+            if(subEle.result && subEle.result.content 
+              &&  subEle.result.content.children &&  subEle.result.content.children.length) {
+                 ele['children'] = subEle.result.content.children
+              }
+          })
+        }
+      }
+    }
+  }
 }

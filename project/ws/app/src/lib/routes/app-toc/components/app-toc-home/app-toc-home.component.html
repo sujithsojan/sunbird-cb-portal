@@ -98,11 +98,13 @@
               <ws-app-karmapoints-panel [btntype]="'Enroll'" [data]="kparray"></ws-app-karmapoints-panel>
             </ng-container> -->
           </ng-container>
-          <ng-container *ngIf="((content?.primaryCategory !== primaryCategory.RESOURCE)  && !enrollBtnLoading) && contentReadData?.batches[0].endDate">
-            <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
-            [userEnrollmentList]="userEnrollmentList"  [analytics]="analytics" (programEnrollCall)="programEnrollCall($event)"
-            [resumeData]="resumeData" [batchData]="batchData" [contentReadData]="contentReadData">
-            </ws-app-toc-banner>
+          <ng-container *ngIf="!forPreview || isInIFrame; else authViewBtn">
+            <ng-container *ngIf="((content?.primaryCategory !== primaryCategory.RESOURCE)  && !enrollBtnLoading) && contentReadData?.batches[0].endDate">
+              <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
+              [userEnrollmentList]="userEnrollmentList"  [analytics]="analytics" (programEnrollCall)="programEnrollCall($event)"
+              [resumeData]="resumeData" [batchData]="batchData" [contentReadData]="contentReadData">
+              </ws-app-toc-banner>
+            </ng-container>
           </ng-container>
         </ng-container>
         <ng-container *ngIf="(courseCategory?.MODERATED_PROGRAM === contentReadData?.courseCategory) && !contentReadData?.batches && !batchData?.enrolled && !enrollBtnLoading">
@@ -407,7 +409,7 @@
         <!-- Overall progress functionality -->
 
         <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure" 
-        [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
+        [forPreview]="forPreview" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
         [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}" [kparray]="kparray"></ws-widget-content-toc>
         <div class="mob-tip-for-learner">
           <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
@@ -469,11 +471,13 @@
                 <div class="batch-label">{{ 'apptoc.totalEnrolled' | translate }}</div>
               </div>
             </div>
-            <ng-container *ngIf="!mobile1200">
-              <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
-              [userEnrollmentList]="userEnrollmentList" (withdrawOrEnroll)="withdrawOrEnroll($event)" [analytics]="analytics"
-              [resumeData]="resumeData" [batchData]="batchData" [contentReadData]="contentReadData">
-            </ws-app-toc-banner>
+            <ng-container *ngIf="!forPreview || isInIFrame; else authViewBtn">
+              <ng-container *ngIf="!mobile1200">
+                <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
+                [userEnrollmentList]="userEnrollmentList" (withdrawOrEnroll)="withdrawOrEnroll($event)" [analytics]="analytics"
+                [resumeData]="resumeData" [batchData]="batchData" [contentReadData]="contentReadData">
+                </ws-app-toc-banner>
+              </ng-container>
             </ng-container>
           </div>
 
@@ -640,7 +644,7 @@
 
   <div class="mobile-enroll-div" [ngClass]="{'bg-white': content?.primaryCategory === primaryCategory.BLENDED_PROGRAM }">
     <ng-container *ngIf="content && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM ">
-      <div class="mb-2" *ngIf="mobile1200">
+      <div class="mb-2" *ngIf="mobile1200 && !forPreview || isInIFrame; else authViewBtn">
         <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
           [userEnrollmentList]="userEnrollmentList" (withdrawOrEnroll)="withdrawOrEnroll($event)" [analytics]="analytics"
           [resumeData]="resumeData" [batchData]="batchData" [contentReadData]="contentReadData">
@@ -668,6 +672,13 @@
 </ng-template>
 
 <ng-template #authView i18n>{{'apptochome.view' | translate}}</ng-template>
+
+<ng-template #authViewBtn i18n>
+  <a [routerLink]="(resumeData && !certData) ? resumeDataLink?.url : firstResourceLink?.url" [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')"
+    class="flex action-button justify-center">
+    {{'apptochome.view' | translate}}
+  </a>
+</ng-template>
 <ng-template #authViewForInviteOnlyAssessment i18n>
   <ng-container
         *ngIf="forPreview && content?.courseCategory === 'Invite-Only Assessment'">        
