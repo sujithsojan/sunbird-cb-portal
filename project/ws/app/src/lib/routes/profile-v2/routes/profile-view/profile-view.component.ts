@@ -160,7 +160,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   designationApprovedTime = 0
   currentDate = new Date()
   designationsMeta: any
-  isMentor = false  
+  isMentor = false
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -246,7 +246,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
 
-    if(this.configService && this.configService.userRoles) {
+    if (this.configService && this.configService.userRoles) {
       this.isMentor = this.configService.userRoles.has('MENTOR') ? true : false
     }
 
@@ -1280,8 +1280,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   viewMentorProfile() {
     // window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
-    //this.router.navigateByUrl('mentorship')
-    window.open(`${environment.contentHost}/mentorship`,'_blank')
+    // this.router.navigateByUrl('mentorship')
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
   }
 
   // isEmailAllowed(email: string): boolean {
