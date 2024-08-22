@@ -1279,7 +1279,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewMentorProfile() {
-    window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
+    // window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
     //this.router.navigateByUrl('mentorship')
     window.open(`${environment.contentHost}/mentorship`,'_blank')
   }
