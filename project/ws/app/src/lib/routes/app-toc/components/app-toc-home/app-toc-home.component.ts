@@ -206,6 +206,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   mobile1200: any
   assessmentStrip: any
   learnAdvisoryData: any
+  contentCreatorData: any =  []
   // randomlearnAdvisoryObj: any
   // learnAdvisoryDataLength: any
 
@@ -431,7 +432,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
     if (this.content) {
       const contentName = this.content.name.trim()
+      if(this.content.creatorContacts) {
+       this.contentCreatorData =  this.handleParseJsonData(this.content.creatorContacts)
 
+      }
       if ((contentName).toLowerCase() === this.dakshtaName.toLowerCase()) {
         this.showBtn = true
       } else {
@@ -751,22 +755,29 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       if (batch && this.currentCourseBatchId) {
         this.startDate = (_.get(batch, 'startDate'))
         this.endDate = (_.get(batch, 'endDate'))
-        const startDateTime = this.startDate && new Date(this.startDate).getTime()
-        const endDateTime = this.endDate && new Date(this.endDate).getTime()
-        this.startDateDifference = now - startDateTime
-        this.endDateDifference = endDateTime - now
-        if (this.endDateDifference > 0 && this.startDateDifference > 0 && batch.status !== 2) {
-          return true
+        if (this.endDate) {
+          const startDateTime = this.startDate && new Date(this.startDate).getTime()
+          const endDateTime = this.endDate && new Date(this.endDate).getTime()
+          this.startDateDifference = now - startDateTime
+          this.endDateDifference = endDateTime - now
+          if (this.endDateDifference > 0 && this.startDateDifference > 0 && batch.status !== 2) {
+            return true
+          }
+          return false
         }
-        return false
+        return true
       }
       return false
-    } return false
+    }
+    return false
   }
 
   private initData(data: Data) {
     const initData = this.tocSvc.initData(data, true)
     this.content = initData.content
+    if (this.forPreview) {
+      this.tocSvc.checkModuleWiseData(this.content)
+    }
     this.errorCode = initData.errorCode
     switch (this.errorCode) {
       case NsAppToc.EWsTocErrorCode.API_FAILURE: {
@@ -979,8 +990,20 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
             this.tocSvc.checkModuleWiseData(this.content)
             this.enrolledCourseData = enrolledCourse
             this.currentCourseBatchId = enrolledCourse.batchId
-            this.downloadCert(enrolledCourse.issuedCertificates)
-
+            // this.downloadCert(enrolledCourse.issuedCertificates)
+            if (enrolledCourse && enrolledCourse.issuedCertificates &&
+              enrolledCourse.issuedCertificates.length) {
+              const certificate: any = enrolledCourse.issuedCertificates.sort((a: any, b: any) =>
+                 new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+              const certId = certificate[0].identifier
+              this.certId = certId
+              if (this.content) {
+                this.content['certificateObj'] = {
+                  certId,
+                  certData: '',
+                }
+              }
+            }
             this.content.completionPercentage = enrolledCourse.completionPercentage || 0
             this.content.completionStatus = enrolledCourse.status || 0
             if (this.contentReadData && this.contentReadData.cumulativeTracking) {
@@ -1098,22 +1121,22 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     return batchId
   }
 
-  downloadCert(certIdArr: any) {
-    if (certIdArr && certIdArr.length && certIdArr.length > 0) {
-      certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
-      const certId = certIdArr[0].identifier
-      this.certId = certId
+  // downloadCert(certIdArr: any) {
+  //   if (certIdArr && certIdArr.length && certIdArr.length > 0) {
+  //     certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+  //     const certId = certIdArr[0].identifier
+  //     this.certId = certId
 
-      this.contentSvc.downloadCert(certId).subscribe(response => {
-        if (this.content) {
-          this.content['certificateObj'] = {
-            certData: response.result.printUri,
-            certId: this.certId,
-          }
-        }
-      })
-    }
-  }
+  //     this.contentSvc.downloadCert(certId).subscribe(response => {
+  //       if (this.content) {
+  //         this.content['certificateObj'] = {
+  //           certData: response.result.printUri,
+  //           certId: this.certId,
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
   public handleAutoBatchAssign() {
     if (this.forPreview) {
@@ -1763,7 +1786,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     return returnValue
   }
 
-  public handleParseJsonData(s: string) {
+  public handleParseJsonData(s: any) {
     try {
       const parsedString = JSON.parse(s)
       return parsedString
