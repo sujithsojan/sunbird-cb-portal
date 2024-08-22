@@ -256,7 +256,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                         }
                         selectBox = selectBox + '</select></mat-form-field>'
                         selectBox = selectBox.toString()
-                        console.log('selectBox', selectBox)
                     }
                     // console.log('============>', i, this.question.options[i].text)
                     if (value[i]) {
