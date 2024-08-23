@@ -505,9 +505,9 @@
                         <mat-select formControlName="serviceType" (selectionChange)="onServiceSelect($event)">
                           <mat-option *ngFor="let service of serviceName" [value]="service">{{ service }}</mat-option>
                         </mat-select>
-                        <div class="flex justify-end">
+<!--                         <div class="flex justify-end">
                           <span class="get-request sm:mr-4" (click)="handleRequestService()">Request for service </span>
-                        </div>
+                        </div> -->
                       </mat-form-field>
                     </div>
                   </div>
