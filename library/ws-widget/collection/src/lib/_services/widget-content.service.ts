@@ -482,15 +482,15 @@ export class WidgetContentService {
             if (!this.isBatchInProgress(enrolledCourseData.batch)) {
               return this.gotoTocPage(content)
             }
-        } else {
-          const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
-          return data
+            const returnData =  await this.checkForDataToFormUrl(content, enrolledCourseData)
+            return returnData
         }
+        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
+        return data
       }
       return ''
     }
     return this.gotoTocPage(content)
-
   }
   async checkForDataToFormUrl(content: any, enrollData: any) {
     let urlData: any
