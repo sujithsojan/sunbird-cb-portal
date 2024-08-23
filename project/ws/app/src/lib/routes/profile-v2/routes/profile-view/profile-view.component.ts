@@ -389,6 +389,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.startBatch = this.selectedService.cadreList.find((cadre: any) => cadre.startBatchYear).startBatchYear
     this.endBatch = this.selectedService.cadreList.find((cadre: any) => cadre.endBatchYear).endBatchYear
     this.exclusionYear = this.selectedCadre.exculsionYearList
+    // tslint:disable
     this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
         .filter(year => !this.exclusionYear.includes(year))
     this.cadreId = this.selectedCadre.id
