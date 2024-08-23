@@ -450,24 +450,115 @@
                   </mat-error>
                 </div>
               </div>
-            </div>
 
-            <!-- {{ portalProfile | json }}  // -->
-  
-            <div class="grid-container">
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.eHRMSId' | translate }}</div>
                 <div class="info-value">{{ portalProfile?.additionalProperties?.externalSystemId || 'NA' }}</div>
               </div>
+
+              <div class="info-div">
+                <div class="label">
+                  {{ 'profileInfo.isCadre' | translate }}<span class="asterisk" style="color: red;"> *</span>
+                </div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.cadreDetails?.cadreName ? 'Yes' : 'No' }}
+                </div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="isCadre">
+                      <mat-option [value]="true">Yes</mat-option>
+                      <mat-option [value]="false">No</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              
+
+              <div class="info-div" *ngIf="otherDetailsForm.get('isCadre').value || !editDetails || editingAsWhole">
+                <div class="label">{{ 'profileInfo.typeOfCivilService' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.cadreDetails?.civilServiceType || 'No data available'  }}
+                </div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="typeOfCivilService" (selectionChange)="getService($event.value)">
+                      <mat-option *ngFor="let service of civilServiceTypes" [value]="service">{{ service }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              
+
+              <div class="info-div" *ngIf="otherDetailsForm.get('typeOfCivilService').value && otherDetailsForm.get('isCadre').value || !editDetails || editingAsWhole">
+                <div class="label">{{ 'profileInfo.serviceType' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
+                
+                <div class="info-value" *ngIf="!editDetails">
+                  <span class="flex flex-row gap-2 items-center">
+                    {{ portalProfile?.cadreDetails?.civilServiceName }}
+                  </span>
+                </div>
+              
+                <div class="flex flex-row gap-2" *ngIf="editDetails">
+                  <div class="flex-1">
+                    <div class="flex flex-col">
+                      <mat-form-field class="profile-form-field">
+                        <mat-select formControlName="serviceType" (selectionChange)="onServiceSelect($event)">
+                          <mat-option *ngFor="let service of serviceName" [value]="service">{{ service }}</mat-option>
+                        </mat-select>
+<!--                         <div class="flex justify-end">
+                          <span class="get-request sm:mr-4" (click)="handleRequestService()">Request for service </span>
+                        </div> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="info-div" *ngIf="otherDetailsForm.get('serviceType').value && otherDetailsForm.get('isCadre').value || !editDetails || editingAsWhole">
+                <div class="label">{{ 'profileInfo.cadre' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.cadreDetails?.cadreName || 'NA' }}
+                </div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="cadre" (selectionChange)="onCadreSelect($event.value)">
+                      <mat-option *ngFor="let state of cadre" [value]="state">{{ state }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div> 
+              
+              <div class="info-div" *ngIf="otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value || !editDetails || editingAsWhole">
+                <div class="label">{{ 'profileInfo.batch' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.cadreDetails?.cadreBatch || 'NA' }}
+                </div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="batch">
+                      <mat-option *ngFor="let year of yearArray" [value]="year">{{ year }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="info-div" *ngIf="otherDetailsForm.get('batch').value && otherDetailsForm.get('isCadre').value || !editDetails || editingAsWhole">
+                <div class="label">{{ 'profileInfo.cadreControllingAuthority' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ this.portalProfile?.cadreDetails?.cadreControllingAuthorityName || 'NA' }}
+                </div>
+                <div class="info-value-c" *ngIf="editDetails">{{ cadreControllingAuthority }}</div>
+              </div>
             </div>
   
             <ng-container *ngIf="editDetails">
-              <div class="flex flex-row gap-4 justify-center sm:justify-start">
+              <div class="flex flex-row gap-4 justify-center sm:justify-end">
                 <button class="outline-button" (click)="handleCancelUpdate()">{{ 'profileInfo.cancel' | translate
                   }}</button>
                 <button class="save-button" [disabled]="otherDetailsForm?.invalid || verifyEmail || verifyMobile"
                   [ngClass]="{'disable-button': otherDetailsForm?.invalid || verifyEmail || verifyMobile}"
-                  (click)="handleSaveOtherDetails()">{{ 'profileInfo.saveChanges' | translate }}</button>
+                  (click)="handleSaveOtherDetails()">{{ 'profileInfo.saveChanges' | translate }}</button>                
               </div>
             </ng-container>
           </div>
@@ -630,6 +721,10 @@
               {{ 'profileInfo.viewMentorProfile' | translate }}
             </div>          
           </div>
+        <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
+          <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
+          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
+          <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <!--  pattern="/^[a-z0-9._-]+$/i" -->

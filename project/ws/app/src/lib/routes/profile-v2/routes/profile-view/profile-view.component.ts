@@ -32,7 +32,9 @@ import { DesignationRequestComponent } from '../../components/designation-reques
 import { HomePageService } from 'src/app/services/home-page.service'
 import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
 import { ConfirmDialogComponent } from '@sunbird-cb/collection/src/lib/_common/confirm-dialog/confirm-dialog.component'
+import { ProfileV2Service } from '../../services/profile-v2.servive'
 import { environment } from 'src/environments/environment'
+
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -128,6 +130,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     countryCode: new FormControl('', []),
     pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
     category: new FormControl('', []),
+    isCadre: new FormControl(false, [Validators.required]),
+    typeOfCivilService: new FormControl(''),
+    serviceType: new FormControl(''),
+    cadre: new FormControl(''),
+    batch: new FormControl(''),
+    cadreControllingAuthority: new FormControl(''),
   })
   unVerifiedObj = {
     designation: '',
@@ -160,7 +168,32 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   designationApprovedTime = 0
   currentDate = new Date()
   designationsMeta: any
+  civilServiceTypes: any
+  civilServiceData: any
+  cadreControllingAuthority: any
+  serviceListData: any
+  serviceName: any
+  cadre: any
+  startBatch: any
+  endBatch: any
+  yearArray: any
+  serviceId: any
+  exclusionYear: any
+  selectedCadreName: any
+  selectedServiceName: any
+  selectedCadre: any
+  selectedService: any
+  civilServiceName: any
+  civilServiceId: any
+  cadreId: any
+  serviceType: any
+  cadreStatus: any
+  excluedYear: any
+  userData: any
+  editingAsWhole: any
   isMentor = false
+  errorMessage: any
+
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -172,7 +205,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private otpService: OtpService,
     private loader: LoaderService,
     private pipeImgUrl: PipeCertificateImageURL,
-    private homeService: HomePageService
+    private homeService: HomePageService,
+    private profileService: ProfileV2Service
   ) {
 
     if (localStorage.getItem('websiteLanguage')) {
@@ -299,6 +333,80 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getApprovedFields()
     this.getInsightsData()
     // this.getAssessmentData()
+    this.fetchCadreData()
+  }
+
+  getService(event: any) {
+    const serviceTypeControl = this.otherDetailsForm.get('serviceType')
+    const cadreControl = this.otherDetailsForm.get('cadre')
+    const batchControl = this.otherDetailsForm.get('batch')
+    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
+
+    if (serviceTypeControl) { serviceTypeControl.reset() }
+    if (cadreControl) { cadreControl.reset() }
+    if (batchControl) { batchControl.reset() }
+    if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
+
+    this.serviceType = this.civilServiceData.civilServiceTypeList.find((element: any) => element.name === event)
+    if (this.serviceType) {
+      this.serviceListData = this.serviceType.serviceList
+      this.serviceName = this.serviceListData.map((service: any) => service.name)
+      this.serviceId = this.serviceType.id
+      this.errorMessage = ''
+    } else {
+      this.errorMessage = 'Service Type not found'
+    }
+  }
+
+  onServiceSelect(event: any) {
+    const cadreControl = this.otherDetailsForm.get('cadre')
+    const batchControl = this.otherDetailsForm.get('batch')
+    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
+
+    if (cadreControl) { cadreControl.reset() }
+    if (batchControl) { batchControl.reset() }
+    if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
+    this.selectedServiceName = event.value
+    this.selectedService = this.serviceListData.find((service: any) => service.name === this.selectedServiceName)
+    this.civilServiceName =  this.selectedService.name
+    this.civilServiceId = this.selectedService.id
+    this.cadre = this.selectedService.cadreList.map((cadre: any) => cadre.name)
+    if (this.selectedService.cadreControllingAuthority) {
+      this.cadreControllingAuthority = this.selectedService.cadreControllingAuthority
+    } else {
+      this.cadreControllingAuthority = 'NA'
+    }
+  }
+
+  onCadreSelect(event: any) {
+    const batchControl = this.otherDetailsForm.get('batch')
+    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
+
+    if (batchControl) { batchControl.reset() }
+    if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
+    this.selectedCadreName = event
+    this.selectedCadre = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName)
+    this.startBatch = this.selectedService.cadreList.find((cadre: any) => cadre.startBatchYear).startBatchYear
+    this.endBatch = this.selectedService.cadreList.find((cadre: any) => cadre.endBatchYear).endBatchYear
+    this.exclusionYear = this.selectedCadre.exculsionYearList
+    this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
+        .filter(year => !this.exclusionYear.includes(year))
+    this.cadreId = this.selectedCadre.id
+  }
+
+  fetchCadreData() {
+    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
+
+    if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
+    this.profileService.fetchCadre().subscribe({
+      next: response => {
+        this.civilServiceData = response.result.response.value.civilServiceType
+    this.civilServiceTypes = this.civilServiceData.civilServiceTypeList.map((service: any) => service.name)
+      },
+      error: err => {
+        this.errorMessage = err
+      },
+    })
   }
 
   fetchDiscussionsData(): void {
@@ -443,6 +551,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleEditOtherDetails(): void {
+    this.editingAsWhole = true
     if (this.portalProfile.personalDetails.primaryEmail) {
       if (this.otherDetailsForm.get('primaryEmail')) {
         this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required,
@@ -527,6 +636,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.portalProfile.employmentDetails.employeeCode = data.employeeCode
         this.portalProfile.employmentDetails.pinCode = data.dataToSubmit.pincode
       }
+      if (this.portalProfile.cadreDetails) {
+        this.portalProfile.cadreDetails.isCadre = data.dataToSubmit.isCadre
+        this.portalProfile.cadreDetails.typeOfCivilService = data.dataToSubmit.typeOfCivilService
+        this.portalProfile.cadreDetails.serviceType = data.dataToSubmit.serviceType
+        this.portalProfile.cadreDetails.cadre = data.dataToSubmit.cadre
+        this.portalProfile.cadreDetails.batch = data.dataToSubmit.batch
+        this.portalProfile.cadreDetails.cadreControllingAuthority = data.dataToSubmit.cadreControllingAuthority
+      }
     }
 
     // if (this.portalProfile.personalDetails.dob) {
@@ -545,7 +662,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
       pincode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.pinCode,
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
-    })
+      isCadre: this.portalProfile.cadreDetails.isCadre,
+      typeOfCivilService: this.portalProfile.cadreDetails.typeOfCivilService,
+      serviceType: this.portalProfile.cadreDetails.serviceType,
+      cadre: this.portalProfile.cadreDetails.cadre,
+      batch: this.portalProfile.cadreDetails.batch,
+      cadreControllingAuthority: this.portalProfile.cadreDetails.cadreControllingAuthority,
+      })
 
     if ((this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length)) {
       this.primaryDetailsForm.patchValue({
@@ -735,6 +858,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
             'pinCode': this.otherDetailsForm.value['pincode'],
             'mobile': this.otherDetailsForm.value['mobile'],
+          },
+          'cadreDetails': {
+                'civilServiceTypeId': this.serviceId,
+                'civilServiceType': this.otherDetailsForm.value['typeOfCivilService'],
+                'civilServiceId': this.civilServiceId,
+                'civilServiceName': this.otherDetailsForm.value['serviceType'],
+                'cadreId': this.cadreId,
+                'cadreName': this.otherDetailsForm.value['cadre'],
+                'cadreBatch': this.otherDetailsForm.value['batch'],
+                'cadreControllingAuthorityName': this.cadreControllingAuthority,
           },
         },
       },
