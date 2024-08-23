@@ -267,7 +267,9 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         this.sub = this.timer.subscribe((t: any) => this.tickerFunc(t))
         this.oldData = this.htmlContent
         this.scormAdapterService.contentId = this.htmlContent.identifier
-        this.scormAdapterService.loadDataV2()
+        if (!this.forPreview) {
+          this.scormAdapterService.loadDataV2()
+        }
       }
     }
     // For successive scorm resources, when switched to next content - end
@@ -495,39 +497,41 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
 
   raiseTelemetry(data1: any) {
     // if (this.forPreview) { return }
-    let data: any
-    if (this.htmlContent) {
-      if (typeof data1 === 'string' || data1 instanceof String) {
-        data = JSON.parse(data1.toString())
-      } else {
-        data = { ...data1 }
-      }
-      /* tslint:disable-next-line */
-      if (this.activatedRoute.snapshot.queryParams.collectionId) {
-        this.collectionId = this.activatedRoute.snapshot.queryParams.collectionId
-      }
-      this.events.raiseInteractTelemetry(
-        {
-          type: data.event || data.type || 'type',
-          subType: 'scorm',
-          id: this.htmlContent.identifier,
-        },
-        {
-          ...data,
-          // contentId: this.htmlContent.identifier,
-          // contentType: this.htmlContent.primaryCategory,
-          id: this.htmlContent.identifier,
-          type: this.htmlContent.primaryCategory,
-          context: this.htmlContent.context,
-          rollup: {
-            l1: this.collectionId || '',
+    if (!this.forPreview) {
+      let data: any
+      if (this.htmlContent) {
+        if (typeof data1 === 'string' || data1 instanceof String) {
+          data = JSON.parse(data1.toString())
+        } else {
+          data = { ...data1 }
+        }
+        /* tslint:disable-next-line */
+        if (this.activatedRoute.snapshot.queryParams.collectionId) {
+          this.collectionId = this.activatedRoute.snapshot.queryParams.collectionId
+        }
+        this.events.raiseInteractTelemetry(
+          {
+            type: data.event || data.type || 'type',
+            subType: 'scorm',
+            id: this.htmlContent.identifier,
           },
-          ver: `${this.htmlContent.version}${''}`,
-        },
-        {
-          pageIdExt: `${_.camelCase(this.htmlContent.primaryCategory)}`,
-          module: _.camelCase(this.htmlContent.primaryCategory),
-        })
+          {
+            ...data,
+            // contentId: this.htmlContent.identifier,
+            // contentType: this.htmlContent.primaryCategory,
+            id: this.htmlContent.identifier,
+            type: this.htmlContent.primaryCategory,
+            context: this.htmlContent.context,
+            rollup: {
+              l1: this.collectionId || '',
+            },
+            ver: `${this.htmlContent.version}${''}`,
+          },
+          {
+            pageIdExt: `${_.camelCase(this.htmlContent.primaryCategory)}`,
+            module: _.camelCase(this.htmlContent.primaryCategory),
+          })
+      }
     }
   }
 
