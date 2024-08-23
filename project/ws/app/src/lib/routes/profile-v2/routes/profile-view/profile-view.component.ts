@@ -192,6 +192,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any
   editingAsWhole: any
   isMentor = false
+  errorMessage: any
 
   constructor(
     public dialog: MatDialog,
@@ -351,8 +352,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.serviceListData = this.serviceType.serviceList
       this.serviceName = this.serviceListData.map((service: any) => service.name)
       this.serviceId = this.serviceType.id
+      this.errorMessage = ''
     } else {
-      console.log('Service Type not found')
+      this.errorMessage = 'Service Type not found'
     }
   }
 
@@ -402,7 +404,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.civilServiceTypes = this.civilServiceData.civilServiceTypeList.map((service: any) => service.name)
       },
       error: err => {
-        console.error('Error fetching cadre data:', err)
+        this.errorMessage = err
       },
     })
   }
