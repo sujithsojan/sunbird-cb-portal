@@ -402,6 +402,27 @@
 
   <div class="flex flex-row gap-6 fixed-width">
     <div class="toc-content">
+      <ng-container *ngIf="content?.primaryCategory === primaryCategory.BLENDED_PROGRAM &&
+        selectedBatchData?.content[0]?.batchAttributes?.batchLocationDetails &&
+        selectedBatchData?.content[0]?.enrollmentEndDate">
+        <div class="location-details mt-6">
+          <div class="flex items-center gap-4 pb-3">
+            <mat-icon class="location-icon">
+                location_on
+            </mat-icon>
+            <div class="loc-desc">
+              {{selectedBatchData?.content[0]?.batchAttributes?.batchLocationDetails}}
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+              <mat-icon class="event-icon">
+                event</mat-icon>
+            <div class="loc-desc">
+              Last date of enrollment - {{selectedBatchData?.content[0]?.enrollmentEndDate | date: 'dd/MM/yyyy'}}
+            </div>
+          </div>
+        </div>
+      </ng-container>
       <div class="pb-4 lg:py-4">
 
         <!-- Overall progress functionality -->
@@ -473,6 +494,41 @@
                 <div class="batch-label">{{ 'apptoc.totalEnrolled' | translate }}</div>
               </div>
             </div>
+            <ng-container *ngIf="timer && timer.days >= 0 && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM">
+              <div class="flex flex-col gap-6 batch-timer">
+                  <div class="flex flex-row">
+                      <div class="flex-1">
+                          <div class="flex underline"></div>
+                      </div>
+                      <div class="flex">
+                          <div class="timer-label">{{ 'apptocsinglepage.batchStartsIn' | translate }}</div>
+                      </div>
+                      <div class="flex-1">
+                          <div class="flex underline"></div>
+                      </div>
+                  </div>
+                  <div class="flex flex-row gap-4 justify-center">
+                      <div class="flex flex-row gap-1 items-center">
+                          <div class="text-4xl leading-10 counter">{{ timer.days || 0 }}</div>
+                          <div class="counter-label">{{ 'apptocsinglepage.days' | translate }}</div>
+                      </div>
+                      <div class="flex items-center counter-label">
+                          :
+                      </div>
+                      <div class="flex flex-row gap-1 items-center">
+                          <div class="text-4xl leading-10 counter">{{ timer.min === 60 ? timer.hours + 1 : timer.hours }}</div>
+                          <div class="counter-label">{{ 'apptocsinglepage.hours' | translate }}</div>
+                      </div>
+                      <div class="flex items-center counter-label">
+                          :
+                      </div>
+                      <div class="flex flex-row gap-1 items-center">
+                          <div class="text-4xl leading-10 counter">{{ timer.min === 60 ? 00 : timer.min }}</div>
+                          <div class="counter-label">{{ 'apptocsinglepage.minutes' | translate }}</div>
+                      </div>
+                  </div>
+              </div>
+            </ng-container>
             <ng-container *ngIf="!forPreview || isInIFrame; else authViewBtn">
               <ng-container *ngIf="!mobile1200">
                 <ws-app-toc-banner role="banner" [banners]="banners" [forPreview]="forPreview" [content]="content"
