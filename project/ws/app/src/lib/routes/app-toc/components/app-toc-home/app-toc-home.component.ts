@@ -333,7 +333,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
     if (this.route) {
       this.skeletonLoader = true
-      this.routeSubscription = this.route.data.subscribe((data: Data) => {
+      this.routeSubscription = this.route.data.subscribe(async (data: Data) => {
         if (data && data.content && data.content.data && data.content.data.identifier) {
           this.courseID = data.content.data.identifier
           this.skeletonLoader = false
@@ -344,6 +344,14 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
               this.matSnackBar.open('Unable to fetch content data, due to some error!')
             }
           })
+          const initData = this.tocSvc.initData(data, true)
+          this.content = initData.content
+          if (this.forPreview) {
+            this.tocSvc.contentLoader.next(true)
+            await this.tocSvc.fetchCourseHeirarchy(this.content)
+            this.tocSvc.contentLoader.next(false)
+            this.tocSvc.checkModuleWiseData(this.content)
+          }
           this.initialrouteData = data
           this.banners = data.pageData.data.banners
           this.tocSvc.subtitleOnBanners = data.pageData.data.subtitleOnBanners || false
@@ -434,7 +442,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       const contentName = this.content.name.trim()
       if (this.content.creatorContacts) {
        this.contentCreatorData =  this.handleParseJsonData(this.content.creatorContacts)
-
       }
       if ((contentName).toLowerCase() === this.dakshtaName.toLowerCase()) {
         this.showBtn = true
@@ -774,10 +781,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   private initData(data: Data) {
     const initData = this.tocSvc.initData(data, true)
-    this.content = initData.content
-    if (this.forPreview) {
-      this.tocSvc.checkModuleWiseData(this.content)
-    }
     this.errorCode = initData.errorCode
     switch (this.errorCode) {
       case NsAppToc.EWsTocErrorCode.API_FAILURE: {
