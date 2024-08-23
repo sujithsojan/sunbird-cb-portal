@@ -4,6 +4,10 @@
   margin-right: auto !important;
   height: auto;
   min-height: 400px;
+
+  @media only screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .tips-container {
@@ -18,6 +22,7 @@
   @media only screen and (max-width: 768px) {
     width: 100%;
     padding: 0px 0.5rem;
+    box-sizing: border-box;
   }
 }
 
@@ -41,16 +46,27 @@
   border-radius: 8px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  @media only screen and (max-width: 768px) {
+    padding: 12px;
+    margin-bottom: 12px;
+  } 
 }
 
 .tip-item img {
   width: 64px;
   height: 64px;
   margin-right: 15px;
+  @media only screen and (max-width: 768px) {
+    width: 48px;
+  height: 48px;
+  } 
 }
 
 .tip-item p {
   margin: 0;
   padding: 30px;
   line-height: 16.8px;
+  @media only screen and (max-width: 768px) {
+    padding: 12px;
+  } 
 }
