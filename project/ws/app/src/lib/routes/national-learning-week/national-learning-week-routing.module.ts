@@ -8,13 +8,24 @@ const routes: Routes = [
         path: '',
         component: NationalLearningWeekMicrositeComponent,
         data: {
-            pageId: ':channel/:orgId/v2/micro-sites',
             module: 'Learn',
         },
         resolve: {
             formData: NationalLearningWeekFormService,
         },
-    },    
+    },
+    {
+        path: 'see-all',
+        component: NationalLearningWeekMicrositeComponent,
+        data: {
+            pageId: 'see-all',
+            module: 'Learn',
+        },
+        resolve: {
+            formData: NationalLearningWeekFormService,
+        },
+
+    } 
 ]
 
 @NgModule({
