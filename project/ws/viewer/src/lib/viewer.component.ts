@@ -117,7 +117,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   getContentData(e: any) {
-    debugger
     e.activatedRoute.data.subscribe((data: { content: { data: NsContent.IContent } }) => {
       if (data.content && data.content.data) {
         this.content = data.content.data
@@ -179,7 +178,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
           content: [enrolledCourseData.batch],
           enrolled: true,
         }
-        if(!this.forPreview) {
+        if (!this.forPreview) {
          this.tocSvc.mapSessionCompletionPercentage(this.batchData)
         }
       }
@@ -362,7 +361,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   async manipulateHierarchyData() {
-    if(!this.forPreview) {
+    if (!this.forPreview) {
       this.tocSvc.mapCompletionPercentageProgram(this.hierarchyData, this.enrollmentList.courses)
     } else {
       this.loadAllHierarchyData = true

@@ -172,7 +172,7 @@ export class ViewerUtilService {
     const tempContentData = this.contentSvc.currentMetaData
     const tempContentReadData = this.contentSvc.currentContentReadMetaData
     const enrollmentList = this.contentSvc.currentBatchEnrollmentList
-    if(!this.forPreview){
+    if (!this.forPreview) {
       if (tempContentData && tempContentReadData.cumulativeTracking &&
         (tempContentData.primaryCategory === NsContent.EPrimaryCategory.PROGRAM ||
        tempContentData.primaryCategory === NsContent.EPrimaryCategory.CURATED_PROGRAM ||
@@ -245,7 +245,11 @@ export class ViewerUtilService {
     if (!forPreview) {
       url = `/apis/proxies/v8/action/content/v3/read/${contentId}`
     } else {
-      url = `/api/content/v1/read/${contentId}`
+      if (window.location.href.includes('editMode=true')  && window.location.href.includes('_rc')) {
+        url = `/apis/proxies/v8/action/content/v3/read/${contentId}`
+      } else {
+          url = `/api/content/v1/read/${contentId}`
+      }
     }
     return this.http.get<NsContent.IContent>(
       // tslint:disable-next-line:max-line-length

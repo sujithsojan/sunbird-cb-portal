@@ -440,7 +440,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
     if (this.content) {
       const contentName = this.content.name.trim()
-      if(this.content.creatorContacts) {
+      if (this.content.creatorContacts) {
        this.contentCreatorData =  this.handleParseJsonData(this.content.creatorContacts)
       }
       if ((contentName).toLowerCase() === this.dakshtaName.toLowerCase()) {
