@@ -654,22 +654,25 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
 
     this.otherDetailsForm.patchValue({
-      employeeCode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.employeeCode || '',
+      employeeCode: this.portalProfile.employmentDetails ? this.portalProfile.employmentDetails.employeeCode : '',
       primaryEmail: this.portalProfile.personalDetails.primaryEmail,
-      gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
+      gender: this.portalProfile.personalDetails.gender ? this.portalProfile.personalDetails.gender.toUpperCase() : '',
       dob: this.getDateFromText(this.portalProfile.personalDetails.dob),
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
       mobile: this.portalProfile.personalDetails.mobile,
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
-      pincode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.pinCode,
-      category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
-      isCadre: this.portalProfile.cadreDetails.isCadre,
-      typeOfCivilService: this.portalProfile.cadreDetails.typeOfCivilService,
-      serviceType: this.portalProfile.cadreDetails.serviceType,
-      cadre: this.portalProfile.cadreDetails.cadre,
-      batch: this.portalProfile.cadreDetails.batch,
-      cadreControllingAuthority: this.portalProfile.cadreDetails.cadreControllingAuthority,
-      })
+      pincode: this.portalProfile.employmentDetails ? this.portalProfile.employmentDetails.pinCode : '',
+      category: this.portalProfile.personalDetails.category ? this.portalProfile.personalDetails.category.toUpperCase() : '',
+      ...(this.portalProfile.cadreDetails ? {
+        typeOfCivilService: this.portalProfile.cadreDetails.typeOfCivilService,
+        serviceType: this.portalProfile.cadreDetails.serviceType,
+        cadre: this.portalProfile.cadreDetails.cadre,
+        batch: this.portalProfile.cadreDetails.batch,
+        cadreControllingAuthority: this.portalProfile.cadreDetails.cadreControllingAuthority,
+      } : {})
+    });
+    
+    
 
     if ((this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length)) {
       this.primaryDetailsForm.patchValue({
