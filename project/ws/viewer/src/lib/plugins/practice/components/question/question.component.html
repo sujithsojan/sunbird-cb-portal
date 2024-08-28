@@ -54,7 +54,7 @@
               class="quiz-question">
             </h2>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
+              <viewer-fitb-question [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel" [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
                 (update)="update($event)"></viewer-fitb-question>
             </ng-container>
           </div>
@@ -184,7 +184,7 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              <viewer-fitb-question [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
               ></viewer-fitb-question>
             </ng-container>
           </div>
@@ -229,7 +229,7 @@
               class="quiz-question">
             </h2>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
+              <viewer-fitb-question [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel" [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
                 (update)="update($event)" 
                 ></viewer-fitb-question>
             </ng-container>
@@ -328,7 +328,7 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              <viewer-fitb-question [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
               ></viewer-fitb-question>
             </ng-container>
           </div>
