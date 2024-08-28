@@ -468,6 +468,7 @@
   .reviewbox {
     width: 80% !important;
     font: 400 12px/18px Lato !important;
+    resize: none;
   }
 
   textarea::placeholder {
@@ -708,6 +709,7 @@
     .reviewbox {
       width: 80% !important;
       font: 400 12px/18px Lato !important;
+      resize: none;
     }
 
     textarea::placeholder {
@@ -836,6 +838,7 @@
     width: 45%;
     margin: 0 auto;
     padding: 8px;
+    resize: none;
   }
 
   button {
