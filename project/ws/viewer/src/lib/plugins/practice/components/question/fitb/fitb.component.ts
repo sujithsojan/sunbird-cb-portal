@@ -43,6 +43,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
     localQuestion: string = this.question.question
     safeQuestion: SafeHtml = ''
+    @Input() selectedAssessmentCompatibilityLevel = 2
     @Output() update = new EventEmitter<string | Object>()
     shCorrectAnsSubscription: Subscription | null = null
     showAns = false
