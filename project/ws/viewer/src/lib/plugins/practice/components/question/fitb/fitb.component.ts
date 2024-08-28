@@ -248,13 +248,13 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                             let optionString = ''
                             const selvalue = this.question.choices.options[sel]['value']['body']
                             const label = this.question.choices.options[sel]['value']['body']
-                            const selected = (value[i] && selvalue && (value[i].toString().trim() === selvalue.toString().trim())) ? 'selected' : ''
+                            const selected = (value[i] && value[i].toString().trim() === selvalue.toString().trim()) ? 'selected' : ''
                             if (selected) {
-                                optionString = `<option value=${selvalue} selected=${selected}>${label}</option>`
-                                selectBox = selectBox + optionString
-                                break
-                            } else {
-                                optionString = `<option value=${selvalue}>${label}</option>`
+                                optionString = `<option value='${selvalue}' selected=${selected}>${label}</option>`
+                                selectBox = selectBox + optionString                                
+                            } 
+                            else {
+                                optionString = `<option value='${selvalue}'>${label}</option>`
                                 selectBox = selectBox + optionString
                             }
                             // "<option value='"+this.question.choices.options[sel]['value']['body']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
