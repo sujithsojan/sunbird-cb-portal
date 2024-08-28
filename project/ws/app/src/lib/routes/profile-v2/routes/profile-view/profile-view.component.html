@@ -482,7 +482,7 @@
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <mat-select formControlName="typeOfCivilService" (selectionChange)="getService($event.value)">
-                      <mat-option *ngFor="let service of civilServiceTypes" [value]="service">{{ portalProfile?.cadreDetails?.civilServiceType || 'No data available' }}</mat-option>
+                      <mat-option *ngFor="let service of civilServiceTypes" [value]="service">{{ service }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -510,7 +510,7 @@
                     <div class="flex flex-col">
                       <mat-form-field class="profile-form-field">
                         <mat-select formControlName="serviceType" (selectionChange)="onServiceSelect($event)">
-                          <mat-option *ngFor="let service of serviceName" [value]="service">{{ portalProfile?.cadreDetails?.civilServiceName }}</mat-option>
+                          <mat-option *ngFor="let service of serviceName" [value]="service">{{ service }}</mat-option>
                         </mat-select>
 <!--                         <div class="flex justify-end">
                           <span class="get-request sm:mr-4" (click)="handleRequestService()">Request for service </span>
