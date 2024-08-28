@@ -22,7 +22,7 @@ export class NetworkConnectionRequestsComponent implements OnInit {
   currentFilterSort = 'desc'
   datalist: any[] = []
   filterdData: any[] = []
-  enableSearchFeature: boolean = false
+  enableSearchFeature = false
   constructor(
     private route: ActivatedRoute,
     private networkV2Service: NetworkV2Service,
@@ -86,7 +86,7 @@ export class NetworkConnectionRequestsComponent implements OnInit {
       this.currentFilter = key
       this.currentFilterSort = order
       if (this.currentFilter === 'timestamp') {
-        //this.filterdData = this.datalist
+        // this.filterdData = this.datalist
         this.filterdData.sort((a: any, b: any) => {
           return a.id.toLowerCase().localeCompare(b.id.toLowerCase())
         })
