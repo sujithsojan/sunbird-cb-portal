@@ -279,9 +279,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
-
     if (this.configService && this.configService.userRoles) {
-      this.isMentor = this.configService.userRoles.has('MENTOR') ? true : false
+      this.isMentor = (this.configService.userRoles.has('MENTOR') || this.configService.userRoles.has('mentor') || this.configService.userRoles.has('Mentor')) ? true : false
     }
 
     this.route.queryParams.subscribe((params: Params) => {
