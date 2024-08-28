@@ -106,7 +106,7 @@ export class NetworkMyConnectionComponent implements OnInit {
       this.currentFilter = key
       this.currentFilterSort = order
       if (this.currentFilter === 'timestamp') {
-        //this.filterdData = this.datalist
+        // this.filterdData = this.datalist
         this.filterdData.sort((a: any, b: any) => {
           return a.id.toLowerCase().localeCompare(b.id.toLowerCase())
         })

@@ -63,17 +63,17 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
                     if (questionId === this.question.questionId) {
                         const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                        if(blank) {
+                        if (blank) {
                             blank.value = ''
                         }
-                        
+
                     }
                 }
             } else {
                 for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
                     if (questionId === this.question.questionId) {
                         const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                        if(blank) {
+                        if (blank) {
                             blank.value = ''
                         }
                     }
