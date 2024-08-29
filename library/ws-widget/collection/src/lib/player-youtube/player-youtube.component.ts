@@ -79,6 +79,7 @@ export class PlayerYoutubeComponent extends WidgetBaseComponent
 
   ngAfterViewInit() {
     if (this.widgetData && this.widgetData.url) {
+      this.widgetData.url = this.widgetData.url && this.widgetData.url.trim()
       if (this.widgetData.isVideojs) {
         this.initializePlayer()
       } else {
@@ -138,7 +139,7 @@ export class PlayerYoutubeComponent extends WidgetBaseComponent
           this.contentSvc
             .saveContinueLearning(continueLearningData)
             .toPromise()
-            .catch()
+            .catch() 
         }
       }
     }
