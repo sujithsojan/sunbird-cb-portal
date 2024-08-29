@@ -139,7 +139,7 @@ export class PlayerYoutubeComponent extends WidgetBaseComponent
           this.contentSvc
             .saveContinueLearning(continueLearningData)
             .toPromise()
-            .catch() 
+            .catch()
         }
       }
     }
