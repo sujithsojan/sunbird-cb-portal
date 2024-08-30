@@ -82,6 +82,10 @@ uiHostCreator('/ja', 'ja')
 uiHostCreator('', 'en')
 app.use(haltOnTimedOut)
 
+app.use(function(req, res, next){
+  res.status(404).render('./404.html')
+})
+
 const port = CONSTANTS.PORTAL_PORT
 app.listen(port, '0.0.0.0', err => {
   console.error(err || 'No Error', `Server started at ${port}`)
