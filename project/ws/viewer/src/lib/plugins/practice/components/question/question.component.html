@@ -225,7 +225,7 @@
         
         <div class="flex flex-column respo_inner">
           <div class="flex flex-1">
-            <h2 *ngIf="question.questionType !== 'ftb'" class="mat-h2" [innerHTML]="question?.question"
+            <h2 *ngIf="question.questionType !== 'ftb'" class="mat-h2" [innerHTML]="question?.question | QuestionSafeUrl"
               class="quiz-question">
             </h2>
             <ng-container *ngIf="question.questionType === 'ftb'">

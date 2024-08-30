@@ -376,7 +376,9 @@ export class GridLayoutComponent extends WidgetBaseComponent
         // tslint:disable-next-line
         console.log(resp)
         localStorage.setItem('platformRatingSubmit', 'true')
-        this.isNPSOpen = false
+        setTimeout(()=>{
+          this.isNPSOpen = false
+        },4000)        
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
