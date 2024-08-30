@@ -876,3 +876,17 @@
 .sbmt-btn[disabled]{
   opacity: 0.5;
 }
+
+.feedback-count {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 27%;
+}
+
+@media only screen and (max-width : 768px) {
+  .feedback-count {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 8%;
+  }
+}
