@@ -44,10 +44,11 @@ export namespace NSProfileDataV2 {
   export interface ICadreDetails {
     isCadre: boolean
     typeOfCivilService: string
-    serviceType: string
-    cadre: string
-    batch: string
-    cadreControllingAuthority: string
+    civilServiceName: string
+    civilServiceType: string
+    cadreName: string
+    cadreBatch: string
+    cadreControllingAuthorityName: string
   }
 
   export interface IKarmapoints {

@@ -39,7 +39,10 @@
       <div class="flex flex-row mweb-right-extreme"><span class="cstext mat-body-2">{{ 'platformrating.extremelyLikely' | translate }}</span></div>
     </div>
     <div class="reviewdiv" *ngIf="ratingGiven">
-      <textarea #textArea class="reviewbox display-block" name="review" id="review" cols="30" rows="2" placeholder="{{phtext}}" maxlength="500"></textarea>
+      <textarea #textArea (keyup)="getReviewCommentLength()" class="reviewbox display-block" name="review" id="review" cols="30" rows="2" maxlength="500" placeholder="{{phtext}}" maxlength="500"></textarea>
+      <div class="w-100 feedback-count mt-2">
+        <span id="current">{{reviewCommentLength}}/ 500</span>
+      </div>
       <button mat-stroked-button type="submit" class="display-block text-white ws-mat-primary-background margin-top-m sbmt-btn" [disabled]="submitBtnClick"
       (click)="submitRating(textArea.value); raiseInteractTelemetry('submit')"><span class="text-white" i18n>{{ 'platformrating.submit' | translate }}</span>
       </button>
