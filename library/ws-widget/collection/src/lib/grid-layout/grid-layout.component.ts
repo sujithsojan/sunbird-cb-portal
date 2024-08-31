@@ -379,10 +379,10 @@ export class GridLayoutComponent extends WidgetBaseComponent
         // tslint:disable-next-line
         console.log(resp)
         localStorage.setItem('platformRatingSubmit', 'true')
-        setTimeout(()=>{
+        setTimeout(() => {
           this.isNPSOpen = false
           this.onSuccessRating = false
-        },4000)        
+        },         4000)
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
@@ -524,11 +524,11 @@ export class GridLayoutComponent extends WidgetBaseComponent
   }
 
   getReviewCommentLength() {
-    if(this.textArea && this.textArea.nativeElement && this.textArea.nativeElement.value) {
+    if (this.textArea && this.textArea.nativeElement && this.textArea.nativeElement.value) {
       this.reviewCommentLength = this.textArea.nativeElement.value.length
     } else {
       this.reviewCommentLength = 0
     }
-    
+
   }
 }

@@ -65,7 +65,7 @@ import { QuestionSafeUrlPipe } from './question-safe-pipe.pipe'
     AssessmentPerformanceSummaryComponent,
     AssessmentPerformanceInsightSummaryComponent,
     FinalAssessmentPopupComponent,
-    QuestionSafeUrlPipe
+    QuestionSafeUrlPipe,
   ],
   entryComponents: [
     SubmitQuizDialogComponent,
@@ -95,7 +95,7 @@ import { QuestionSafeUrlPipe } from './question-safe-pipe.pipe'
     SkeletonLoaderModule,
     TranslateModule,
     MatMenuModule,
-    MatSelectModule    
+    MatSelectModule,
   ],
   exports: [
     PracticeComponent,
