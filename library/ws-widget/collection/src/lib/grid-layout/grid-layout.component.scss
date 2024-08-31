@@ -883,6 +883,10 @@
   margin-right: 27%;
 }
 
+::ng-deep .page-nps {
+  display: none !important; 
+}
+
 @media only screen and (max-width : 768px) {
   .feedback-count {
     display: flex;

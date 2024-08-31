@@ -39,6 +39,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
   }
 
   @Input() widgetData!: IGridLayoutDataMain
+  @Input() fromHeader = false
   containerClass = ''
   processed: IGridLayoutProcessedData[][] = []
   isNudgeOpen = true
@@ -380,6 +381,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
         localStorage.setItem('platformRatingSubmit', 'true')
         setTimeout(()=>{
           this.isNPSOpen = false
+          this.onSuccessRating = false
         },4000)        
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
