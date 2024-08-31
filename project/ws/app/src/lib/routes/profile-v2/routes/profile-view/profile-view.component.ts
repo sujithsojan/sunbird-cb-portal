@@ -193,7 +193,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   editingAsWhole: any
   isMentor = false
   errorMessage: any
-  isCadreStatus = false  
+  isCadreStatus = false
   showBatchForNoCadre = true
   constructor(
     public dialog: MatDialog,
@@ -334,7 +334,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInsightsData()
     this.fetchCadreData()
     // this.getAssessmentData()
-    
+
   }
 
   // Sujith
@@ -379,7 +379,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cadreControllingAuthority = 'NA'
     }
 
-    if( this.selectedService.cadreList.length === 0) {
+    if (this.selectedService.cadreList.length === 0) {
       this.showBatchForNoCadre = true
       this.startBatch = this.selectedService.commonBatchStartYear
       this.endBatch = this.selectedService.commonBatchEndYear
