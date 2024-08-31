@@ -118,7 +118,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
          // console.log(true);
         this.showDashboardIcon = false
       }
-      
+
     }
 
     if (this.configSvc && this.configSvc.userRoles) {
