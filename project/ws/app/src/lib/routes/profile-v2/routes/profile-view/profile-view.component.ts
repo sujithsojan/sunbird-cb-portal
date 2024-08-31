@@ -195,6 +195,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessage: any
   isCadreStatus = false  
   showBatchForNoCadre = true
+  noCadreDetails = true
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -410,7 +411,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // Sujith
   fetchCadreData() {
-    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
+  if(this.portalProfile.cadreDetails == null) {
+    this.noCadreDetails = false
+  }
+  else {
+    this.noCadreDetails = true
+
+   const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
 
     if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
     this.profileService.fetchCadre().subscribe({
@@ -422,7 +429,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.errorMessage = err
         },
       })
-
+    }
     
   }
 
@@ -897,6 +904,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
+    if(this.otherDetailsForm.value['typeOfCivilService'] && this.otherDetailsForm.value['serviceType'] && this.otherDetailsForm.value['batch']) {
     if(this.isCadreStatus) {
       payload.request.profileDetails.cadreDetails = {
         'civilServiceTypeId': this.serviceId,
@@ -925,6 +933,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.prefillForm()
         }
       })
+    }
+    else {
+      this.matSnackBar.open('Please fill in all mandatory cadre information to update your profile')
+    }
   }
 
   handleTransferRequest(): void {
@@ -1456,7 +1468,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getIsCadreStatus(value:boolean) {
-    this.isCadreStatus = value
+    this.isCadreStatus = value    
     if(value) {
       this.otherDetailsForm.patchValue({
         typeOfCivilService: '',
@@ -1466,13 +1478,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         cadreControllingAuthority: '',
       });       
     }
+    else {
+    this.showBatchForNoCadre = false
+    }
   }
 
   populateValues() {
     let cadreValues:any = this.portalProfile.cadreDetails;
     this.profileService.fetchCadre().subscribe({
       next: response => {
-        console.log(response,'response');       
         let civilServiceTypeList:any = response.result.response.value.civilServiceType.civilServiceTypeList
         for (let index = 0; index < civilServiceTypeList.length; index++) {
           if (civilServiceTypeList[index].id === cadreValues.civilServiceTypeId) {
@@ -1497,7 +1511,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                     .filter(year => !this.exclusionYear.includes(year)) 
                   for (let index = 0; index < this.yearArray.length; index++) {
                     if (this.yearArray[index] === cadreValues.cadreBatch) {                     
-                      console.log(this.yearArray, 'year array');
                      }
                   }
                 }
