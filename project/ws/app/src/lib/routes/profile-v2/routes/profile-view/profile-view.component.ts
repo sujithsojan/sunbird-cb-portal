@@ -411,12 +411,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // Sujith
   fetchCadreData() {
-  if(this.portalProfile.cadreDetails == null) {
+  if(! this.portalProfile.hasOwnProperty('cadreDetails')) {
+    this.noCadreDetails = true
+  } else if(this.portalProfile.cadreDetails == null) {
     this.noCadreDetails = false
   }
   else {
     this.noCadreDetails = true
-
+  }
    const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
 
     if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
@@ -429,7 +431,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.errorMessage = err
         },
       })
-    }
+    
     
   }
 
@@ -1498,6 +1500,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                 let popServiceType = popCivilServiceType.serviceList[serviceIndex];
                 this.serviceName = popCivilServiceType.serviceList.map((service: any) => service.name)
                 this.civilServiceId = popCivilServiceType.serviceList[serviceIndex].id
+                  if (!cadreValues.cadreName) {
+                    this.startBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchStartYear
+                    this.endBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchEndYear
+                    this.exclusionYear = popCivilServiceType.serviceList[serviceIndex].commonBatchExclusionYearList
+                    // tslint:disable
+                    this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
+                        .filter(year => !this.exclusionYear.includes(year))
+                  } 
                 for (let cadreIndex = 0; cadreIndex < popServiceType.cadreList.length; cadreIndex++) {
                   if (popServiceType.cadreList[cadreIndex].id === cadreValues.cadreId) {
                     let popCadre:any = popServiceType.cadreList[cadreIndex];
