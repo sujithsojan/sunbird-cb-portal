@@ -460,7 +460,8 @@
                   {{ 'profileInfo.isCadre' | translate }}
                 </div>
                 <div class="info-value" *ngIf="!editDetails">
-                  {{ isCadreStatus ? 'Yes' : 'No' }}
+                  <span *ngIf="!portalProfile.hasOwnProperty('cadreDetails'); else elsCadreDetails">NA</span>
+                  <ng-template #elsCadreDetails>{{ isCadreStatus ? 'Yes' : 'No' }}</ng-template>
                 </div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
@@ -514,7 +515,7 @@
               </div>
               
               
-              <div class="info-div" *ngIf="(!showBatchForNoCadre) && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value|| (!editDetails)">
+              <div class="info-div" *ngIf="(!showBatchForNoCadre) && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value|| (!editDetails && !showBatchForNoCadre)">
                 <ng-container *ngIf="isCadreStatus">
                 <div class="label">{{ 'profileInfo.cadre' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">
