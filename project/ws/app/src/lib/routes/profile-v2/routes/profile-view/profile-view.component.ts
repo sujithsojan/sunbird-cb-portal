@@ -664,15 +664,36 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.portalProfile.employmentDetails.employeeCode = data.employeeCode
         this.portalProfile.employmentDetails.pinCode = data.dataToSubmit.pincode
       }
-      
-      if (this.portalProfile.cadreDetails) {
-        this.portalProfile.cadreDetails.isCadre = data.dataToSubmit.isCadre        
-        this.portalProfile.cadreDetails.civilServiceType = data.dataToSubmit.typeOfCivilService
-        this.portalProfile.cadreDetails.civilServiceName = data.dataToSubmit.serviceType
-        this.portalProfile.cadreDetails.cadreName = data.dataToSubmit.cadre
-        this.portalProfile.cadreDetails.cadreBatch = data.dataToSubmit.batch
-        this.portalProfile.cadreDetails.cadreControllingAuthorityName = this.cadreControllingAuthority
+      if(!this.portalProfile.hasOwnProperty('cadreDetails')) {
+        if(data && data.dataToSubmit) {
+          this.portalProfile['cadreDetails'] = {
+            isCadre : false,
+            civilServiceType: '',
+            civilServiceName:'',
+            cadreName:'',
+            cadreBatch:'',
+            cadreControllingAuthorityName:'',
+            typeOfCivilService:''
+          }
+          this.portalProfile['cadreDetails']['isCadre'] = data.dataToSubmit.isCadre 
+          this.portalProfile['cadreDetails']['civilServiceType'] = data.dataToSubmit.typeOfCivilService 
+          this.portalProfile['cadreDetails']['civilServiceName'] = data.dataToSubmit.serviceType
+          this.portalProfile['cadreDetails']['cadreName'] = data.dataToSubmit.cadre
+          this.portalProfile['cadreDetails']['cadreBatch'] = data.dataToSubmit.batch
+          this.portalProfile['cadreDetails']['cadreControllingAuthorityName'] = this.cadreControllingAuthority
+        }
       }
+      if(data && data.dataToSubmit) {
+        if (this.portalProfile.cadreDetails) {
+          this.portalProfile.cadreDetails.isCadre = data.dataToSubmit.isCadre        
+          this.portalProfile.cadreDetails.civilServiceType = data.dataToSubmit.typeOfCivilService
+          this.portalProfile.cadreDetails.civilServiceName = data.dataToSubmit.serviceType
+          this.portalProfile.cadreDetails.cadreName = data.dataToSubmit.cadre
+          this.portalProfile.cadreDetails.cadreBatch = data.dataToSubmit.batch
+          this.portalProfile.cadreDetails.cadreControllingAuthorityName = this.cadreControllingAuthority
+        }
+      }
+      
     }
 
     // if (this.portalProfile.personalDetails.dob) {

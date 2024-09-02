@@ -517,7 +517,7 @@
               
               <div class="info-div" *ngIf="(!showBatchForNoCadre) && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value|| (!editDetails && !showBatchForNoCadre)">
                 <ng-container *ngIf="isCadreStatus">
-                <div class="label">{{ 'profileInfo.cadre' | translate }}</div>
+                <div class="label">{{ 'profileInfo.cadre' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
                 <div class="info-value" *ngIf="!editDetails">
                   {{ portalProfile?.cadreDetails?.cadreName || 'NA' }}
                 </div>
