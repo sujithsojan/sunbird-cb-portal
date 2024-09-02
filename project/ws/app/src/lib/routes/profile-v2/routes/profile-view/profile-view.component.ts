@@ -906,7 +906,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
-    if(this.otherDetailsForm.value['typeOfCivilService'] && this.otherDetailsForm.value['serviceType'] && this.otherDetailsForm.value['batch']) {
+    if((this.otherDetailsForm.value['typeOfCivilService'] && this.otherDetailsForm.value['serviceType'] && this.otherDetailsForm.value['batch']) || (!this.otherDetailsForm.value['isCadre'])) {
     if(this.isCadreStatus) {
       payload.request.profileDetails.cadreDetails = {
         'civilServiceTypeId': this.serviceId,
