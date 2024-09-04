@@ -407,6 +407,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
     this.questionVisitedData = []
+    if(this.assessmentType === 'optionalWeightage') {
+      this.quizJson.questions  = []
+    }
+     
     this.fetchingSectionsStatus = 'fetching'
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
       && _.get(this.quizSvc.paperSections, 'value.questionSet.children')) {
