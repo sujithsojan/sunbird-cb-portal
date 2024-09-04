@@ -1533,12 +1533,14 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       )
 
       const firstPlayableContent = this.contentSvc.getFirstChildInHierarchy(this.content)
+      console.log(firstPlayableContent, "firstPlayableContent====")
       let primaryCategory
       if (this.content.secureSettings !== undefined) {
         primaryCategory = 'Learning Resource'
       } else {
         primaryCategory = firstPlayableContent.primaryCategory || this.content.primaryCategory
       }
+      console.log(firstPlayableContent.primaryCategory, "firstPlayableContent.primaryCategory------")
 
       this.firstResourceLink = viewerRouteGenerator(
         firstPlayableContent.identifier,
@@ -1552,8 +1554,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
       /* tslint:disable-next-line */
       console.log(this.firstResourceLink, '=====> home first data link <========')
+      console.log(firstPlayableContent, "firstPlayableContent---------------")
       if (firstPlayableContent.optionalReading && firstPlayableContent.primaryCategory === 'Learning Resource') {
         this.updateProgress(2, firstPlayableContent.identifier)
+        console.log("enter updateprogress fun -----")
       }
     }
   }
@@ -1732,6 +1736,8 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   updateProgress(status: number, resourceId: any) {
+    console.log("fun called updateprogress")
+    console.log(status, "status---")
     const collectionId = this.route.snapshot.params.id ?
       this.route.snapshot.params.id : ''
     const batchId = this.route.snapshot.queryParams.batchId ?

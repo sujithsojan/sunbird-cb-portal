@@ -115,6 +115,8 @@ export class ViewerUtilService {
 
   realTimeProgressUpdate(contentId: string, request: any, collectionId?: string, batchId?: string) {
     let req: any
+    console.log("realTimeProgressUpdate fun called!")
+    console.log(request, "request=========")
     if (this.configservice.userProfile) {
       req = {
         request: {
@@ -222,6 +224,7 @@ export class ViewerUtilService {
       this.http
         .patch(`${this.API_ENDPOINTS.PROGRESS_UPDATE}/${contentId}`, req)
         .subscribe(noop, noop)
+        console.log(req.request.contents[0], "req.request.contents[0]===========")
       if (this.tocSvc.hashmap && this.tocSvc.hashmap[contentId] && req.request.contents[0]) {
         if (this.tocSvc.hashmap[contentId] &&
           (!this.tocSvc.hashmap[contentId]['completionStatus'] || this.tocSvc.hashmap[contentId]['completionStatus'] < 2)) {
