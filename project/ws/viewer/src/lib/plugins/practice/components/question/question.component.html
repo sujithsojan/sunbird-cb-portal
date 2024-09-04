@@ -160,17 +160,6 @@
       </div>
       <div class="respo flex flex-column padding-top-m">
         <div class="flex flex-1- flex-column respo_inner">
-          <div class="flex flex-1" *ngIf="question.questionType === 'mtf'">
-            <div class="flex flex-1 flex-column">
-              <div class="flex flex-1 viewer_quest_box">
-                <!-- {{log(question)}} -->
-                <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
-                  ></viewer-mtf-question>
-                </ng-container>
-              </div>
-            </div>
-          </div>
           <div class="flex flex-1 flex-center flex-column">
             <ng-container *ngIf="question.questionType !== 'ftb'">
               <h2 [innerHTML]="question?.question | QuestionSafeUrl" class="m-auto quiz-question mat-h2 flex-center text-center">
@@ -188,6 +177,18 @@
               ></viewer-fitb-question>
             </ng-container>
           </div>
+          <div class="flex flex-1" *ngIf="question.questionType === 'mtf'">
+            <div class="flex flex-1 flex-column">
+              <div class="flex flex-1 viewer_quest_box">
+                <!-- {{log(question)}} -->
+                <ng-container>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          
         </div>
       </div>
     
@@ -305,16 +306,6 @@
         </div>
       <div class="respo flex flex-column " *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
         <div class="flex flex-1- flex-column respo_inner">
-          <div class="flex flex-1" *ngIf="question.questionType === 'mtf'">
-            <div class="flex flex-1 flex-column">
-              <div class="flex flex-1 viewer_quest_box">
-                <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
-                  ></viewer-mtf-question>
-                </ng-container>
-              </div>
-            </div>
-          </div>
           <div class="flex flex-1 flex-center flex-column">
             <ng-container *ngIf="question.questionType !== 'ftb'">
               <h2 [innerHTML]="question?.question | QuestionSafeUrl" class="m-auto quiz-question mat-h2 flex-center text-center">
@@ -332,6 +323,17 @@
               ></viewer-fitb-question>
             </ng-container>
           </div>
+          <div class="flex flex-1" *ngIf="question.questionType === 'mtf'">
+            <div class="flex flex-1 flex-column">
+              <div class="flex flex-1 viewer_quest_box">
+                <ng-container>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          
         </div>
       </div>
     
