@@ -196,6 +196,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   isCadreStatus = false
   showBatchForNoCadre = true
   noCadreDetails = true
+  saveChanges = false
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -413,6 +414,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fetchCadreData() {
   if(! this.portalProfile.hasOwnProperty('cadreDetails')) {
     this.noCadreDetails = true
+    this.saveChanges = true
   } else if(this.portalProfile.cadreDetails == null) {
     this.noCadreDetails = false
   }

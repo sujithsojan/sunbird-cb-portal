@@ -565,9 +565,9 @@
               <div class="flex flex-row gap-4 justify-center sm:justify-end">
                 <button class="outline-button" (click)="handleCancelUpdate()">{{ 'profileInfo.cancel' | translate
                   }}</button>
-                <button class="save-button" [disabled]="otherDetailsForm?.invalid || verifyEmail || verifyMobile"
-                [ngClass]="{'disable-button': otherDetailsForm?.invalid || verifyEmail || verifyMobile}"
-                  (click)="handleSaveOtherDetails()">{{ 'profileInfo.saveChanges' | translate }}</button>                
+                <button class="save-button" [disabled]="(otherDetailsForm?.invalid && !saveChanges) || verifyEmail || verifyMobile"
+                [ngClass]="{'disable-button': (otherDetailsForm?.invalid && !saveChanges)|| verifyEmail || verifyMobile}"
+                (click)="handleSaveOtherDetails()">{{ 'profileInfo.saveChanges' | translate }}</button> 
               </div>
             </ng-container>
           </div>
