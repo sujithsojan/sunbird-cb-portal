@@ -31,12 +31,12 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   // deptFilterData  : Observable<string[]>
   designationData: any[] = []
   private destroySubject$ = new Subject()
-  isInValidOrgSelection:boolean = false
+  isInValidOrgSelection = false
 
   constructor(
     public dialogRef: MatDialogRef<TransferRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private userProfileService: UserProfileService, 
+    private userProfileService: UserProfileService,
     private matSnackBar: MatSnackBar,
     private configService: ConfigurationsService
   ) {
@@ -69,10 +69,10 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
             this.deptFilterData = this.departmentData &&
              this.departmentData.filter(item => item.toLowerCase().includes(res && res.toLowerCase()))
              const orgSearchVal = this.transferRequestForm.controls['organization']
-             if(this.deptFilterData && this.deptFilterData.length && this.deptFilterData.length > 0) {
-              orgSearchVal.setErrors(null);
+             if (this.deptFilterData && this.deptFilterData.length && this.deptFilterData.length > 0) {
+              orgSearchVal.setErrors(null)
              } else {
-            orgSearchVal.setErrors({ invalidSelection: true });
+            orgSearchVal.setErrors({ invalidSelection: true })
              }
           } else {
             this.deptFilterData = this.departmentData
@@ -80,11 +80,10 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
         })
     }
 
-
     if (this.transferRequestForm.get('designation')) {
       this.transferRequestForm.get('designation')!.valueChanges
         .pipe(
-          debounceTime(250),  
+          debounceTime(250),
           distinctUntilChanged(),
           startWith(''),
         )
@@ -95,13 +94,12 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
               val && val.name.trim().toLowerCase().includes(res && res.toLowerCase())
             )
             const designationSearchVal = this.transferRequestForm.controls['designation']
-            if(this.designationData && this.designationData.length && this.designationData.length > 0) {
-              designationSearchVal.setErrors(null);
+            if (this.designationData && this.designationData.length && this.designationData.length > 0) {
+              designationSearchVal.setErrors(null)
              } else {
-            designationSearchVal.setErrors({ invalidSelection: true });
+            designationSearchVal.setErrors({ invalidSelection: true })
              }
-          } 
-          else {
+          } else {
             this.designationData = this.data && this.data.designationsMeta
            }
         })
@@ -110,7 +108,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAllDeptData()
-    
+
   }
 
   handleCloseModal(): void {
@@ -131,7 +129,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitRequest(): void {
-    if (this.transferRequestForm.valid ) {
+    if (this.transferRequestForm.valid) {
     const data: any = {
       'name': this.transferRequestForm.value['organization'],
       'designation': this.transferRequestForm.value['designation'],
