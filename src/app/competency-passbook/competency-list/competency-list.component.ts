@@ -280,7 +280,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
       allObj['latest'] = (this.certificateMappedObject[allObj.competencyTheme].completedOn.length) ? Math.max(...this.certificateMappedObject[allObj.competencyTheme].completedOn) : null
       this.leftCardDetails.forEach((_lObj: any) => {
         if (_lObj.type === allObj.competencyArea) {
-          _lObj.competencySubTheme = allObj.subTheme.length
+          _lObj.competencySubTheme += allObj.subTheme.length
           _lObj.contentConsumed += allObj.contentConsumed.length
         }
       })
