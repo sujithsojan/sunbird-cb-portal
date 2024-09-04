@@ -20,9 +20,16 @@
                 </div>
                 <mat-autocomplete class="mat-autocomplete" #departmentAuto="matAutocomplete">
                     <mat-option *ngFor="let dept of deptFilterData" value="{{ dept }}">{{ dept }}</mat-option>
+                    
                 </mat-autocomplete>
-            </mat-form-field>
+                {{ isValidOrgSelection }}  ///
+                <mat-error *ngIf="transferRequestForm.controls['organization'].invalid && transferRequestForm.controls['organization'].touched">
+                    Please enter a valid organization.
+                  </mat-error>
+                  <span *ngIf="isValidOrgSelection">Please enter a valid organization!!!!!!!!!.</span>
+            </mat-form-field>   
         </div>
+
     
         <ng-container *ngIf="otherDetails">
             <div class="flex flex-col">
@@ -50,6 +57,9 @@
                     <mat-autocomplete class="mat-autocomplete" #designationAuto="matAutocomplete">
                         <mat-option *ngFor="let designation of designationData" value="{{ designation?.name }}">{{ designation?.name }}</mat-option>
                     </mat-autocomplete>
+                    <mat-error *ngIf="transferRequestForm.controls['designation'].invalid && transferRequestForm.controls['designation'].touched">
+                        Please enter a valid designation.
+                      </mat-error>
                 </mat-form-field>
             </div>
         </ng-container>
@@ -61,7 +71,9 @@
         
         <div class="flex flex-row justify-between mt-2">
             <button class="outline-button" (click)="handleCloseModal()">{{ 'profileInfo.cancel' | translate }}</button>
-            <button class="save-button" [disabled]="transferRequestForm?.invalid || (transferRequestForm.get('organization')?.value === data.portalProfile.employmentDetails.departmentName)" [ngClass]="{'disable-button': transferRequestForm?.invalid || (transferRequestForm.get('organization')?.value === data.portalProfile.employmentDetails.departmentName)}" (click)="handleSubmitRequest()">{{ 'profileInfo.submitRequest' | translate }}</button>
+            <button class="save-button" [disabled]="transferRequestForm?.invalid || 
+            isValidOrgSelection" [ngClass]="{'disable-button': transferRequestForm?.invalid ||
+            isValidOrgSelection}" (click)="handleSubmitRequest()">{{ 'profileInfo.submitRequest' | translate }}</button>
         </div>
     </form>
 </div>
