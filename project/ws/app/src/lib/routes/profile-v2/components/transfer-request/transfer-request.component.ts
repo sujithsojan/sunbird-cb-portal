@@ -50,7 +50,8 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
 
     this.transferRequestForm.get('organization')!.valueChanges
       .subscribe((value: string) => {
-        if (value !== this.data.portalProfile.employmentDetails.departmentName) {
+        if (value !== this.data && this.data.portalProfile &&  this.data.portalProfile.employmentDetails
+           && this.data.portalProfile.employmentDetails.departmentName) {
           this.otherDetails = true
         } else {
           this.otherDetails = false
