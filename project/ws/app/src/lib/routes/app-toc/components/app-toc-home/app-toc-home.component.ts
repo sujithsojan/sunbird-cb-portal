@@ -920,7 +920,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
           (res: any) => {
             if (res && res.result && res.result.response) {
               this.userRating = res.result.response
-              console.log('this.userRating - ', this.userRating)
               if (fireUpdate) {
                 this.tocSvc.changeUpdateReviews(true)
               }
@@ -1539,7 +1538,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       } else {
         primaryCategory = firstPlayableContent.primaryCategory || this.content.primaryCategory
       }
-
       this.firstResourceLink = viewerRouteGenerator(
         firstPlayableContent.identifier,
         firstPlayableContent.mimeType,
@@ -1551,7 +1549,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       )
 
       /* tslint:disable-next-line */
-      console.log(this.firstResourceLink, '=====> home first data link <========')
+
       if (firstPlayableContent.optionalReading && firstPlayableContent.primaryCategory === 'Learning Resource') {
         this.updateProgress(2, firstPlayableContent.identifier)
       }
