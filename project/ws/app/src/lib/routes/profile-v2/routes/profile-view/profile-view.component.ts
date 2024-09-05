@@ -791,6 +791,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+
+
   handleResendOTP(data: any): void {
     let otpValue$: any
     if (data.type === 'email') {
@@ -912,11 +914,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     delete dataToSubmit.employeeCode
     delete dataToSubmit.primaryEmail
 
-    const payload = {
+    const payload: any = {
       'request': {
         'userId': this.configService.unMappedUser.id,
         'profileDetails': {
-          'personalDetails': {},
+          'personalDetails': {
+          },
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
             'pinCode': this.otherDetailsForm.value['pincode'],
@@ -929,6 +932,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
+    payload.request.profileDetails.personalDetails['phoneVerified'] = this.verifyMobile ? 'false' : 'true';
+
     if((this.otherDetailsForm.value['typeOfCivilService'] && this.otherDetailsForm.value['serviceType'] && this.otherDetailsForm.value['batch']) || (!this.otherDetailsForm.value['isCadre'])) {
     if(this.isCadreStatus) {
       payload.request.profileDetails.cadreDetails = {
