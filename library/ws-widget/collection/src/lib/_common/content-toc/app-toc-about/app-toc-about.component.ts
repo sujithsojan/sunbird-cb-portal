@@ -28,6 +28,7 @@ import { ResetRatingsService } from '@ws/app/src/lib/routes/app-toc/services/res
 
 import { ReviewsContentComponent } from '../reviews-content/reviews-content.component'
 import { CertificateDialogComponent } from '../../certificate-dialog/certificate-dialog.component'
+import { environment } from 'src/environments/environment'
 
 interface IStripUnitContentData {
   key: string
@@ -182,7 +183,10 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   timer: any = {}
   isMobile = false
+  compentencyKey = ''
+
   ngOnInit() {
+    this.compentencyKey = environment.compentencyVersionKey
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
@@ -288,11 +292,11 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   getSubThemes(): any[] {
     const subThemeArr: any[] = []
-    if (this.content && this.content.competencies_v5 && this.content.competencies_v5.length) {
-      if (typeof this.content.competencies_v5 === 'string' && this.checkValidJSON(this.content.competencies_v5)) {
-        this.content.competencies_v5 = JSON.parse(this.content.competencies_v5)
+    if (this.content && this.content[this.compentencyKey] && this.content[this.compentencyKey].length) {
+      if (typeof this.content[this.compentencyKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey])) {
+        this.content[this.compentencyKey] = JSON.parse(this.content[this.compentencyKey])
       }
-      this.content.competencies_v5.forEach((_competencyObj: any) => {
+      this.content[this.compentencyKey].forEach((_competencyObj: any) => {
         if (subThemeArr.indexOf(_competencyObj.competencySubTheme) === -1) {
           subThemeArr.push(_competencyObj.competencySubTheme)
         }
@@ -302,12 +306,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   loadCompetencies(): void {
-    if (this.content && this.content.competencies_v5 && this.content.competencies_v5.length) {
+    if (this.content && this.content[this.compentencyKey] && this.content[this.compentencyKey].length) {
       const competenciesObject: any = {}
-      if (typeof this.content.competencies_v5 === 'string' && this.checkValidJSON(this.content.competencies_v5)) {
-        this.content.competencies_v5 = JSON.parse(this.content.competencies_v5)
+      if (typeof this.content[this.compentencyKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey])) {
+        this.content[this.compentencyKey] = JSON.parse(this.content[this.compentencyKey])
       }
-      this.content.competencies_v5.forEach((_obj: any) => {
+      this.content[this.compentencyKey].forEach((_obj: any) => {
         if (competenciesObject[_obj.competencyArea]) {
           if (competenciesObject[_obj.competencyArea][_obj.competencyTheme]) {
             const competencyTheme = competenciesObject[_obj.competencyArea][_obj.competencyTheme]

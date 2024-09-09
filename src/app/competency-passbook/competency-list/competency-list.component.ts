@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators'
 import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { WidgetUserService } from '@sunbird-cb/collection/src/public-api'
 import { TranslateService } from '@ngx-translate/core'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'ws-competency-list',
@@ -122,6 +123,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   filterObjData2 = { ...this.filterObjData }
   tabValue = ''
   certificateMappedObject: any = {}
+  compentencyKey = ''
 
   constructor(
     private widgetService: WidgetUserService,
@@ -148,6 +150,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.compentencyKey = environment.compentencyVersionKey
     this.getUserEnrollmentList()
   }
 
@@ -164,8 +167,8 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
             // To eliminate In progress or Yet to start courses...
             if (enrollmentMapData[eachCourse.contentId].status !== 2) { return }
 
-            if (eachCourse.content && eachCourse.content.competencies_v5) {
-              competenciesV5 = [...competenciesV5, ...eachCourse.content.competencies_v5]
+            if (eachCourse.content && eachCourse.content[this.compentencyKey]) {
+              competenciesV5 = [...competenciesV5, ...eachCourse.content[this.compentencyKey]]
             }
 
             const courseDetails = {
@@ -183,9 +186,9 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
             } else {
               eachCourse.issuedCertificates.push(courseDetails)
             }
-            if ((eachCourse.content.competencies_v5 && eachCourse.content.competencies_v5.length)) {
+            if ((eachCourse.content[this.compentencyKey] && eachCourse.content[this.compentencyKey].length)) {
               const subThemeMapping: any = {}
-              eachCourse.content.competencies_v5.forEach((v5Obj: any) => {
+              eachCourse.content[this.compentencyKey].forEach((v5Obj: any) => {
                 if (this.certificateMappedObject[v5Obj.competencyTheme]) {
 
                   // Certificate consumed logic...
