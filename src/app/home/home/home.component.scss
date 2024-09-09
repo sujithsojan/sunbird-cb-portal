@@ -81,7 +81,7 @@
     font-size: 16px;
     line-height: 1.5;
     font-weight: 600;
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
   }
   .update-mobile-number-flex .update-now {
     margin-top: 38px;
@@ -107,7 +107,7 @@
     border-radius: 0.3rem;
     box-sizing: border-box;
     color: #111827;
-    font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: "Inter var", ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 12px;
     line-height: 1.25rem;
     padding: 8.75px 2rem;
@@ -138,7 +138,6 @@
   /* CSS */
   .update-now{
     background: rgb(27, 76, 161) !important;
-    border-radius: 0.3rem;
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 20px;
@@ -164,9 +163,7 @@
       visibility: hidden;
     }
 
-  .footer-update-mobile-number {
-    border: 1px solid rgb(239, 149, 30);
-  }
+
 
   .update-now:hover {
     background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
@@ -240,30 +237,21 @@
   span.tooltip-check .tooltiptext-check {
     visibility: hidden;
     width: 199px;
-    font-family: unset;
     z-index: 2000;
     min-height: 48px;
     line-height: 1.6;
-    font-family: inherit;
+    font-family: inherit, sans-serif;
     font-weight: 500;
-    box-shadow: 0px 8px 24px rgb(184 162 162 / 24%);
     opacity: 1;
     background-color: rgba(255,255,255, 1);
-    background: white;
-    border-radius: 5px;
     font-size: 10px;
-    background-color: 1px 1px 1px 1px solid white;
     color: black;
     text-align: justify;
-    position: relative;
     border-radius: 6px;
     box-shadow: outset 0 2px 5px rgba(0, 0, 0, 0.25);
     padding: 15px;
     position: absolute;
-    /* border: 1px solid #392727; */
-    background: white;
     padding-bottom: 27px;
-    z-index: 2000;
     bottom: 157%;
     left: 50%;
     margin-left: -120px;
@@ -297,9 +285,6 @@
   background-color: rgba(255,255,255, 1);
   }
 
-  .update-profile{
-    visibility: hidden;
-  }
 
 @media only screen and (max-width: 768px) {
     .home-container {
@@ -379,7 +364,6 @@
           margin-right: 10px;
           margin-left: 10px;
           color: #FFFFFF;
-          font-size: 10px;
           justify-content: center;
           padding: 0px 20px !important;
           text-decoration: none;
@@ -393,7 +377,6 @@
       }
 
       .update-now {
-          // display: none;
           margin-top: 0px !important;
           margin-left: 5px !important;
           margin-bottom: 12px;
@@ -406,7 +389,7 @@
           box-sizing: border-box;
           opacity: 1;
           color: rgba(0,116,182,1);
-          font-family: "Lato-Bold";
+          font-family: "Lato-Bold", sans-serif;
           font-size: 10px;
           font-weight: 700;
           font-style: normal;
@@ -417,7 +400,6 @@
           text-decoration: none #D1D5DB solid;
           text-decoration-thickness: auto;
           cursor: pointer;
-          // margin-left: 135px;
           user-select: none;
       }
 
@@ -428,7 +410,6 @@
         left: 0;
         width: 92%;
         bottom: 9.6vh;
-        padding-bottom: 15px;
         background-color: #fcf9f9;
         color: black;
         text-align: center;
@@ -455,29 +436,20 @@
       span.tooltip-check .tooltiptext-check {
         visibility: hidden;
         width: 199px;
-        font-family: unset;
         z-index: 2000;
         min-height: 48px;
         line-height: 1.6;
-        font-family: inherit;
+        font-family: inherit, sans-serif;
         font-weight: 500;
-        box-shadow: 0px 8px 24px rgb(184 162 162 / 24%);
         opacity: 1;
-        background-color: rgba(255,255,255, 1);
         background: white;
-        border-radius: 5px;
         font-size: 9px !important;
-        background-color: 1px 1px 1px 1px solid white;
         color: black;
         text-align: justify;
-        position: relative;
         border-radius: 6px;
         box-shadow: outset 0 2px 5px rgba(0, 0, 0, 0.25);
         padding: 15px;
         position: absolute;
-        /* border: 1px solid #392727; */
-        background: white;
-        z-index: 2000;
         bottom: 104%;
         right: -12% !important;
       }
@@ -523,7 +495,7 @@
         font-size: 14px;
         line-height: 1.5;
         font-weight: 400;
-        font-family: 'Montserrat';
+        font-family: 'Montserrat', sans-serif;
         color: rgba(0,0,0,.87);
         text-align: left;
       }
@@ -552,7 +524,7 @@
 
 .logo-text {
   margin-bottom: 0!important;
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', sans-serif;
 }
 
 

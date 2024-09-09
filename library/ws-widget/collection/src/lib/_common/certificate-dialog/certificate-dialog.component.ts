@@ -100,7 +100,7 @@ export class CertificateDialogComponent implements OnInit {
       {
         type: WsEvents.EnumInteractTypes.CLICK,
         id: `${type}-${WsEvents.EnumInteractSubTypes.CERTIFICATE}`,
-        subType: action && action,
+        subType:  action ? action : '',
       },
       {
         id: this.data.certId,   // id of the certificate
@@ -114,7 +114,7 @@ export class CertificateDialogComponent implements OnInit {
       {
         type: WsEvents.EnumInteractTypes.CLICK,
         id: 'download-certificate',
-        subType: action && action,
+        subType: action ? action : '',
       },
       {
         id: this.data.certId,   // id of the certificate
