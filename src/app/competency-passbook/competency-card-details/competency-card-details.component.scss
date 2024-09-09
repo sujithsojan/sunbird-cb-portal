@@ -103,6 +103,7 @@ $title-line-count: 2;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+    line-clamp: $title-line-count;
     -webkit-line-clamp: $title-line-count;
     -webkit-box-orient: vertical;
 }
@@ -167,9 +168,7 @@ $title-line-count: 2;
 }
 .view-certificate {
     visibility: visible !important;
-    display: block;
     position: absolute;
-    /* width: 500px; */
     left: 0;
     top: 0;
     text-align: center;

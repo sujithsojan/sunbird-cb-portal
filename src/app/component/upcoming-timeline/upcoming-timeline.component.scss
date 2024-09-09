@@ -8,7 +8,7 @@
     .title {
         opacity: 1;
         color: rgba(0,0,0,0.87);
-        font: 600 16px/24px Montserrat-SemiBold;
+        font: 600 16px/24px Montserrat-SemiBold, sans-serif;
         font-style: normal;
         letter-spacing: 0.12px;
         text-align: left;
@@ -17,7 +17,7 @@
     .description {
         opacity: 1;
         color: rgba(0,0,0,0.6);
-        font-family: "Lato-Regular";
+        font-family: "Lato-Regular", sans-serif;
         font-size: 14px;
         font-weight: 400;
         font-style: normal;
@@ -30,7 +30,7 @@
 ::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
     opacity: 1;
     color: rgba(0,0,0,0.87) !important;
-    font-family: "Lato-Bold";
+    font-family: "Lato-Bold", sans-serif;
     font-size: 14px;
     font-weight: 700;
     font-style: normal;
@@ -41,11 +41,10 @@
 ::ng-deep .theme-igot.day-mode .mat-ink-bar {
     background-color: #0074b6 !important;
 }
-::ng-deep.mat-tab-label.mat-tab-label,
 ::ng-deep.mat-tab-label.mat-tab-label {
     opacity: 1;
     color: rgba(0,0,0,0.6) !important;
-    font-family: "Lato-Regular";
+    font-family: "Lato-Regular", sans-serif;
     font-size: 14px;
     font-weight: 400;
     font-style: normal;

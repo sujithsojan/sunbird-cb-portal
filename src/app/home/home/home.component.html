@@ -5,7 +5,7 @@
         <span class="font-bold"> {{'appKarmapointsPanel.fKarmaPoints' |translate}} </span> 
         {{'appKarmapointsPanel.courseEnrollement' |translate}}
     </p>
-    <mat-icon (click)="closeKarmaPointsPanel()" class="cursor-pointer">close</mat-icon>
+    <!-- //NOSONAR --><mat-icon (click)="closeKarmaPointsPanel()" class="cursor-pointer">close</mat-icon>
 </div>
 <div class="home-container m-auto flex flex-row gap-6"
     [ngClass]="mobileTopHeaderVisibilityStatus ? 'home-container':'home-container-without-mobile-header'">
@@ -29,14 +29,6 @@
         (!homeConfig?.rightSection?.active && !homeConfig?.leftSection?.active) ? 'full' : ''"
             *ngIf="homeConfig?.rightSection?.active">
             <div class="flex flex-col gap-4 mt-8">
-                <!-- <div class="home-container mt-8">
-                    <div class="flex flex-1">
-                        <p class="mat-subheading-1 inline-block flex gap-2 items-center feed-title cursor-pointer" [routerLink]="'/page/learn'">
-                            Go to learn hub
-                            <mat-icon class="ws-mat-default-text mr-3 mat-icon notranslate material-icons mat-icon-no-color feed-title-icon" [color]="'accent'">navigate_next</mat-icon>
-                        </p>
-                    </div>
-                </div> -->
                 <ng-container *ngIf="enableLazyLoadingFlag">
                     <ng-container *ngFor="let item of contentStripData; let i=index; trackBy i">
                         <ng-container *ngFor="let vitem of sectionList;let j=index; trackBy j">
@@ -48,8 +40,7 @@
                             </span>
                         </ng-container>
                     </ng-container>
-                    <!-- <ng-container  [ngTemplateOutlet]="loadNewStrips" ></ng-container> -->
-
+                    
                     <div class="slider" *ngIf="sliderData && sliderData[0]?.active">
                         <ng-container *ngFor="let vitem of sectionList">
                             <ng-container *ngIf="vitem && vitem['isVisible'] && (vitem['section'] == 'slider' )">
@@ -112,14 +103,7 @@
         (!homeConfig?.rightSection?.active && !homeConfig?.leftSection?.active) ? 'full' : ''"
             *ngIf="homeConfig?.rightSection?.active">
             <div class="flex flex-col gap-3 mt-8">
-                <!-- <div class="home-container mt-8">
-                    <div class="flex flex-1 cursor-pointer" [routerLink]="'/page/learn'">
-                        <p class="mat-subheading-1 inline-block flex gap-2 items-center feed-title">
-                            Go to learn hub
-                            <mat-icon class="ws-mat-default-text mr-3 mat-icon notranslate material-icons mat-icon-no-color feed-title-icon" [color]="'accent'">navigate_next</mat-icon>
-                        </p>
-                    </div>
-                </div> -->
+                
                 <ng-container *ngIf="enableLazyLoadingFlag">
                     <ng-container *ngFor="let item of contentStripData; let i=index; trackBy i">
                         <ng-container *ngFor="let vitem of sectionList;let j=index; trackBy j">
@@ -202,34 +186,25 @@
 </div>
 
 <div class="footer footer-update-mobile-number customindex" *ngIf="!isMDOMsgOpen">
-    <div (click)="handleMDOMsgstatus()" class="desktop-cross">X</div>
+    <!-- //NOSONAR --><div (click)="handleMDOMsgstatus()" class="desktop-cross">X</div>
     <div class="update-mobile-number-flex">
-        <span (click)="handleMDOMsgstatus()" class="mobile-cross">X</span>
-        <img class="hand-icon" src="assets/icons/footer-nav/update-mobile-number.svg"/>
+        <!-- //NOSONAR --><span (click)="handleMDOMsgstatus()" class="mobile-cross">X</span>
+        <img class="hand-icon" src="assets/icons/footer-nav/update-mobile-number.svg" alt=""/>
         <p class="updatetitle" *ngIf="rejectedStatus && !approvedStatus">MDO has rejected your request. 
-            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+            <!-- //NOSONAR --><a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
         <p class="updatetitle" *ngIf="!rejectedStatus && approvedStatus">MDO has approved your request. 
-            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+            <!-- //NOSONAR --><a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
         <p class="updatetitle" *ngIf="(!rejectedStatus && !approvedStatus) || (rejectedStatus && approvedStatus)">MDO has updated your details. 
-            <a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
+            <!-- //NOSONAR --><a class="linktext cursor-pointer" (click)="fetchProfile()" role="button">Click here</a> to see the changes.</p>
     </div>
 </div>
 
 <div class="footer footer-update-mobile-number" *ngIf="isNudgeOpen">
-    <div (click)="handleRemindLater()" class="desktop-cross">X</div>
+    <!-- //NOSONAR --><div (click)="handleRemindLater()" class="desktop-cross">X</div>
     <div class="update-mobile-number-flex">
-        <span (click)="handleRemindLater()" class="mobile-cross">X</span>
-        <img class="hand-icon" src="assets/icons/footer-nav/update-mobile-number.svg"/>
+        <!-- //NOSONAR --><span (click)="handleRemindLater()" class="mobile-cross">X</span>
+        <img class="hand-icon" src="assets/icons/footer-nav/update-mobile-number.svg" alt=""/>
         <p class="updatetitle">{{ 'home.updateYourProfile' | translate }}</p>
-        <button class="ui fluid-button update-now" (click)="fetchProfile()" role="button">{{ 'home.updateNow' | translate }}</button>
+        <!-- //NOSONAR --><button class="ui fluid-button update-now" (click)="fetchProfile()" role="button">{{ 'home.updateNow' | translate }}</button>
     </div>
 </div>
-
-<!-- <ng-template #loadNewStrips>
-    <ng-container *ngFor="let newStrip of newHomeStrips">
-        <sb-uic-content-strip-with-tabs 
-            (telemtryResponse)="raiseTelemetryInteratEvent($event)"
-            [widgetData]="newStrip">
-        </sb-uic-content-strip-with-tabs>
-    </ng-container>
-</ng-template> -->

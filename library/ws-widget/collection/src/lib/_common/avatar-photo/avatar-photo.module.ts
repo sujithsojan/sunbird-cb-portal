@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router'
 import { MatButtonModule, MatIconModule, MatMenuModule, MatRippleModule } from '@angular/material'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import { AvatarPhotoComponent } from './avatar-photo.component'
+import { PipeCertificateImageURLModule } from '@sunbird-cb/utils-v2'
 
 @NgModule({
   declarations: [AvatarPhotoComponent],
@@ -15,6 +16,7 @@ import { AvatarPhotoComponent } from './avatar-photo.component'
     MatMenuModule,
     MatRippleModule,
     WidgetResolverModule,
+    PipeCertificateImageURLModule
   ],
   exports: [AvatarPhotoComponent],
   entryComponents: [AvatarPhotoComponent],

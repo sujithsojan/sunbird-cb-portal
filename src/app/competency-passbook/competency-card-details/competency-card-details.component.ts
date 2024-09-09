@@ -157,7 +157,7 @@ export class CompetencyCardDetailsComponent implements OnInit, AfterViewInit, On
       {
         type: WsEvents.EnumInteractTypes.CLICK,
         id: `${type}-${WsEvents.EnumInteractSubTypes.CERTIFICATE}`,
-        subType: action && action,
+        subType:  action ? action : '',
       },
       {
         id: certId,   // id of the certificate
