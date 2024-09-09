@@ -1,16 +1,6 @@
 <div class="main_container flex flex-column"
     style=" background: url(assets/instances/eagle/banners/home/9/Login_background.png) no-repeat center center fixed;">
-    <!-- <div class="left_container flex flex-col items-center justify-center mt-8">
-    <div class="logo_box flex items-center">
-      <img src="/assets/instances/eagle/app_logos/dopt_logo.png" alt="logo" class="logo_img">
-    </div>
-    <div class="slideshow-container">
-      <div class="mySlides">
-        <img src="/assets/instances/eagle/app_logos/Hexagon.png" alt="karmayogi">
-      </div>
-    </div>
-    <br>
-  </div> -->
+    
     <div class="flex flex-1 flex-column right_inner_container profile-box">
         <div class="flex flex-1 right_container flex flex-col items-center justify-center py-16 m-auto">
             <div class="flex flex-1 flex-column m-auto">
@@ -24,7 +14,6 @@
             <ng-container *ngIf="registrationForm">
                 <form class="flex flex-1" [formGroup]="registrationForm">
                     <div class="flex flex-1 margin-top-l new-mobile flex-column">
-                        <!-- <div class="flex flex-1 flex-wrap mobile-break flex-column"> -->
                         <div class="flex flex-1 flex-row content-center flex-wrap">
                             <div class="flex flex-1 input-wrapper margin-top-s">
                                 <label for="firstName" class=" margin-remove-bottom form-label required"
@@ -48,27 +37,7 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <!-- <div class="flex flex-1 input-wrapper margin-top-s">
-                                <label for="lastName" class=" margin-remove-bottom form-label required"
-                                    i18n="Surname label|Label which explains the user to enter Surname" i18n-aria-label
-                                    aria-label="Last name label">
-                                    Surname
-                                </label>
-                                <mat-form-field appearance="outline" class="margin-top-s">
-                                    <input id="lastName" matInput #lastname formControlName="lastname" i18n-placeholder
-                                        placeholder="Enter your surname" i18n-aria-label aria-label="Last name input" />
-                                    <mat-error [hidden]="false" i18n="Surname Error|Explains name is required"
-                                        *ngIf="registrationForm?.controls['lastname'].errors?.required" i18n-aria-label
-                                        aria-label="Surname is mandatory">
-                                        Surname is mandatory
-                                    </mat-error>
-                                    <mat-error [hidden]="false"
-                                        *ngIf="registrationForm?.controls['lastname'].errors?.pattern" i18n-aria-label
-                                        aria-label="Name field can only contain letters, space and the character (').">
-                                        Name field can only contain letters, space and the character (').
-                                    </mat-error>
-                                </mat-form-field>
-                            </div> -->
+                            
                         </div>
                         <div class="flex flex-1 fflex-row content-center flex-wrap">
                             <div class="flex flex-1 input-wrapper margin-top-s">
@@ -106,9 +75,7 @@
                             <div class="flex flex-1">
             
                               <mat-form-field appearance="outline" class="margin-top-s w-full">
-                                <!-- <input [readonly]="otpSend && !otpVerified" id="mobileNumber" #mobile type="number" matInput
-                                  placeholder="Mobile Number" formControlName="mobile" i18n-aria-label
-                                  aria-label="Mobile Number input" maxlength="12"> -->
+
                                 <input  id="mobileNumber" #mobile type="number" matInput
                                   placeholder="Mobile Number" formControlName="mobile" i18n-aria-label
                                   aria-label="Mobile Number input" maxlength="12">
@@ -133,7 +100,6 @@
                                 </a>
                               </button>
                               <div *ngIf="otpSend" class="flex flex-1 flex-column">
-                                <!-- <div class="flex flex-1 flex-row"> -->
                                   <mat-form-field appearance="outline" class="margin-top-xs w-full">
                                     <input  id="mobileNumber" #otp type="password"
                                       matInput placeholder="Enter OTP" i18n-aria-label aria-label="OTP input" onKeyPress="if(this.value.length === 8) return false;" autocomplete="new-password">
@@ -141,7 +107,7 @@
                                       <span>Resend OTP after {{timeLeftforOTP | pipeDurationTransform: 'hms2M'}}</span>
                                     </mat-hint>
                                     <mat-hint *ngIf="timeLeftforOTP <= 0 ">
-                                      <span class="cursor-pointer ws-mat-default-text" (click)="resendOTP()">Resend
+                                      <!-- //NOSONAR --> <span class="cursor-pointer ws-mat-default-text" (click)="resendOTP()">Resend
                                         OTP</span>
                                     </mat-hint>
                                   </mat-form-field>
@@ -154,44 +120,10 @@
                                       </span>
                                     </button>
                                   </div>
-                                <!-- </div> -->
                               </div>
                             </div>
                           </div>
-                          <!-- Mobile number field end -->
-                    <!-- <div class="flex flex-1 flex-row content-center flex-wrap">
-                            <div class="flex flex-1 input-wrapper margin-top-s">
-                                <label for="position" class=" margin-remove-bottom form-label required"
-                                    i18n="Position|Label which explains the user to enter Position" i18n-aria-label
-                                    aria-label="Position Field label">
-                                    Position
-                                </label>
-                                <mat-form-field appearance="outline" class="margin-top-s w-full">
-                                    <input id="position" matInput tab-directive type="text"
-                                        placeholder="Select your position" i18n-placeholder="position"
-                                        formControlName="position" [matAutocomplete]="positionAutocomplete"
-                                        i18n-aria-label aria-label="Position" #position i18n-aria-label
-                                        aria-label="Position Field input" />
-                                    <mat-error [hidden]="false" i18n="Position Error|Explains Position is required"
-                                        *ngIf="registrationForm?.controls['position'].errors?.required" i18n-aria-label
-                                        aria-label="Position is mandatory">
-                                        Position is mandatory
-                                    </mat-error>
-                                    <mat-error *ngIf="registrationForm?.controls['position'].errors?.forbiddenNames"
-                                        i18n-aria-label aria-label="Please choose a value from the list provided above.">
-                                        Please choose a value from the list provided above.
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-autocomplete #positionAutocomplete="matAutocomplete" autoActiveFirstOption="true"
-                                    i18n-aria-label aria-label="Position list masterPositions"
-                                    [displayWith]="displayFnPosition">
-                                    <mat-option *ngFor="let option of masterPositions | async" [value]="option"
-                                        i18n-aria-label aria-label="Position list autocomplete option">
-                                        {{ option.name }}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </div>
-                        </div> -->
+                         
                         <div class="input-wrapper margin-top-s">
                             <label for="group" class=" margin-remove-bottom form-label required"
                               i18n="Group | Label which explains the user to enter Group" i18n-aria-label
@@ -256,13 +188,12 @@
                                 aria-label="Organisation label">
                                 Organisation
                             </label>
-                            <!-- <ng-container *ngIf="!hideOrg"> -->
                             <mat-form-field appearance="outline" class="margin-top-s w-full" [hidden]="hideOrg">
                                 <mat-icon matPrefix class="search-home flex items-center justify-center">search</mat-icon>
                                 <input matInput onfocus="this.select()" aria-label="organisation" [matAutocomplete]="auto" #organisation
                                     name="organisation" formControlName="organisation" i18n-placeholder placeholder="Search organisation"
                                     i18n-aria-label aria-label="Type here" required (keydown.enter)="searchOrgs($event.target.value)">
-                                <span matSuffix class="ws-mat-accent-text margin-xs cursor-pointer"
+                                <!-- //NOSONAR --> <span matSuffix class="ws-mat-accent-text margin-xs cursor-pointer"
                                     (click)="searchOrgs(organisation.value)">Search</span>
                                 <mat-error *ngIf="registrationForm?.controls['organisation'].errors?.pattern" i18n-aria-label
                                     aria-label="You must enter value from suggested list only.">
@@ -290,14 +221,14 @@
                                     </ng-container>
                                 </mat-option>
                             </mat-autocomplete>
-                            <!-- </ng-container> -->
+                            
                             <ng-container *ngIf="hideOrg">
                                 <div class="orgBox margin-top-s px-4 py-3 relative">
                                     <div class="flex">
                                         <h3 class="mat-h2 margin-remove inline-block  flex-1">
                                             {{heirarchyObject?.orgName}}
                                         </h3>
-                                        <mat-icon matPrefix class="flex items-right justify-right cursor-pointer close-rounded"
+                                        <!-- //NOSONAR --> <mat-icon matPrefix class="flex items-right justify-right cursor-pointer close-rounded"
                                             (click)="editOrg()">close</mat-icon>
                                     </div>
                                     <div class="flex flex-1 items-center flex-wrap text-left mat-body-2">

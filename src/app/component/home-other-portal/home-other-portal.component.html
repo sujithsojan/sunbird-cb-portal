@@ -4,7 +4,7 @@
     <div class="flex flex-row items-center content-center portal-box" *ngFor="let wdata of portalLinks">
         <a class="flex flex-row items-center content-center" (click)="raiseTelemetry(wdata)" target="_blank" href="{{wdata.widgetData.actionBtn.url}}">
             <div class="icon-box margin-right-s flex items-center justify-center">
-                <img src="{{wdata.widgetData.actionBtn.icon}}">
+                <img src="{{wdata.widgetData.actionBtn.icon}}" alt="{{ translateLabels( wdata.widgetData.actionBtn.name, 'homeotherportals') }}">
             </div>
             <div class="flex flex-col card-text-box">
                 <p class="mat-subheading-2 margin-remove-bottom" [attr.id]="wdata.widgetData.actionBtn.icon">
