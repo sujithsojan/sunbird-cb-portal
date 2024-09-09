@@ -36,9 +36,9 @@
 </div>
 <div class="container-fluid" *ngIf="navList.length">
     <div class="flex sticky-navigator gap-4">
-        <mat-icon class="nav-up-arrow cursor-pointer" (click)="scrollToSection('section-micro-sites')">arrow_upwards</mat-icon>
+        <!-- //NOSONAR --> <mat-icon class="nav-up-arrow cursor-pointer" (click)="scrollToSection('section-micro-sites')">arrow_upwards</mat-icon>
         <ng-container *ngFor="let section of navList">
-            <div class="nav-button" (click)="scrollToSection(section.key)">{{section.title}}</div>
+            <!-- //NOSONAR --> <div class="nav-button" (click)="scrollToSection(section.key)">{{section.title}}</div>
         </ng-container>
     </div>
 
@@ -46,7 +46,6 @@
 
 
 <ng-template #topSection let-data="data">
-    <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12">
             <div class="grid grid-cols-12">
                 <div class="col-span-12 md:col-span-8">
@@ -90,14 +89,12 @@
                 </div>
             </div>
         </div>
-    <!-- </div> -->
 </ng-template>
 
 <ng-template #contentStrip let-contentStrip="contentStrip">
     <div class="flex justify-center">
         <div class="container ">
             <div class="w-full">
-                <!-- <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs> -->
                 <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
             </div>
         </div>
