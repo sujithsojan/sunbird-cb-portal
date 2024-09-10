@@ -379,7 +379,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cadreControllingAuthority = this.selectedService.cadreControllingAuthority
     } else {
       this.cadreControllingAuthority = 'NA'
-    }    
+    }
     if (this.selectedService.cadreList.length === 0) {
       this.showBatchForNoCadre = true
       this.startBatch = this.selectedService.commonBatchStartYear
