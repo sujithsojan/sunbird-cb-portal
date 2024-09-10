@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { BehaviorSubject, Subject, Observable } from 'rxjs'
 import { finalize } from 'rxjs/operators'
+import { SeeAllService } from '../../see-all/services/see-all.service'
 
 const API_ENDPOINTS = {
   SEARCH_V6: `/apis/proxies/v8/sunbirdigot/search`,
@@ -20,7 +21,7 @@ export class BrowseCompetencyService {
    * Observable string streams
    */
   notifyObservable$ = this.removeFilter.asObservable()
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private seeAllservice: SeeAllService) { }
 
   public isLoading(): Observable<boolean> {
     return this.displayLoader$
@@ -46,6 +47,12 @@ export class BrowseCompetencyService {
     if (data) {
       this.removeFilter.next(data)
     }
+  }
+
+  async getAllCompentencyParameters(competencyKey: string): Promise<any> {
+    return await this.seeAllservice.getSeeAllConfigJson().then(data => {
+      return data.compentency[competencyKey];
+    })
   }
 
 }

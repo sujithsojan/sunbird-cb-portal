@@ -567,4 +567,12 @@ export namespace NsContent {
     EMimeTypes.TEXT_WEB,
     EMimeTypes.SURVEY,
   ]
+
+  export interface CompentencyKeys {
+    vKey: string
+    vCompetencyArea: string
+    vCompetencyAreaDescription: string
+    vCompetencyTheme: string
+    vCompetencySubTheme: string
+  }
 }

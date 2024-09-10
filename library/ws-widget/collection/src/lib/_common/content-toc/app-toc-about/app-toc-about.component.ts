@@ -29,6 +29,7 @@ import { ResetRatingsService } from '@ws/app/src/lib/routes/app-toc/services/res
 import { ReviewsContentComponent } from '../reviews-content/reviews-content.component'
 import { CertificateDialogComponent } from '../../certificate-dialog/certificate-dialog.component'
 import { environment } from 'src/environments/environment'
+import { BrowseCompetencyService } from '@ws/app/src/lib/routes/browse-by-competency/services/browse-competency.service'
 
 interface IStripUnitContentData {
   key: string
@@ -84,7 +85,8 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     private reviewDataService: ReviewComponentDataService,
     private handleClaimService: HandleClaimService,
     private resetRatingsService: ResetRatingsService,
-    private contentSvc: WidgetContentService
+    private contentSvc: WidgetContentService,
+    private compentencyService: BrowseCompetencyService
   ) {
     this.resetRatingsService.resetRatings$.subscribe((_res: any) => {
       this.fetchRatingSummary()
@@ -183,10 +185,11 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   timer: any = {}
   isMobile = false
-  compentencyKey = ''
+  compentencyKey!: NsContent.CompentencyKeys;
 
-  ngOnInit() {
-    this.compentencyKey = environment.compentencyVersionKey
+  async ngOnInit() {
+    this.compentencyKey = await this.compentencyService.getAllCompentencyParameters(environment.compentencyVersionKey)
+   
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
@@ -292,13 +295,13 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   getSubThemes(): any[] {
     const subThemeArr: any[] = []
-    if (this.content && this.content[this.compentencyKey] && this.content[this.compentencyKey].length) {
-      if (typeof this.content[this.compentencyKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey])) {
-        this.content[this.compentencyKey] = JSON.parse(this.content[this.compentencyKey])
+    if (this.content && this.content[this.compentencyKey.vKey] && this.content[this.compentencyKey.vKey].length) {
+      if (typeof this.content[this.compentencyKey.vKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey.vKey])) {
+        this.content[this.compentencyKey.vKey] = JSON.parse(this.content[this.compentencyKey.vKey])
       }
-      this.content[this.compentencyKey].forEach((_competencyObj: any) => {
-        if (subThemeArr.indexOf(_competencyObj.competencySubTheme) === -1) {
-          subThemeArr.push(_competencyObj.competencySubTheme)
+      this.content[this.compentencyKey.vKey].forEach((_competencyObj: any) => {
+        if (subThemeArr.indexOf(_competencyObj[this.compentencyKey.vCompetencySubTheme]) === -1) {
+          subThemeArr.push(_competencyObj[this.compentencyKey.vCompetencySubTheme])
         }
       })
     }
@@ -306,26 +309,26 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   loadCompetencies(): void {
-    if (this.content && this.content[this.compentencyKey] && this.content[this.compentencyKey].length) {
+    if (this.content && this.content[this.compentencyKey.vKey] && this.content[this.compentencyKey.vKey].length) {
       const competenciesObject: any = {}
-      if (typeof this.content[this.compentencyKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey])) {
-        this.content[this.compentencyKey] = JSON.parse(this.content[this.compentencyKey])
+      if (typeof this.content[this.compentencyKey.vKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey.vKey])) {
+        this.content[this.compentencyKey.vKey] = JSON.parse(this.content[this.compentencyKey.vKey])
       }
-      this.content[this.compentencyKey].forEach((_obj: any) => {
-        if (competenciesObject[_obj.competencyArea]) {
-          if (competenciesObject[_obj.competencyArea][_obj.competencyTheme]) {
-            const competencyTheme = competenciesObject[_obj.competencyArea][_obj.competencyTheme]
-            if (competencyTheme.indexOf(_obj.competencySubTheme) === -1) {
-              competencyTheme.push(_obj.competencySubTheme)
+      this.content[this.compentencyKey.vKey].forEach((_obj: any) => {
+        if (competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]) {
+          if (competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]]) {
+            const competencyTheme = competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]]
+            if (competencyTheme.indexOf(_obj[this.compentencyKey.vCompetencySubTheme]) === -1) {
+              competencyTheme.push(_obj[this.compentencyKey.vCompetencySubTheme])
             }
           } else {
-            competenciesObject[_obj.competencyArea][_obj.competencyTheme] = []
-            competenciesObject[_obj.competencyArea][_obj.competencyTheme].push(_obj.competencySubTheme)
+            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]] = []
+            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]].push(_obj[this.compentencyKey.vCompetencySubTheme])
           }
         } else {
-          competenciesObject[_obj.competencyArea] = {}
-          competenciesObject[_obj.competencyArea][_obj.competencyTheme] = []
-          competenciesObject[_obj.competencyArea][_obj.competencyTheme].push(_obj.competencySubTheme)
+          competenciesObject[_obj[this.compentencyKey.vCompetencyArea]] = {}
+          competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]] = []
+          competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]].push(_obj[this.compentencyKey.vCompetencySubTheme])
         }
       })
 
