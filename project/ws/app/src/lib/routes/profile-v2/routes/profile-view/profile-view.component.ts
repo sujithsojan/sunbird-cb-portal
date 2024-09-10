@@ -130,7 +130,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     countryCode: new FormControl('', []),
     pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
     category: new FormControl('', []),
-    isCadre: new FormControl(false, [Validators.required]),
+    isCadre: new FormControl(false, []),
     typeOfCivilService: new FormControl(''),
     serviceType: new FormControl(''),
     cadre: new FormControl(''),
@@ -380,7 +380,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.cadreControllingAuthority = 'NA'
     }
-
     if (this.selectedService.cadreList.length === 0) {
       this.showBatchForNoCadre = true
       this.startBatch = this.selectedService.commonBatchStartYear
@@ -1527,7 +1526,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
               if (popCivilServiceType.serviceList[serviceIndex].id === cadreValues.civilServiceId) {
                 let popServiceType = popCivilServiceType.serviceList[serviceIndex];
                 this.serviceName = popCivilServiceType.serviceList.map((service: any) => service.name)
+                
                 this.civilServiceId = popCivilServiceType.serviceList[serviceIndex].id
+                if(popCivilServiceType.serviceList[serviceIndex] && popCivilServiceType.serviceList[serviceIndex].name) {
+                  let civilServiceName = popCivilServiceType.serviceList[serviceIndex].name
+                  if((civilServiceName.trim() === 'Indian Administrative Office (IAS)') || 
+                    (civilServiceName.trim() === "Indian Police Service (IPS)") ||
+                    (civilServiceName.trim() === "Indian Forest Service (IFoS)")) {
+                    this.showBatchForNoCadre = false
+                  }
+                }
+                
                   if (!cadreValues.cadreName) {
                     this.startBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchStartYear
                     this.endBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchEndYear
