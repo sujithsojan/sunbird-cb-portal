@@ -51,7 +51,7 @@ export class BrowseCompetencyService {
 
   async getAllCompentencyParameters(competencyKey: string): Promise<any> {
     return await this.seeAllservice.getSeeAllConfigJson().then(data => {
-      return data.compentency[competencyKey];
+      return data.compentency[competencyKey]
     })
   }
 

@@ -185,11 +185,11 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   timer: any = {}
   isMobile = false
-  compentencyKey!: NsContent.CompentencyKeys;
+  compentencyKey!: NsContent.CompentencyKeys
 
   async ngOnInit() {
     this.compentencyKey = await this.compentencyService.getAllCompentencyParameters(environment.compentencyVersionKey)
-   
+
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
