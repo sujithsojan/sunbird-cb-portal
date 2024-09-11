@@ -871,7 +871,7 @@ export class MicrosotesComponent implements OnInit {
 
   async fetchFromSearchV6(request: any) {
       return new Promise<any>((resolve, reject) => {
-        if (request && request) {
+        if (request) {
           this.contentSvc.searchV6(request).subscribe(results => {
               resolve({ results })
             },                                        (error: any) => {
