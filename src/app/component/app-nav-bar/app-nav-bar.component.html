@@ -49,6 +49,7 @@
             }"></ng-container>
           </div>
           <span *ngIf="!isforPreview"  class="spacer"></span>
+
           <ng-container >
             <div  class="hidden md:block md:flex" *ngIf="!isforPreview">
               <ng-container [ngTemplateOutlet]="karmaBadge"></ng-container>
@@ -60,22 +61,24 @@
         </ng-container>
       </ng-container>
     </div>
+
   </mat-toolbar>
 
   <mat-toolbar *ngIf="sShowAppNavBar && !needToHide && mode === 'bottom'" [color]="primaryNavbarBackground?.color" [ngStyle]="primaryNavbarBackground?.styles" class="mat-elevation-z3 custom mobile-footer-fixed-nav">
-   
+    
 
     <ng-container *ngIf="primaryNavbarConfig?.smallScreen && isLoggedIn">
       <ul class="mobile-footer-fixed-nav-list-item-container">
         <ng-container *ngFor="let item of primaryNavbarConfig?.smallScreen?.all">
-          <!-- //NOSONAR --><li *ngIf="item?.type !== 'explorerButton'" [ngClass]="activeRoute === item?.config?.label ? 'active-icon': ''" class="mobile-footer-fixed-nav-list-item" (click)="redirectToPath(item?.config)">
+          <!-- item?.config?.path -->
+          <!-- //NOSONAR --> <li *ngIf="item?.type !== 'explorerButton'" [ngClass]="activeRoute === item?.config?.label ? 'active-icon': ''" class="mobile-footer-fixed-nav-list-item" (click)="redirectToPath(item?.config)">
             <div class="icon-container" [id]="item?.config?.label?.toLowerCase() === 'search' ? 'feature_mobile_search' : ''">
               <img src="/assets/icons/footer-nav/{{item?.config?.icon}}.svg" id="draft" alt="draft" title="draft" />
               <span>{{item?.config?.label | titlecase}}</span>
             </div>
           </li>
           
-          <!-- //NOSONAR --><li *ngIf="item?.type === 'explorerButton'" [ngClass]="activeRoute === item?.config?.label ? 'active-icon': ''" class="mobile-footer-fixed-nav-list-item" (click)="openExploreMenu()">
+          <!-- //NOSONAR --> <li *ngIf="item?.type === 'explorerButton'" [ngClass]="activeRoute === item?.config?.label ? 'active-icon': ''" class="mobile-footer-fixed-nav-list-item" (click)="openExploreMenu()">
             <div class="icon-container">
               <img   src="/assets/icons/footer-nav/{{item?.config?.icon}}.svg" id="draft" alt="draft" title="draft" />
               <span>{{item?.config?.label | titlecase}}</span>
@@ -87,7 +90,7 @@
   </mat-toolbar>
 
   <mat-toolbar *ngIf="!sShowAppNavBar">
-    <!-- //NOSONAR --><div class="fix-ww flex flex-row mt-3" id="root-tool-bar" title="toolbar" i18n-aria-label role="toolbar">
+    <!-- //NOSONAR --> <div class="fix-ww flex flex-row mt-3" id="root-tool-bar" title="toolbar" i18n-aria-label role="toolbar">
       <ng-container *ngIf="mode === 'top'">
         <div class="flex flex-1">
           <a class="logo-dim" role="link" title="Home" i18n-aria-title i18n-aria-label routerLink="/page/home"
@@ -99,6 +102,7 @@
             <img [src]="appIcon" alt="Application Logo" class="app-logo" />
           </a>
         </div>
+      </ng-container>
     </div>
   </mat-toolbar>
 </ng-container>
@@ -109,11 +113,11 @@
 
 <ng-template #karmaBadge>
   <div class="flex flex-middle points-block" [class.hideForNav]="hideKPOnNav" >
-    <!-- //NOSONAR --><img (click)="viewKarmapoints()" src="/assets/icons/home/karma-badge.svg" width="32px" height="32px" alt="Application Logo" class="app-logo cursor-pointer" />
+    <!-- //NOSONAR --> <img (click)="viewKarmapoints()" src="/assets/icons/home/karma-badge.svg" width="32px" height="32px" alt="Application Logo" class="app-logo cursor-pointer" />
     <div class="margin-left-xs">
       <p class="karma-lbl flex">
         {{ 'appnavbar.karmaPoints' | translate }}
-        <!-- //NOSONAR --><img #tooltip="matTooltip" [matTooltipClass]="['karma-tooltip','below']" width="13.33px" height="13.33px" mat-raised-button
+        <!-- //NOSONAR --> <img #tooltip="matTooltip" [matTooltipClass]="['karma-tooltip','below']" width="13.33px" height="13.33px" mat-raised-button
         matTooltip="{{ 'appnavbar.karmaPointsToolTip' | translate }}" [matTooltipPosition]="'below'"  (click)="tooltip.show()"
         [matTooltipHideDelay]="tooltipDelay" class="cursor-pointer margin-left-xs" src="assets/icons/info.svg" alt="" />
       </p>
@@ -128,7 +132,7 @@
     </div>
   </div>
   
-  <!-- //NOSONAR --><div class="flex items-center arrow-back" [class.hideForNav]="!hideKPOnNav" (click)="handleNavigateBack()" >
+  <!-- //NOSONAR --> <div class="flex items-center arrow-back" [class.hideForNav]="!hideKPOnNav" (click)="handleNavigateBack()" >
     <mat-icon>arrow_back</mat-icon>
   </div>
 </ng-template>
@@ -159,7 +163,7 @@
       }
     }"></ws-widget-btn-feature>
 
-  <!-- //NOSONAR --><div mat-menu-item *ngIf="isTourGuideAvailable" (click)="startTour()">
+  <!-- //NOSONAR --> <div mat-menu-item *ngIf="isTourGuideAvailable" (click)="startTour()">
     <mat-icon>help</mat-icon>
     <span class="ml-2">Tour Guide</span>
   </div>
