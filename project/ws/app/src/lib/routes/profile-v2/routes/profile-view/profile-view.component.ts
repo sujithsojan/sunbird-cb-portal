@@ -336,7 +336,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInsightsData()
     this.fetchCadreData()
     // this.getAssessmentData()
-
   }
 
   // Sujith
@@ -357,6 +356,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.serviceName = this.serviceListData.map((service: any) => service.name)
       this.serviceId = this.serviceType.id
       this.errorMessage = ''
+      localStorage.setItem('serviceType', JSON.stringify(this.serviceType));
     } else {
       this.errorMessage = 'Service Type not found'
     }
@@ -371,6 +371,24 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (batchControl) { batchControl.reset() }
     if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
     this.selectedServiceName = event.value
+    if (this.serviceType) {
+      this.serviceListData = this.serviceType.serviceList
+      this.serviceName = this.serviceListData.map((service: any) => service.name)
+      this.serviceId = this.serviceType.id
+      this.errorMessage = ''
+    } else {
+      var storedServiceType = localStorage.getItem('serviceType');
+      if (storedServiceType) {
+        this.serviceType = JSON.parse(storedServiceType);
+        this.serviceListData = this.serviceType.serviceList
+        this.serviceName = this.serviceListData.map((service: any) => service.name)
+        this.serviceId = this.serviceType.id
+    } else {
+        this.errorMessage = 'Service Type is not available. Please select a service type first.';
+        return;
+    }
+      this.errorMessage = 'Service Type not found'
+    }
     this.selectedService = this.serviceListData.find((service: any) => service.name === this.selectedServiceName)
     this.civilServiceName =  this.selectedService.name
     this.civilServiceId = this.selectedService.id
