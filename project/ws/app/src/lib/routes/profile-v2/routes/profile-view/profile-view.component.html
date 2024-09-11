@@ -738,7 +738,7 @@
         </div> -->
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <!--  pattern="/^[a-z0-9._-]+$/i" -->
-          <input #profileNameVar="ngModel" type="text" name="profileNameVar" [(ngModel)]="profileName" class="input-text"/>          
+          <input #profileNameVar="ngModel" type="text" name="profileNameVar" [(ngModel)]="profileName" class="input-text" (input)="validateName($event.target.value)"/>          
           <!-- <div
             *ngIf="profileNameVar.invalid && (profileNameVar.dirty || profileNameVar.touched)"
             class="alert"

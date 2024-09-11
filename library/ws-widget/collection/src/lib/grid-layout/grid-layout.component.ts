@@ -15,6 +15,7 @@ import {
 } from './grid-layout.model'
 // tslint:disable-next-line
 import _ from 'lodash'
+import { MatSnackBar } from '@angular/material'
 
 const API_END_POINTS = {
   fetchProfileById: (id: string) => `/apis/proxies/v8/api/user/v2/read/${id}`,
@@ -34,6 +35,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
     private configSvc: ConfigurationsService,
     private http: HttpClient,
     private npsService: NPSGridService,
+    private snackBar: MatSnackBar,
   ) {
     super()
   }
@@ -117,6 +119,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
   isMobile = false
   reviewCommentLength = 0
   @ViewChild('textArea', { static: false }) textArea!: ElementRef
+  noHtmlCharacter = new RegExp(/<[^>]*>|(function[^\s]+)|(javascript:[^\s]+)/i)
   ngOnInit() {
     this.npsCategory = localStorage.getItem('npsCategory') ? localStorage.getItem('npsCategory') : 'NPS'
     if (window.innerWidth < 540) {
@@ -523,9 +526,21 @@ export class GridLayoutComponent extends WidgetBaseComponent
     )
   }
 
+  private openSnackbar(primaryMsg: string, duration: number = 2000) {
+    this.snackBar.open(primaryMsg, 'X', {
+      duration,
+    })
+  }
+
   getReviewCommentLength() {
     if (this.textArea && this.textArea.nativeElement && this.textArea.nativeElement.value) {
       this.reviewCommentLength = this.textArea.nativeElement.value.length
+      if (this.textArea.nativeElement.value.match(this.noHtmlCharacter)) {
+        this.submitBtnClick = true
+        this.openSnackbar('HTML or Js is not allowed')
+      } else {
+        this.submitBtnClick = false
+      }
     } else {
       this.reviewCommentLength = 0
     }

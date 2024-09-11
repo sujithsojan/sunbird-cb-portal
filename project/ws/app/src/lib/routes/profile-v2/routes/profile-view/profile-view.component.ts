@@ -197,6 +197,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   showBatchForNoCadre = true
   noCadreDetails = true
   saveChanges = false
+  noHtmlCharacter = new RegExp(/<[^>]*>|(function[^\s]+)|(javascript:[^\s]+)/i)
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -1347,6 +1348,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleUpdateName(): void {
+
+    const regexMatch = this.profileName.match(this.noHtmlCharacter)
+    if (regexMatch) {
+      this.matSnackBar.open('HTML or Js is not allowed')
+      return 
+    } 
+
     const postData = {
       'request': {
         'userId': this.configService.unMappedUser.id,
