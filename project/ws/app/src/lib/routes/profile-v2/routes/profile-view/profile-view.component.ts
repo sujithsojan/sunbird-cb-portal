@@ -356,7 +356,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.serviceName = this.serviceListData.map((service: any) => service.name)
       this.serviceId = this.serviceType.id
       this.errorMessage = ''
-      localStorage.setItem('serviceType', JSON.stringify(this.serviceType));
+      localStorage.setItem('serviceType', JSON.stringify(this.serviceType))
     } else {
       this.errorMessage = 'Service Type not found'
     }
@@ -377,15 +377,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.serviceId = this.serviceType.id
       this.errorMessage = ''
     } else {
-      var storedServiceType = localStorage.getItem('serviceType');
+      const storedServiceType = localStorage.getItem('serviceType')
       if (storedServiceType) {
-        this.serviceType = JSON.parse(storedServiceType);
+        this.serviceType = JSON.parse(storedServiceType)
         this.serviceListData = this.serviceType.serviceList
         this.serviceName = this.serviceListData.map((service: any) => service.name)
         this.serviceId = this.serviceType.id
     } else {
-        this.errorMessage = 'Service Type is not available. Please select a service type first.';
-        return;
+        this.errorMessage = 'Service Type is not available. Please select a service type first.'
+        return
     }
       this.errorMessage = 'Service Type not found'
     }
@@ -1526,7 +1526,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       });       
     }
     else {
-    this.showBatchForNoCadre = false
+    this.showBatchForNoCadre = true
     }
   }
 
@@ -1554,15 +1554,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.showBatchForNoCadre = false
                   }
                 }
-                
-                  if (!cadreValues.cadreName) {
+  
+                if (!cadreValues.cadreName) {
                     this.startBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchStartYear
                     this.endBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchEndYear
                     this.exclusionYear = popCivilServiceType.serviceList[serviceIndex].commonBatchExclusionYearList
                     // tslint:disable
                     this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
                         .filter(year => !this.exclusionYear.includes(year))
-                  } 
+                }
                 for (let cadreIndex = 0; cadreIndex < popServiceType.cadreList.length; cadreIndex++) {
                   if (popServiceType.cadreList[cadreIndex].id === cadreValues.cadreId) {
                     let popCadre:any = popServiceType.cadreList[cadreIndex];
@@ -1576,12 +1576,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                     .filter(year => !this.exclusionYear.includes(year)) 
                   for (let index = 0; index < this.yearArray.length; index++) {
                     if (this.yearArray[index] === cadreValues.cadreBatch) {                     
-                     }
                   }
                 }
               }
             }
           }
+        }
         }
         }
         this.cadreControllingAuthority = cadreValues.cadreControllingAuthorityName
@@ -1593,8 +1593,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
             batch: this.portalProfile.cadreDetails.cadreBatch,
             isCadre: this.portalProfile.personalDetails.isCadre,
             cadreControllingAuthority: this.portalProfile.cadreDetails.cadreControllingAuthorityName,
-          }); 
-        }               
+          });
+        }
+        if (this.selectedService.cadreList.length === 0) {
+          this.showBatchForNoCadre = true
+        } else {
+          this.showBatchForNoCadre = false
+        }
       },
       error: err => {
         this.errorMessage = err
