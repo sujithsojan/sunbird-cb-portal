@@ -460,7 +460,7 @@
                   {{ 'profileInfo.isCadre' | translate }}
                 </div>
                 <div class="info-value" *ngIf="!editDetails">
-                  <span *ngIf="!portalProfile.hasOwnProperty('cadreDetails'); else elsCadreDetails">NA</span>
+                  <span *ngIf="!portalProfile.hasOwnProperty('cadreDetails') || !portalProfile?.personalDetails.hasOwnProperty('isCadre'); else elsCadreDetails">NA</span>
                   <ng-template #elsCadreDetails>{{ isCadreStatus ? 'Yes' : 'No' }}</ng-template>
                 </div>
                 <div class="flex" *ngIf="editDetails">
@@ -514,8 +514,17 @@
                 </div>
               </div>
               
-              
-              <div class="info-div" *ngIf="(!showBatchForNoCadre) && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value|| (!editDetails && !showBatchForNoCadre)">
+              <!-- ((!showBatchForNoCadre) && otherDetailsForm.get('serviceType').value && 
+                                                                      otherDetailsForm.get('isCadre').value 
+                                                                      && otherDetailsForm.get('typeOfCivilService').value) 
+                                                                      || (!editDetails && !showBatchForNoCadre)-->
+              <div class="info-div" *ngIf="otherDetailsForm.get('serviceType').value && 
+              otherDetailsForm.get('isCadre').value 
+              && otherDetailsForm.get('typeOfCivilService').value && (
+                otherDetailsForm.get('serviceType').value === 'Indian Administrative Office (IAS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Police Service (IPS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Forest Service (IFoS)' 
+              )">
                 <ng-container *ngIf="isCadreStatus">
                 <div class="label">{{ 'profileInfo.cadre' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
                 <div class="info-value" *ngIf="!editDetails">
@@ -530,8 +539,19 @@
                   </mat-form-field>
                 </div>
               </div> 
-              
-              <div class="info-div" *ngIf="showBatchForNoCadre && otherDetailsForm.get('serviceType').value  || otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('typeOfCivilService').value|| !editDetails && this.cadreStatus">
+              <!-- showBatchForNoCadre && otherDetailsForm.get('serviceType').value  || otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('typeOfCivilService').value|| !editDetails && this.cadreStatus -->
+              <div class="info-div" *ngIf="(otherDetailsForm.get('serviceType').value && 
+              otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value && (
+                otherDetailsForm.get('serviceType').value === 'Indian Administrative Office (IAS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Police Service (IPS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Forest Service (IFoS)' 
+              ) && otherDetailsForm.get('cadre').value)  ? true : ((otherDetailsForm.get('serviceType').value && 
+              otherDetailsForm.get('isCadre').value 
+              && otherDetailsForm.get('typeOfCivilService').value && (
+                otherDetailsForm.get('serviceType').value !== 'Indian Administrative Office (IAS)' && 
+                otherDetailsForm.get('serviceType').value !== 'Indian Police Service (IPS)' && 
+                otherDetailsForm.get('serviceType').value !== 'Indian Forest Service (IFoS)' 
+              ))) ? true : false">
                 <ng-container *ngIf="isCadreStatus">
                 <div class="label">{{ 'profileInfo.batch' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
               
@@ -548,8 +568,9 @@
                 </div>
                
               </div>
-
-              <div class="info-div" *ngIf="showBatchForNoCadre && otherDetailsForm.get('batch').value  || otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('typeOfCivilService').value&& otherDetailsForm.get('batch').value || !editDetails">
+              <!-- showBatchForNoCadre && otherDetailsForm.get('batch').value  || otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('typeOfCivilService').value&& otherDetailsForm.get('batch').value || !editDetails -->
+               
+              <div class="info-div" *ngIf="otherDetailsForm.get('isCadre').value &&  otherDetailsForm.get('batch').value">
                 <ng-container *ngIf="isCadreStatus">
                 <div class="label">{{ 'profileInfo.cadreControllingAuthority' | translate }}<span class="asterisk" style="color: red;"> *</span></div>
               
@@ -565,8 +586,10 @@
               <div class="flex flex-row gap-4 justify-center sm:justify-end">
                 <button class="outline-button" (click)="handleCancelUpdate()">{{ 'profileInfo.cancel' | translate
                   }}</button>
+                  <!-- [disabled]="(otherDetailsForm?.invalid && !saveChanges) || verifyEmail || verifyMobile"
+                [ngClass]="{'disable-button': (otherDetailsForm?.invalid && !saveChanges)|| verifyEmail || verifyMobile}" -->
                 <button class="save-button" [disabled]="(otherDetailsForm?.invalid && !saveChanges) || verifyEmail || verifyMobile"
-                [ngClass]="{'disable-button': (otherDetailsForm?.invalid && !saveChanges)|| verifyEmail || verifyMobile}"
+                [ngClass]="{'disable-button': (otherDetailsForm?.invalid && !saveChanges)|| verifyEmail || verifyMobile}" 
                 (click)="handleSaveOtherDetails()">{{ 'profileInfo.saveChanges' | translate }}</button> 
               </div>
             </ng-container>
