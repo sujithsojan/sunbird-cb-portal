@@ -194,7 +194,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   isMentor = false
   errorMessage: any
   isCadreStatus : any
-  cadreAval = true
   showBatchForNoCadre = true
   noCadreDetails = true
   saveChanges = false
