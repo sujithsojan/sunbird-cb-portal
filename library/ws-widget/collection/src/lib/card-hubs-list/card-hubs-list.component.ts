@@ -187,7 +187,10 @@ export class CardHubsListComponent extends WidgetBaseComponent
       routerSlug: '/app',
       headerOptions: false,
       bannerOption: true,
-      userProfile: {...this.configSvc.userProfile, ...this.configSvc.userProfileV2, ...this.configSvc.unMappedUser.profileDetails, nodebbid: this.configSvc.unMappedUser.nodebbid}
+      userProfile: { ...this.configSvc.userProfile,
+         ...this.configSvc.userProfileV2,
+         ...this.configSvc.unMappedUser.profileDetails,
+         nodebbid: this.configSvc.unMappedUser.nodebbid },
     }
     this.discussUtilitySvc.setDiscussionConfig(config)
     localStorage.setItem('home', JSON.stringify(config))
