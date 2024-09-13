@@ -56,6 +56,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
   public activeRoute = ''
   public showDashboardIcon = true
   isHubEnable!: boolean
+  isMentor = false
   // private readonly featuresConfig: IGroupWithFeatureWidgets[] = []
 
   constructor(
@@ -117,6 +118,12 @@ export class CardHubsListComponent extends WidgetBaseComponent
          // console.log(true);
         this.showDashboardIcon = false
       }
+
+    }
+
+    if (this.configSvc && this.configSvc.userRoles) {
+      // tslint:disable-next-line:max-line-length
+      this.isMentor = (this.configSvc.userRoles.has('MENTOR') || this.configSvc.userRoles.has('mentor') || this.configSvc.userRoles.has('Mentor')) ? true : false
     }
 
     if (instanceConfig) {
@@ -158,11 +165,11 @@ export class CardHubsListComponent extends WidgetBaseComponent
         {
           route: 'tags',
           label: 'Tags',
-          enable: true,
+          enable: false,
         },
         {
           route: 'my-discussion',
-          label: 'Your discussion',
+          label: 'My discussions',
           enable: true,
         },
         // {
@@ -180,6 +187,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
       routerSlug: '/app',
       headerOptions: false,
       bannerOption: true,
+      userProfile: {...this.configSvc.userProfile, ...this.configSvc.userProfileV2, ...this.configSvc.unMappedUser.profileDetails, nodebbid: this.configSvc.unMappedUser.nodebbid}
     }
     this.discussUtilitySvc.setDiscussionConfig(config)
     localStorage.setItem('home', JSON.stringify(config))
@@ -268,6 +276,9 @@ export class CardHubsListComponent extends WidgetBaseComponent
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
     )
+  }
+  routeToMentorship() {
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
   }
 
 }

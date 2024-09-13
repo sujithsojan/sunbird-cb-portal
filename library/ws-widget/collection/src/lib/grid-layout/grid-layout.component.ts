@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit, Input, OnDestroy } from '@angular/core'
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ConfigurationsService, EventService, WsEvents, NPSGridService  } from '@sunbird-cb/utils-v2'
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
@@ -39,6 +39,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
   }
 
   @Input() widgetData!: IGridLayoutDataMain
+  @Input() fromHeader = false
   containerClass = ''
   processed: IGridLayoutProcessedData[][] = []
   isNudgeOpen = true
@@ -114,6 +115,8 @@ export class GridLayoutComponent extends WidgetBaseComponent
   ]
   fullMenuHeight = false
   isMobile = false
+  reviewCommentLength = 0
+  @ViewChild('textArea', { static: false }) textArea!: ElementRef
   ngOnInit() {
     this.npsCategory = localStorage.getItem('npsCategory') ? localStorage.getItem('npsCategory') : 'NPS'
     if (window.innerWidth < 540) {
@@ -376,7 +379,10 @@ export class GridLayoutComponent extends WidgetBaseComponent
         // tslint:disable-next-line
         console.log(resp)
         localStorage.setItem('platformRatingSubmit', 'true')
-        this.isNPSOpen = false
+        setTimeout(() => {
+          this.isNPSOpen = false
+          this.onSuccessRating = false
+        },         4000)
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
@@ -515,5 +521,14 @@ export class GridLayoutComponent extends WidgetBaseComponent
         module: WsEvents.EnumTelemetrySubType.PlatformRating,
       }
     )
+  }
+
+  getReviewCommentLength() {
+    if (this.textArea && this.textArea.nativeElement && this.textArea.nativeElement.value) {
+      this.reviewCommentLength = this.textArea.nativeElement.value.length
+    } else {
+      this.reviewCommentLength = 0
+    }
+
   }
 }

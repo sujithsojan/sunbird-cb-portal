@@ -33,7 +33,8 @@
                     </ng-container>
                     <ng-container *ngIf="!skeletonLoader">
                         <div class="certificate_box" *ngIf="!content?.certificateObj?.certId">
-                            <img src="/assets/icons/toc/no-certificate.svg" alt="No certificate image" />
+                            <img *ngIf="!fromMarketPlace" src="/assets/icons/toc/no-certificate.svg" alt="No certificate image" />
+                            <img *ngIf="fromMarketPlace" src="/assets/icons/toc/no-certificate-market-place.svg" alt="No certificate image" />
                             <div class="flex items-center certificate_overlay">
                                 <div class="flex flex-col text-center gap-1 p-4 text-white mt-4">
                                     <div>{{'apptochome.certificationTakesTime' | translate }}</div>
@@ -45,9 +46,13 @@
                         <ng-container *ngIf="content?.certificateObj?.certId">
                             <div class="img-container">
                                 <img class="celebration-animation" src="assets/images/animation/leaderboard_animation.gif"/>
-                            <img class="ceritificate-image"
+                            <img *ngIf="!fromMarketPlace" class="ceritificate-image"
                                 [src]="'/assets/icons/toc/no-certificate.svg'"
                                 alt="certificate image" />
+                                <img *ngIf="fromMarketPlace" class="ceritificate-image"
+                                [src]="'/assets/icons/toc/no-certificate-market-place.svg'"
+                                alt="certificate image" />
+                                
                                 <div [ngClass]="{'view-certificate': downloadCertificateBool, 'view-cert': !downloadCertificateBool}">
                                     <button type="button" (click)="handleOpenCertificateDialog()">
                                         <span *ngIf="!downloadCertificateBool">{{ 'apptoccontentcard.viewCertificate' | translate }}</span>
@@ -162,8 +167,26 @@
         </div>
     </ng-container>
 
+    <ng-container *ngIf="content && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM">
+        <div class="flex flex-row gap-3 justify-around hideAbove1200">
+            <div class="batch-info">
+                <div class="font-base font-bold">{{ selectedBatchData?.content[0]?.batchAttributes?.currentBatchSize || '0' }}
+                </div>
+                <div class="batch-label">{{ 'apptoc.batchSize' | translate }}</div>
+            </div>
+            <div class="batch-info">
+                <div class="font-base font-bold">{{ selectedBatchData?.userCount?.totalApplied || '0' }}</div>
+                <div class="batch-label">{{ 'apptoc.totalApplied' | translate }}</div>
+            </div>
+            <div class="batch-info">
+                <div class="font-base font-bold">{{ selectedBatchData?.userCount?.enrolled || '0' }}</div>
+                <div class="batch-label">{{ 'apptoc.totalEnrolled' | translate }}</div>
+            </div>
+        </div>
+    </ng-container>
+
     <ng-container *ngIf="timer.days >= 0 && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM">
-        <div class="flex flex-col gap-6 batch-timer">
+        <div class="flex flex-col gap-6 my-5 batch-timer hideAbove1200">
             <div class="flex flex-row">
                 <div class="flex-1">
                     <div class="flex underline"></div>
@@ -195,24 +218,6 @@
                     <div class="text-4xl leading-10 counter">{{ timer.min === 60 ? 00 : timer.min }}</div>
                     <div class="counter-label">{{ 'apptocsinglepage.minutes' | translate }}</div>
                 </div>
-            </div>
-        </div>
-    </ng-container>
-
-    <ng-container *ngIf="content && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM">
-        <div class="flex flex-row gap-3 justify-around hideAbove1200">
-            <div class="batch-info">
-                <div class="font-base font-bold">{{ selectedBatchData?.content[0]?.batchAttributes?.currentBatchSize || '0' }}
-                </div>
-                <div class="batch-label">{{ 'apptoc.batchSize' | translate }}</div>
-            </div>
-            <div class="batch-info">
-                <div class="font-base font-bold">{{ selectedBatchData?.userCount?.totalApplied || '0' }}</div>
-                <div class="batch-label">{{ 'apptoc.totalApplied' | translate }}</div>
-            </div>
-            <div class="batch-info">
-                <div class="font-base font-bold">{{ selectedBatchData?.userCount?.enrolled || '0' }}</div>
-                <div class="batch-label">{{ 'apptoc.totalEnrolled' | translate }}</div>
             </div>
         </div>
     </ng-container>
