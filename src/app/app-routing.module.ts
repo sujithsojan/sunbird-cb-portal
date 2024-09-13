@@ -789,7 +789,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     data: {
       pageType: 'page',
-      pageKey: 'homee',
+      pageKey: 'home',
       pageId: 'page/home',
       module: 'Home',
     },
