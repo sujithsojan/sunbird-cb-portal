@@ -42,7 +42,7 @@ export namespace NSProfileDataV2 {
   }
 
   export interface ICadreDetails {
-    isCadre: boolean
+    isCadre: any
     typeOfCivilService: string
     civilServiceName: string
     civilServiceType: string

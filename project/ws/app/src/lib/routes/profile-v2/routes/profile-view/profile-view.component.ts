@@ -130,7 +130,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     countryCode: new FormControl('', []),
     pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
     category: new FormControl('', []),
-    isCadre: new FormControl(false, []),
+    isCadre: new FormControl(''),
     typeOfCivilService: new FormControl(''),
     serviceType: new FormControl(''),
     cadre: new FormControl(''),
@@ -193,7 +193,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   editingAsWhole: any
   isMentor = false
   errorMessage: any
-  isCadreStatus = false
+  isCadreStatus : any
+  cadreAval = true
   showBatchForNoCadre = true
   noCadreDetails = true
   saveChanges = false
@@ -664,7 +665,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Sujith
   prefillForm(data?: any): void {
+    if(this.portalProfile.personalDetails.isCadre !== undefined) {
     this.isCadreStatus = this.portalProfile.personalDetails && this.portalProfile.personalDetails.isCadre ? true : false
+    }
+    else {
+      this.cadreStatus = undefined
+    }
     if (data) {
       this.portalProfile.personalDetails.gender = data.dataToSubmit.gender
       this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
@@ -680,7 +686,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if(!this.portalProfile.hasOwnProperty('cadreDetails')) {
         if(data && data.dataToSubmit) {
           this.portalProfile['cadreDetails'] = {
-            isCadre : false,
+            isCadre : '',
             civilServiceType: '',
             civilServiceName:'',
             cadreName:'',

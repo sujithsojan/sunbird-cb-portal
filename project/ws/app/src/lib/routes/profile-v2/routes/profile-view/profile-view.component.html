@@ -461,7 +461,7 @@
                 </div>
                 <div class="info-value" *ngIf="!editDetails">
                   <span *ngIf="!portalProfile.hasOwnProperty('cadreDetails') || !portalProfile?.personalDetails.hasOwnProperty('isCadre'); else elsCadreDetails">NA</span>
-                  <ng-template #elsCadreDetails>{{ isCadreStatus ? 'Yes' : 'No' }}</ng-template>
+                  <ng-template #elsCadreDetails>{{ isCadreStatus === undefined ? 'NA' : (isCadreStatus? 'Yes' : 'No') }}</ng-template>
                 </div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
@@ -472,6 +472,7 @@
                   </mat-form-field>
                 </div>
               </div>
+              
               
 
               <div class="info-div" *ngIf="otherDetailsForm.get('isCadre').value || !editDetails">
