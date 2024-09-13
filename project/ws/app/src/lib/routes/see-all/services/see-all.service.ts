@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable, of, Subject } from 'rxjs'
-import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { NSSearch } from '@sunbird-cb/collection/src/lib/_services/widget-search.model'
 
 // tslint:disable
 import _ from 'lodash'
+import { FormExtService } from 'src/app/services/form-ext.service'
 // tslint:enable
 
 const API_END_POINTS = {
@@ -25,7 +25,7 @@ export class SeeAllService {
   notifyObservable$ = this.removeFilter.asObservable()
   constructor(
     private http: HttpClient,
-    private configSrv: ConfigurationsService,
+    private formSvc: FormExtService,
   ) {
 
   }
@@ -48,8 +48,16 @@ export class SeeAllService {
   async getSeeAllConfigJson(): Promise<any> {
     if (!this.getSeeAllConfig) {
       this.getSeeAllConfig = {}
-      const baseUrl = this.configSrv.sitePath
-      this.getSeeAllConfig = await this.http.get<any>(`${baseUrl}/page/home.json`).toPromise()
+      const requestData: any = {
+        'request': {
+            'type': 'page',
+            'subType': 'home',
+            'action': 'page-configuration',
+            'component': 'portal',
+            'rootOrgId': '*',
+        },
+      }
+      this.getSeeAllConfig = await  this.formSvc.homeFormReadData(requestData).toPromise()
     }
     return of(this.getSeeAllConfig).toPromise()
   }
