@@ -27,7 +27,7 @@
                     </div>
                     <div class="mb-8">
                         <p class="title">{{resourceData?.name}}</p>
-                        <p class="description mb-4" [innerHTML]="resourceData?.instructions"></p>
+                        <p class="description mb-4" [innerHTML]="resourceData?.instructions | replaceNbspText"></p>
                         <p class="published-date mb-4">Published on {{resourceData?.lastPublishedOn |date:'MMM d, y'}}</p>
                     </div>
                     <div class="flex gap-6 flex-wrap">
