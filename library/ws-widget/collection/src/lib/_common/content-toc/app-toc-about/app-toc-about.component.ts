@@ -309,24 +309,31 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   loadCompetencies(): void {
     if (this.content && this.content[this.compentencyKey.vKey] && this.content[this.compentencyKey.vKey].length) {
       const competenciesObject: any = {}
-      if (typeof this.content[this.compentencyKey.vKey] === 'string' && this.checkValidJSON(this.content[this.compentencyKey.vKey])) {
+      if (typeof this.content[this.compentencyKey.vKey] === 'string'
+        && this.checkValidJSON(this.content[this.compentencyKey.vKey])) {
         this.content[this.compentencyKey.vKey] = JSON.parse(this.content[this.compentencyKey.vKey])
       }
       this.content[this.compentencyKey.vKey].forEach((_obj: any) => {
         if (competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]) {
-          if (competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]]) {
-            const competencyTheme = competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]]
+          if (competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]
+            [_obj[this.compentencyKey.vCompetencyTheme]]) {
+            const competencyTheme = competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]
+              [_obj[this.compentencyKey.vCompetencyTheme]]
             if (competencyTheme.indexOf(_obj[this.compentencyKey.vCompetencySubTheme]) === -1) {
               competencyTheme.push(_obj[this.compentencyKey.vCompetencySubTheme])
             }
           } else {
-            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]] = []
-            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]].push(_obj[this.compentencyKey.vCompetencySubTheme])
+            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]
+              [_obj[this.compentencyKey.vCompetencyTheme]] = []
+            competenciesObject[_obj[this.compentencyKey.vCompetencyArea]]
+              [_obj[this.compentencyKey.vCompetencyTheme]]
+              .push(_obj[this.compentencyKey.vCompetencySubTheme])
           }
         } else {
           competenciesObject[_obj[this.compentencyKey.vCompetencyArea]] = {}
           competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]] = []
-          competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]].push(_obj[this.compentencyKey.vCompetencySubTheme])
+          competenciesObject[_obj[this.compentencyKey.vCompetencyArea]][_obj[this.compentencyKey.vCompetencyTheme]]
+          .push(_obj[this.compentencyKey.vCompetencySubTheme])
         }
       })
 

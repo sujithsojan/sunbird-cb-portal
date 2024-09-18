@@ -52,10 +52,10 @@ export namespace NSBrowseCompetency {
   }
 
   export interface IcompentencyResponseV2 {
-    result: Result
+    result: IResult
   }
 
-  export interface Result {
+  export interface IResult {
     content: ICompetencyV2[]
   }
 }

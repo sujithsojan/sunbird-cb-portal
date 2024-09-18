@@ -193,17 +193,22 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
                   // Certificate consumed logic...
                   eachCourse.issuedCertificates.forEach((certObj: any) => {
                     // tslint:disable-next-line: max-line-length
-                    if (this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].certificate.findIndex((_obj: any) => _obj.courseName === certObj.courseName) === -1) {
-                      this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].certificate.push(certObj)
+                    if (this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].certificate
+                      .findIndex((_obj: any) => _obj.courseName === certObj.courseName) === -1) {
+                      this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].certificate
+                      .push(certObj)
                     }
                   })
 
                   // Content consumed logic...
-                  if (this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].contentConsumed.indexOf(eachCourse.courseName.trim()) === -1) {
-                    this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].contentConsumed.push(eachCourse.courseName.trim())
+                  if (this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].contentConsumed
+                    .indexOf(eachCourse.courseName.trim()) === -1) {
+                    this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].contentConsumed
+                    .push(eachCourse.courseName.trim())
 
                     // Completed on logic...
-                    this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].completedOn.push(eachCourse.completedOn)
+                    this.certificateMappedObject[v5Obj[this.compentencyKey.vCompetencyTheme]].completedOn
+                    .push(eachCourse.completedOn)
                   }
 
                 } else {
@@ -217,12 +222,15 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
 
                 // Sub theme mapping logic...
                 if (subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]]) {
-                  if (subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]].indexOf(v5Obj[this.compentencyKey.vCompetencySubTheme]) === -1) {
-                    subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]].push(v5Obj[this.compentencyKey.vCompetencySubTheme])
+                  if (subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]]
+                    .indexOf(v5Obj[this.compentencyKey.vCompetencySubTheme]) === -1) {
+                    subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]]
+                      .push(v5Obj[this.compentencyKey.vCompetencySubTheme])
                   }
                 } else {
                   subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]] = []
-                  subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]].push(v5Obj[this.compentencyKey.vCompetencySubTheme])
+                  subThemeMapping[v5Obj[this.compentencyKey.vCompetencyTheme]]
+                    .push(v5Obj[this.compentencyKey.vCompetencySubTheme])
                 }
               })
               for (const key in subThemeMapping) {
@@ -238,10 +246,14 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
             v5Obj.contentConsumed = []
             v5Obj.issuedCertificates = []
             // tslint:disable-next-line: max-line-length
-            const competencyArea = (v5Obj[this.compentencyKey.vCompetencyArea].toLowerCase() === 'behavioral') ? 'behavioural' : v5Obj[this.compentencyKey.vCompetencyArea].toLowerCase()
-            if (this.competency[competencyArea].findIndex((obj: any) => obj[this.compentencyKey.vCompetencyTheme] === v5Obj[this.compentencyKey.vCompetencyTheme]) === -1) {
-              this.competency[competencyArea].push(v5Obj)
-            }
+            const competencyArea = (v5Obj[this.compentencyKey.vCompetencyArea].toLowerCase() === 'behavioral')
+            ? 'behavioural' : v5Obj[this.compentencyKey.vCompetencyArea].toLowerCase()
+            if (this.competency[competencyArea]
+              .findIndex((obj: any) =>
+                obj[this.compentencyKey.vCompetencyTheme] === v5Obj[this.compentencyKey.vCompetencyTheme]
+              ) === -1) {
+            this.competency[competencyArea].push(v5Obj)
+          }
 
             this.competency[competencyArea].forEach((_obj: any) => {
               if (_obj[this.compentencyKey.vCompetencyTheme] === v5Obj[this.compentencyKey.vCompetencyTheme]) {
