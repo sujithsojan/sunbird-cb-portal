@@ -115,7 +115,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     // this.store.clearAll()
     if (this.tocConfigSubscription) {
       this.tocConfigSubscription.unsubscribe()
-    } 
+    }
     this.iframeUrl = ''
   }
 
