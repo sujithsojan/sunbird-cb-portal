@@ -12,7 +12,6 @@ import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird
 import { NsContent, WidgetUserService } from '@sunbird-cb/collection/src/public-api'
 import { TranslateService } from '@ngx-translate/core'
 import { environment } from 'src/environments/environment'
-import { BrowseCompetencyService } from '@ws/app/src/lib/routes/browse-by-competency/services/browse-competency.service'
 
 @Component({
   selector: 'ws-competency-list',
@@ -132,7 +131,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private langtranslations: MultilingualTranslationsService,
     private translate: TranslateService,
-    private compentencyService: BrowseCompetencyService,
+    private configSvc: ConfigurationsService,
     @Inject(DOCUMENT) private document: Document
   ) {
     if (window.innerWidth < 768) {
@@ -150,9 +149,8 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
     }
   }
 
-  async ngOnInit() {
-    this.compentencyKey = await this.compentencyService.getAllCompentencyParameters(environment.compentencyVersionKey)
-
+  ngOnInit() {
+    this.compentencyKey = this.configSvc.compentency[environment.compentencyVersionKey]
     this.getUserEnrollmentList()
   }
 

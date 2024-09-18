@@ -29,7 +29,6 @@ import { ResetRatingsService } from '@ws/app/src/lib/routes/app-toc/services/res
 import { ReviewsContentComponent } from '../reviews-content/reviews-content.component'
 import { CertificateDialogComponent } from '../../certificate-dialog/certificate-dialog.component'
 import { environment } from 'src/environments/environment'
-import { BrowseCompetencyService } from '@ws/app/src/lib/routes/browse-by-competency/services/browse-competency.service'
 
 interface IStripUnitContentData {
   key: string
@@ -86,7 +85,6 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     private handleClaimService: HandleClaimService,
     private resetRatingsService: ResetRatingsService,
     private contentSvc: WidgetContentService,
-    private compentencyService: BrowseCompetencyService
   ) {
     this.resetRatingsService.resetRatings$.subscribe((_res: any) => {
       this.fetchRatingSummary()
@@ -187,9 +185,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   isMobile = false
   compentencyKey!: NsContent.CompentencyKeys
 
-  async ngOnInit() {
-    this.compentencyKey = await this.compentencyService.getAllCompentencyParameters(environment.compentencyVersionKey)
-
+  ngOnInit() {
+    
+    this.compentencyKey = this.configService.compentency[environment.compentencyVersionKey]
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
