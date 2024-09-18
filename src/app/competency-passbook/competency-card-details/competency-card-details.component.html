@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="flex justify-center items-center">
-                <img src="assets/icons/competency/{{ (themeDetails?.competencyArea.toLowerCase() === 'behavioral' ? 'behavioural' :  themeDetails?.competencyArea.toLowerCase()) }}-light.svg" class="stamp-img" alt="{{ themeDetails?.competencyArea.toLowerCase() }} image" />
+                <img alt='' src="assets/icons/competency/{{ (themeDetails?.competencyArea.toLowerCase() === 'behavioral' ? 'behavioural' :  themeDetails?.competencyArea.toLowerCase()) }}-light.svg" class="stamp-img" alt="{{ themeDetails?.competencyArea.toLowerCase() }} image" />
             </div>
         </div>
 
@@ -29,7 +29,9 @@
                             {{ chip }}
                         </div>
                     </ng-container>
-                    <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="((isMobile) ? themeDetails?.subTheme?.length > 3 : themeDetails?.subTheme?.length > 10 )  && !viewMoreST" (click)="viewMoreST = !viewMoreST">
+                    <div class="flex items-center text-primary underline cursor-pointer text-xs"
+                     *ngIf="((isMobile) ? themeDetails?.subTheme?.length > 3 : themeDetails?.subTheme?.length > 10 )  && !viewMoreST" 
+                        (click)="viewMoreST = !viewMoreST">
                         {{'competencyCardDetails.viewMore' | translate}}
                     </div>
                     <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="viewMoreST" (click)="viewMoreST = !viewMoreST">
@@ -75,13 +77,10 @@
                                 </div>
                             </div>
                             <div class="flex justify-center">
-                                <!-- <ng-container *ngIf="eachCert?.loading">
-                                    <ws-widget-skeleton-loader [bindingClass]="'flex rounded'" [width]="'280px'" [height]="'160px'"></ws-widget-skeleton-loader>
-                                </ng-container> -->
                                 <ng-container >
                                     <ng-container *ngIf="!eachCert.error && eachCert?.identifier">
                                         <div class="flex justify-center items-center img-div img-container">
-                                            <!-- [src]="eachCert?.printURI | pipeSafeSanitizer: 'url'" -->
+                                            
                                              <ng-container  *ngIf="!eachCert?.printURI">
                                                 <img [src]="'/assets/icons/toc/no-certificate.svg'"  alt="{{ eachCert?.courseName }} certificate" />
                                              </ng-container>

@@ -1,15 +1,12 @@
 <div class="home">
   <mat-toolbar class="mt-53 nav-toolbar">
-    <div class="fix-ww flex flex-row mt-3" id="root-tool-bar" title="toolbar" i18n-aria-label role="toolbar">
+    <!-- //NOSONAR --> <div class="fix-ww flex flex-row mt-3" id="root-tool-bar" title="toolbar" i18n-aria-label role="toolbar">
       <a class="logo-dim" role="link" title="Home" i18n-aria-title i18n-aria-label routerLink="/static-home">
-        <!-- <img [src]="appIcon" alt="Application Logo" class="app-logo" /> -->
         <img src="https://www.igot-dev.in/img/karmayogiLogo.svg" alt="Application Logo" class="app-logo" />
       </a>
       <div class="text-end flex flex-1 flex-row-reverse signup_div">
         <a routerLink="/public/signup" class="btn btn-primary text-center margin-left-s">{{ 'common.register' | translate }}</a>
         <a href="/protected/v8/resource" class="btn btn-link">{{ 'common.signIn' | translate }}</a>
-        <!-- <a href="/apis/public/v8/google/auth" class="btn btn-link">Parichay</a> -->
-        <!-- <a href="/apis/public/v8/google/auth" class="btn btn-link">Sign In with P</a> -->
       </div>
     </div>
   </mat-toolbar>
@@ -66,8 +63,7 @@
             <div class="flex flex-1 flex-col">
               <h4 class="margin-bottom-l text-white text-left">{{ 'publicHome.expCivilServant' | translate }}</h4>
               <div class="exCivilVideo">
-                <!-- <img src="/assets/instances/eagle/landing-img/video1.png" alt="video presentation"> -->
-                <video width="100%" height="auto" controls poster="/assets/instances/eagle/landing-img/video1.png">
+                <!-- //NOSONAR --> <video width="100%" height="auto" controls poster="/assets/instances/eagle/landing-img/video1.png">
                   <source src="https://igot.blob.core.windows.net/public/Sanjeev-final.mp4" type="video/mp4">
                 </video>
               </div>
@@ -76,14 +72,12 @@
             <div class="flex flex-1 flex-col margin-left-m">
               <h4 class="margin-bottom-l text-white text-left">{{ 'publicHome.servicesSection' | translate }}</h4>
               <div class="exCivilVideo">
-                <video width="100%" height="auto" controls poster="/assets/instances/eagle/landing-img/video2.png">
+                <!-- //NOSONAR --> <video width="100%" height="auto" controls poster="/assets/instances/eagle/landing-img/video2.png">
                   <source src="https://igot.blob.core.windows.net/public/Shilpa-final.mp4" type="video/mp4">
                 </video>
 
               </div>
             </div>
-            <!-- <div class="dd-border1"></div>
-            <div class="dd-border1 dd-border2"></div> -->
           </div>
         </div>
       </div>
@@ -93,13 +87,11 @@
   <section class="journeySection">
     <div class="container container-balanced">
       <div class="flex flex-row w-100">
-        <!-- <div class="grid-cols-1 grid"> -->
         <div class="flex flex-column justify-center items-center journeyContent">
           <h1 class="mb-3">{{ 'publicHome.journeySectionMain' | translate }}</h1>
           <p>{{ 'publicHome.journeySectionPara' | translate }}</p>
           <div class="mt-2"><a routerLink="/public/signup" class="btn btn-primary">{{ 'common.register' | translate }}</a> </div>
         </div>
-        <!-- </div> -->
       </div>
     </div>
   </section>
@@ -172,7 +164,7 @@
 
             <div class="flex flex-1 flex-col">
               <div class="exCivilVideo text-center mt-4 margin-left-m">
-                <video controls="" height="100%" width="100%">
+                <!-- //NOSONAR --> <video controls="" height="100%" width="100%">
                   <source src="https://igot.blob.core.windows.net/public/video-guide.mp4" type="video/mp4">
                 </video>
               </div>

@@ -14,7 +14,7 @@ import { AvatarPhotoComponent } from './avatar-photo.component'
     MatIconModule,
     MatMenuModule,
     MatRippleModule,
-    WidgetResolverModule,
+    WidgetResolverModule
   ],
   exports: [AvatarPhotoComponent],
   entryComponents: [AvatarPhotoComponent],

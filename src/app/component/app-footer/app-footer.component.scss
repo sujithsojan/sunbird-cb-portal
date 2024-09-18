@@ -15,7 +15,7 @@
 }
 
 .font-14 {
-  font-family: lato;
+  font-family: lato, sans-serif;
   font-size: 14px !important;
   color: #000000;
 }
@@ -56,7 +56,6 @@
       margin-right: auto!important;
 
       img.footer_logo {
-        // height: 32px;
         width: 120px;
         background: #fff;
         border-radius: 2px 2px;
@@ -105,9 +104,6 @@
     .top_footer_inner  {
       width: 100%;
       max-width: 100%;
-      // div {
-      //   margin-bottom: 16px;
-      // }
     }
   }
 }
@@ -117,7 +113,6 @@
   margin:0;
 }
 .nav-footer ul li {
-  // margin-bottom: 12px;
   list-style: none;
 }
 

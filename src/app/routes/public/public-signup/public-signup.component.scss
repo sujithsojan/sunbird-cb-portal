@@ -63,9 +63,6 @@
     }
     .left_container {
       flex: 1;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
       position: relative;
       max-width: 60%;
 
@@ -80,10 +77,6 @@
     }
     .features-image img {
       max-width: 90%;   
-      // position: absolute;
-      // top: 10%;
-      // // left: 50%;
-      // transform: translate(-50%, -50%);
     }
 
     .logo_box {
@@ -96,7 +89,6 @@
     .slider_box {
       padding: 5rem 0 2rem 0;
       width: 320px;
-      box-sizing: border-box;
       box-sizing: border-box;
     }
 
@@ -116,17 +108,7 @@
       margin-bottom: 1rem;
     }
 
-    // .main_container {
-    //   background-image : url(assets/instances/eagle/banners/home/9/Login_background.png) no-repeat center center fixed;
-    // }
-
-  // ::ng-deep .top-nav-bar {
-  //   display: none;
-  // }
-
-  // ::ng-deep .height-on-top {
-  //   padding-top: 0!important;
-  // }
+   
 
   ::ng-deep.theme-igot.day-mode .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
     background-color: #0074b6!important;
@@ -173,15 +155,16 @@
   .disable {
     pointer-events: none !important;
     cursor: text !important;
-    // background: gainsboro;
 
     .txt {
       animation-duration: 3000ms;
       animation-name: blink;
       animation-iteration-count: infinite;
       animation-direction: alternate;
-      // tslint:disable-next-line
-      -webkit-animation: blink 3000ms infinite;
+      -webkit-animation-duration: 3000ms;
+      -webkit-animation-name: blink;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-direction: alternate;
       /* Safari and Chrome */
       @keyframes blink {
         from {
@@ -206,14 +189,9 @@
     }
   }
 
-  ::ng-deep mat-form-field .mat-form-field-infix .mat-form-field-label,
-  ::ng-deep mat-form-field .mat-form-field-infix .mat-select-value {
-    line-height: normal !important;
-  }
 
-  ::ng-deep .theme-igot.day-mode .mat-form-field.mat-focused .mat-form-field-label {
-    color: #333232 !important;
-  }
+
+
 
   ::ng-deep .theme-igot.day-mode .mat-option.mat-selected:not(.mat-option-multiple) {
     background: rgba(0, 0, 0, 0.04) !important;
@@ -259,6 +237,7 @@
 
   /* Firefox */
   input[type=number] {
+    appearance: textfield;
     -moz-appearance: textfield;
   }
 
@@ -319,7 +298,6 @@
             width:auto;
           }
 
-          // display: contents;
           &:last-child {
             margin-right: 0;
           }
@@ -488,9 +466,7 @@
         border: 1px solid #70707069;
         border-radius: 4px 0 0 4px;
         border-right-style: none;
-        /* border: 1px solid currentColor; */
         min-width: 4px;
-        border-right-style: none;
       }
 
       .mat-form-field-outline-gap {
@@ -535,11 +511,6 @@
       }
     }
 
-    ::ng-deep .mat-form-field-infix {
-      padding: 0;
-      margin: 0;
-      border: none;
-    }
 
     ::ng-deep .mat-form-field-flex {
       min-height: 48px;
@@ -558,7 +529,7 @@
   }
 
   ::ng-deep #org-field {
-    font: 400 12px/18px Lato !important;
+    font: 400 12px/18px Lato, sans-serif !important;
   }
   ::ng-deep #position .mat-form-field-hint-wrapper {
     display: block !important;
@@ -572,7 +543,7 @@
     color: #222222;
     font-size: 16px;
     margin-bottom: 0.5rem;
-    font-family: 'Lato';
+    font-family: 'Lato', sans-serif;
 
     @include breakpoint-xs {
       display: block;
@@ -614,7 +585,7 @@
     }
   }
 
-  ::ng-deeptextarea.mat-input-element {
+  ::ng-deep textarea.mat-input-element {
     padding: 8px 0;
   }
 
@@ -730,7 +701,6 @@
   ::ng-deep .mat-checkbox-ripple {
     position: absolute;
       left: calc(50% - 13px);
-      /* top: calc(50% - 20px); */
       height: 23px;
       width: 23px;
       z-index: 1;
@@ -760,15 +730,9 @@
 
   @media screen and (max-width: 768px) {
     .profile-box {
-      // margin: 0 1rem;
-      // padding: 0.5rem 1rem;
       margin: 0;
       padding: 10px 0;
 
-      // .btn-success {
-        // margin-right: 0;
-        // margin: 0 8px!important;
-      // }
 
       .profile-cols {
         padding: 1rem;
@@ -833,8 +797,6 @@
   position: absolute;
   z-index: 1;
   top: 100%;
-  // left: 50%;
-  // margin-left: -60px;
   border: 1px solid;
 }
 
@@ -908,15 +870,7 @@ color: #333232 !important;
 padding: 0.6em 0 0.6em 0 !important;
 display: flex;
 width: auto;
-// height: inherit;
 }
-
-// ---------------------------------------
-// custom autocomplete styles end
-// .blue-text {
-//   color: #0074b6 !important;
-//   cursor: pointer;
-// }
 .mat-hint {
   width: 100% !important;
 }
@@ -936,7 +890,6 @@ a.terms-text{
 .help-request {
   position: relative;
   top: -3px;
- // right: 2px;
 }
 
 .pos-request {
@@ -951,7 +904,7 @@ a.terms-text{
     margin-top: -2.5px;
   }
   .custom-lang {
-    font: 400 14px/21px Lato;
+    font: 400 14px/21px Lato, sans-serif;
     width: 124px;
     padding: 0 !important;
     position: relative;
@@ -971,7 +924,7 @@ a.terms-text{
 
   .checkmark::before {
     content:'L';
-    font-family: arial;
+    font-family: arial, sans-serif;
     -ms-transform: scaleX(-1) rotate(-35deg); /* IE 9 */
     -webkit-transform: scaleX(-1) rotate(-35deg); /* Chrome, Safari, Opera */
     transform: scaleX(-1) rotate(-35deg);

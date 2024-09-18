@@ -40,7 +40,6 @@
 
 .chatbot {
   width: 400px;
-  // min-height: 702px;
   position: fixed;
   bottom: 20px;
   right: 50px;
@@ -48,15 +47,16 @@
   border-radius: 15px;
   background-color: white;
   box-shadow: 0 6px 16px #0000003d;
+  height: calc(100vh - 20%);
 }
 
 .cb-close {
   cursor: pointer;
 }
 
+
+
 .cb-header {
-  // background-color: white;
-  // color: black !important;
 
   color: white !important;
   background-color: rgb(27, 76, 161);
@@ -64,14 +64,15 @@
   border-top-right-radius: 15px;
   align-items: center;
   justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  top: 0;
   .user-info-div {
     width: 88%;
     justify-content: space-between;
   }
   .lang-select {
     height: 32px;
-    // background-color: rgba(0, 0, 0, 0.04);
-    // border-color: rgba(0, 0, 0, 0.16)!important;
     background-color: white;
     border-color: rgba(0, 0, 0, 0.16)!important;
   }
@@ -84,8 +85,6 @@
   }
 }
 .cb-content {
-  // max-height: 500px;
-  // min-height: 500px;
   background-color: #F0F3F4;
   overflow: auto;
 }
@@ -99,6 +98,7 @@
 .cb-footer {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  background-color: white;
   .info {
     width: 50%;
     padding: 5px 0;
@@ -145,11 +145,10 @@
   padding: 10px 16px;
   border-radius: 21px;
   border: 1px solid rgba(0,0,0, 0.16);
-  opacity: 1;
   background-color: rgba(0,0,0, 0.04);
   opacity: 1;
   color: rgba(0,0,0,0.87);
-  font-family: "Lato-Regular";
+  font-family: Lato-Regular, sans-serif;
   font-size: 14px;
   font-weight: 400;
   font-style: normal;
@@ -163,11 +162,7 @@
   white-space: nowrap;
 }
 
-// ::-webkit-scrollbar {
-//   width: 0px;
-//   padding: 0;
-//   background: transparent; /* make scrollbar transparent */
-// }
+
 .lang-select {
   width: 70px;
   .mat-form-field-flex {
@@ -324,17 +319,9 @@
 }
 
 
-.chatbot {
-  height: calc(100vh - 20%);
-}
+
 .chatbot-wrapper {
   position: relative;
-  // height: 100%;
-}
-.cb-header {
-  position: absolute;
-  width: 100%;
-  top: 0;
 }
 .cb-content-wrapper {
   position: absolute;
@@ -345,9 +332,6 @@
   overflow: auto;
   box-sizing: border-box;
   background-color: #F0F3F4;
-}
-.cb-footer {
-  background-color: white;
 }
 .cb-footer-wrapper {
   position: absolute;
@@ -361,9 +345,7 @@
 .mr-5px {
   margin-right: 5px
 }
-.br-bl {
-  border-bottom-left-radius: 15px;
-}
+
 *, ::after, ::before {
   box-sizing: border-box;
 }
