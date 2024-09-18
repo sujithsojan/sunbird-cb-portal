@@ -257,13 +257,26 @@ const routes: Routes = [
     },
   },
   {
-    path: 'app/learn/browse-by/competency',
+    path: 'app/learn/browse-by/competency-o',
     loadChildren: () =>
       import('./routes/route-browse-competency.module').then(u => u.RouteBrowseCompetencyModule),
     canActivate: [GeneralGuard],
     data: {
       // pageType: 'feature',
       // pageKey: 'browse by competency',
+      pageId: 'app/learn/browse-by/competency',
+      module: 'Competency',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
+    path: 'app/learn/browse-by/competency',
+    loadChildren: () =>
+      import('./routes/route-browse-competency-v2.module').then(u => u.RouteBrowseCompetencyModuleV2),
+    canActivate: [GeneralGuard],
+    data: {
       pageId: 'app/learn/browse-by/competency',
       module: 'Competency',
     },

@@ -1,12 +1,12 @@
 <ng-template #competencyCard>
     <div class="flex-1 flex-col" *ngFor="let obj of competencyArray">
-        <div class="competency-passbook-theme" [ngClass]="{'behavioral': obj.competencyArea.toLowerCase() === TYPE_CONST.behavioral.otherValue, 'functional': obj.competencyArea.toLowerCase() === TYPE_CONST.functional.value, 'domain': obj.competencyArea.toLowerCase() === TYPE_CONST.domain.value}" ></div>
+        <div class="competency-passbook-theme" [ngClass]="{'behavioral': obj[compentencyKey.vCompetencyArea].toLowerCase() === TYPE_CONST.behavioral.otherValue, 'functional': obj[compentencyKey.vCompetencyArea].toLowerCase() === TYPE_CONST.functional.value, 'domain': obj[compentencyKey.vCompetencyArea].toLowerCase() === TYPE_CONST.domain.value}" ></div>
         <div class="detail flex flex-col">
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between p-4 cursor-pointer gap-6" (click)="handleNavigate(obj)">
                     <div class="flex flex-col gap-3 text-primary">
                         <div class="flex flex-row gap-2 align-baseline">
-                            <div class="competency-name font-semibold" [title]="obj?.competencyTheme" >{{ obj?.competencyTheme }}</div>
+                            <div class="competency-name font-semibold" [title]="obj[compentencyKey.vCompetencyTheme]" >{{ obj[compentencyKey.vCompetencyTheme] }}</div>
                             <div class="flex items-baseline">
                                 <img src="assets/icons/competency/cp-arrow.svg" class="arrow-img" alt="cp arrow img" />
                             </div>
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="flex items-baseline">
-                        <img src="assets/icons/competency/{{(obj?.competencyArea.toLowerCase() === 'behavioral') ? 'behavioural' : obj?.competencyArea.toLowerCase() }}-light.svg" alt="{{ obj?.competencyArea.toLowerCase() }} image" />
+                        <img src="assets/icons/competency/{{(obj[compentencyKey.vCompetencyArea].toLowerCase() === 'behavioral') ? 'behavioural' : obj[compentencyKey.vCompetencyArea].toLowerCase() }}-light.svg" alt="{{ obj[compentencyKey.vCompetencyArea].toLowerCase() }} image" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3 p-4 chip-container">
@@ -247,10 +247,7 @@
                                     [height]="'28px'"></ws-widget-skeleton-loader>
                             </ng-container>
                             <ng-container *ngIf="!competency.skeletonLoading">
-                                <!-- {{ (competency[elem?.name + 'SubTheme']) }} --------
-                                {{ elem.competencySubTheme }}  ++++
-                                {{ elem | json }}/// -->
-                                <div class="text-base font-semibold">{{ (competency[elem?.name + 'SubTheme'] || elem.competencySubTheme) || '0' }}</div>
+                                <div class="text-base font-semibold">{{ (competency[elem?.name + 'SubTheme'] || elem[compentencyKey.vCompetencySubTheme]) || '0' }}</div>
                             </ng-container>
                         </div>
                         <div class="flex flex-col">
