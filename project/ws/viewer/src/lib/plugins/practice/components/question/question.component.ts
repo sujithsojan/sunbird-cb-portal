@@ -70,7 +70,6 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   expandedQuestionSetSubscription: any
 
   constructor(
-    // private domSanitizer: DomSanitizer,
     // private elementRef: ElementRef,
     private practiceSvc: PracticeService,
     private snackBar: MatSnackBar

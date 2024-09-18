@@ -37,7 +37,7 @@ export class CompetencyCardComponent implements OnInit {
             status: [
                 'Live',
             ],
-            [`${this.compentencyKey.vKey}.${this.compentencyKey.vCompetencySubTheme}`]: [''], 
+            [`${this.compentencyKey.vKey}.${this.compentencyKey.vCompetencySubTheme}`]: [''],
         },
         query: '',
         sort_by: {

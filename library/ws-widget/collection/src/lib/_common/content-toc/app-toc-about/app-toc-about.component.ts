@@ -186,7 +186,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   compentencyKey!: NsContent.CompentencyKeys
 
   ngOnInit() {
-    
+
     this.compentencyKey = this.configService.compentency[environment.compentencyVersionKey]
     if (window.innerWidth <= 1200) {
       this.isMobile = true

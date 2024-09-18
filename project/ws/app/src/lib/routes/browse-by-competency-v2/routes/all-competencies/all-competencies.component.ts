@@ -125,7 +125,7 @@ export class AllCompetenciesComponent implements OnInit, OnDestroy, OnChanges {
           // if (reponse.statusInfo && reponse.statusInfo.statusCode === 200) {
           //   this.allCompetencies = reponse.responseData
           // }
-          const data: NSBrowseCompetency.ICompetencie[] = await this.flattenCompetencies(reponse.result.content);
+          const data: NSBrowseCompetency.ICompetencie[] = await this.flattenCompetencies(reponse.result.content)
           if (data) {
             // this.allCompetencies
             if (req && req.filter && req.filter.length > 0) {
@@ -138,7 +138,7 @@ export class AllCompetenciesComponent implements OnInit, OnDestroy, OnChanges {
               })
               // this.allCompetencies = _.orderBy(this.allCompetencies, ['name'], [req.sort === 'Descending'])
             } else {
-              this.allCompetencies = data;
+              this.allCompetencies = data
             }
             this.localDataService.initData(data)
           }
@@ -182,53 +182,52 @@ export class AllCompetenciesComponent implements OnInit, OnDestroy, OnChanges {
   flattenCompetencies(data: NSBrowseCompetency.ICompetencyV2[]): Promise<NSBrowseCompetency.ICompetencie[]> {
     return new Promise((resolve, reject) => {
       try {
-        const result: any[] = [];
-  
+        const result: any[] = []
+
         function traverse(node: NSBrowseCompetency.ICompetencyV2, parentCompetencyType: string, parentCompetencyArea: string) {
           // Push the transformed node
           result.push({
             name: node.displayName || node.name,
-            id: node.identifier, 
+            id: node.identifier,
             description: node.description,
             type: parentCompetencyType,
-            status: "", 
-            source: "", 
+            status: '',
+            source: '',
             competencyType: parentCompetencyType.charAt(0).toUpperCase() + parentCompetencyType.slice(1).toLowerCase(),
             competencyArea: parentCompetencyArea,
-            contentCount: node.count 
-          });
-  
+            contentCount: node.count,
+          })
+
           // Recursively process children if present
           if (node.children && node.children.length > 0) {
-            node.children.forEach(child => traverse(child, parentCompetencyType, parentCompetencyArea));
+            node.children.forEach(child => traverse(child, parentCompetencyType, parentCompetencyArea))
           }
         }
-  
+
         data.forEach(item => {
           if (item.identifier.includes('competencyarea')) {
-            const competencyType = item.displayName || item.name; 
-  
+            const competencyType = item.displayName || item.name
+
             item.children.forEach(area => {
               if (area.identifier.includes('fw_theme')) {
-                const competencyArea = area.displayName || area.name; 
-  
+                const competencyArea = area.displayName || area.name
+
                 area.children.forEach(subtheme => {
                   if (subtheme.identifier.includes('subtheme')) {
-                    traverse(subtheme, competencyType, competencyArea);
+                    traverse(subtheme, competencyType, competencyArea)
                   }
-                });
+                })
               }
-            });
+            })
           }
-        });
-  
-        resolve(result);
+        })
+
+        resolve(result)
       } catch (error) {
-        reject(error);
+        reject(error)
       }
-    });
+    })
   }
-  
 
   updateQuery(key: string) {
     this.searchQuery = key

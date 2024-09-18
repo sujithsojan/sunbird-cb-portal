@@ -64,7 +64,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   leftCardDetails: any = [{
     name: this.TYPE_CONST.behavioral.value,
     label: this.TYPE_CONST.behavioral.capsValue,
-    type: 'Behavioral',
+    type: 'Behavioural',
     total: 0,
     competencySubTheme: 0,
     contentConsumed: 0,
@@ -155,6 +155,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   }
 
   getUserEnrollmentList(): void {
+
     const enrollmentMapData = JSON.parse(localStorage.getItem('enrollmentMapData') as any)
     const userId: any = this.configService && this.configService.userProfile && this.configService.userProfile.userId
     this.widgetService.fetchUserBatchList(userId)
@@ -162,7 +163,6 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
       .subscribe(
         (response: any) => {
           let competenciesV5: any[] = []
-
           response.courses.forEach((eachCourse: any) => {
             // To eliminate In progress or Yet to start courses...
             if (enrollmentMapData[eachCourse.contentId].status !== 2) { return }
@@ -271,6 +271,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   }
 
   getOtherData(): void {
+
     this.competency.all.forEach((allObj: any) => {
       allObj.issuedCertificates = this.certificateMappedObject[allObj[this.compentencyKey.vCompetencyTheme]].certificate
       allObj.contentConsumed = this.certificateMappedObject[allObj[this.compentencyKey.vCompetencyTheme]].contentConsumed

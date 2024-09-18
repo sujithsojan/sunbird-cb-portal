@@ -40,13 +40,13 @@ export namespace NSBrowseCompetency {
   }
 
   export interface ICompetencyV2 {
-    identifier: string;
-    displayName: string;
-    name: string;
-    count: number;
-    description: string;
-    refId: string;
-    children: ICompetencyV2[];
+    identifier: string
+    displayName: string
+    name: string
+    count: number
+    description: string
+    refId: string
+    children: ICompetencyV2[]
     competencyType?: string
     competencyArea?: string
   }
