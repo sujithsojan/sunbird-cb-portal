@@ -183,7 +183,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
   timer: any = {}
   isMobile = false
-  compentencyKey!: NsContent.CompentencyKeys
+  compentencyKey!: NsContent.ICompentencyKeys
 
   ngOnInit() {
 

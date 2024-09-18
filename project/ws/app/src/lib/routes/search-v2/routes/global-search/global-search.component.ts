@@ -17,7 +17,7 @@ export class GlobalSearchComponent implements OnInit {
   filtersPanel!: string | null
   selectedTab = 1
   tabs = ['All', 'Learn', 'Network', 'Discuss', 'Careers']
-  compentencyKey!: NsContent.CompentencyKeys
+  compentencyKey!: NsContent.ICompentencyKeys
 
   constructor(private activated: ActivatedRoute, private translate: TranslateService, private configService: ConfigurationsService) {
     if (localStorage.getItem('websiteLanguage')) {

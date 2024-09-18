@@ -568,7 +568,7 @@ export namespace NsContent {
     EMimeTypes.SURVEY,
   ]
 
-  export interface CompentencyKeys {
+  export interface ICompentencyKeys {
     vKey: string
     vCompetencyArea: string
     vCompetencyAreaDescription: string

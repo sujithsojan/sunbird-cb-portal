@@ -123,7 +123,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   filterObjData2 = { ...this.filterObjData }
   tabValue = ''
   certificateMappedObject: any = {}
-  compentencyKey!: NsContent.CompentencyKeys
+  compentencyKey!: NsContent.ICompentencyKeys
   constructor(
     private widgetService: WidgetUserService,
     private configService: ConfigurationsService,

@@ -51,7 +51,7 @@ export namespace NSBrowseCompetency {
     competencyArea?: string
   }
 
-  export interface IcompentencyResponseV2 {
+  export interface ICompentencyResponseV2 {
     result: IResult
   }
 
