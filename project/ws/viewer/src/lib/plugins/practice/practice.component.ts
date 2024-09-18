@@ -1597,6 +1597,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
           
     }
+    this.updateProgress(2)
   }
 
   showAnswers() {

@@ -130,7 +130,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     countryCode: new FormControl('', []),
     pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
     category: new FormControl('', []),
-    isCadre: new FormControl(false, [Validators.required]),
+    isCadre: new FormControl(false, []),
     typeOfCivilService: new FormControl(''),
     serviceType: new FormControl(''),
     cadre: new FormControl(''),
@@ -197,6 +197,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   showBatchForNoCadre = true
   noCadreDetails = true
   saveChanges = false
+  noHtmlCharacter = new RegExp(/<[^>]*>|(function[^\s]+)|(javascript:[^\s]+)/i)
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -366,22 +367,28 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const cadreControl = this.otherDetailsForm.get('cadre')
     const batchControl = this.otherDetailsForm.get('batch')
     const cadreControllingAuthorityControl = this.otherDetailsForm.get('cadreControllingAuthority')
-
     if (cadreControl) { cadreControl.reset() }
     if (batchControl) { batchControl.reset() }
     if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
     this.selectedServiceName = event.value
-    this.selectedService = this.serviceListData.find((service: any) => service.name === this.selectedServiceName)
-    this.civilServiceName =  this.selectedService.name
-    this.civilServiceId = this.selectedService.id
-    this.cadre = this.selectedService.cadreList.map((cadre: any) => cadre.name)
-    if (this.selectedService.cadreControllingAuthority) {
+    if (this.serviceListData) {
+      this.selectedService = this.serviceListData.find((service: any) => service.name === this.selectedServiceName)
+      this.civilServiceName =  this.selectedService.name
+      this.civilServiceId = this.selectedService.id
+      this.cadre = this.selectedService.cadreList.map((cadre: any) => cadre.name)
+    }
+
+    // if((this.selectedServiceName.trim() === 'Indian Administrative Office (IAS)') ||
+    //                 (this.selectedServiceName.trim() === "Indian Police Service (IPS)") ||
+    //                 (this.selectedServiceName.trim() === "Indian Forest Service (IFoS)") && !this.editDetails) {
+    //                 this.showBatchForNoCadre = false
+    // }
+    if (this.selectedService && this.selectedService.cadreControllingAuthority) {
       this.cadreControllingAuthority = this.selectedService.cadreControllingAuthority
     } else {
       this.cadreControllingAuthority = 'NA'
     }
-
-    if (this.selectedService.cadreList.length === 0) {
+    if (this.selectedService && this.selectedService.cadreList && this.selectedService.cadreList.length === 0) {
       this.showBatchForNoCadre = true
       this.startBatch = this.selectedService.commonBatchStartYear
       this.endBatch = this.selectedService.commonBatchEndYear
@@ -401,14 +408,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (batchControl) { batchControl.reset() }
     if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
     this.selectedCadreName = event
-    this.selectedCadre = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName)
-    this.startBatch = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName).startBatchYear
-    this.endBatch = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName).endBatchYear
-    this.exclusionYear = this.selectedCadre.exculsionYearList
-    // tslint:disable
-    this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
-        .filter(year => !this.exclusionYear.includes(year))
-    this.cadreId = this.selectedCadre.id
+    if(this.selectedService) {
+      this.selectedCadre = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName)
+      this.startBatch = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName).startBatchYear
+      this.endBatch = this.selectedService.cadreList.find((cadre: any) => cadre.name === this.selectedCadreName).endBatchYear
+      this.exclusionYear = this.selectedCadre.exculsionYearList
+      // tslint:disable
+      this.yearArray = Array.from({ length: this.endBatch - this.startBatch + 1 }, (_, index) => this.startBatch + index)
+          .filter(year => !this.exclusionYear.includes(year))
+      this.cadreId = this.selectedCadre.id
+    }
+  
   }
   // Sujith
   fetchCadreData() {
@@ -662,6 +672,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.portalProfile.personalDetails.category = data.dataToSubmit.category
       // this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
       this.portalProfile.personalDetails.mobile = data.dataToSubmit.mobile
+      this.portalProfile.personalDetails.phoneVerified = data.dataToSubmit.phoneVerified
       if (this.portalProfile.employmentDetails) {
         this.portalProfile.employmentDetails.employeeCode = data.employeeCode
         this.portalProfile.employmentDetails.pinCode = data.dataToSubmit.pincode
@@ -791,6 +802,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+
+
   handleResendOTP(data: any): void {
     let otpValue$: any
     if (data.type === 'email') {
@@ -912,11 +925,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     delete dataToSubmit.employeeCode
     delete dataToSubmit.primaryEmail
 
-    const payload = {
+    const payload: any = {
       'request': {
         'userId': this.configService.unMappedUser.id,
         'profileDetails': {
-          'personalDetails': {},
+          'personalDetails': {
+          },
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
             'pinCode': this.otherDetailsForm.value['pincode'],
@@ -929,6 +943,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
+    payload.request.profileDetails.personalDetails['phoneVerified'] = this.verifyMobile ? 'false' : 'true';
+
     if((this.otherDetailsForm.value['typeOfCivilService'] && this.otherDetailsForm.value['serviceType'] && this.otherDetailsForm.value['batch']) || (!this.otherDetailsForm.value['isCadre'])) {
     if(this.isCadreStatus) {
       payload.request.profileDetails.cadreDetails = {
@@ -955,7 +971,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!error.ok) {
           this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdateFailed'))
           this.editDetails = !this.editDetails
-          this.prefillForm()
+          this.prefillForm({ dataToSubmit, ...{ 'employeeCode': this.otherDetailsForm.value['employeeCode'] } })
         }
       })
     }
@@ -1343,6 +1359,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleUpdateName(): void {
+
+    const regexMatch = this.profileName.match(this.noHtmlCharacter)
+    if (regexMatch) {
+      this.matSnackBar.open('HTML or Js is not allowed')
+      return 
+    } 
+
     const postData = {
       'request': {
         'userId': this.configService.unMappedUser.id,
@@ -1522,7 +1545,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
               if (popCivilServiceType.serviceList[serviceIndex].id === cadreValues.civilServiceId) {
                 let popServiceType = popCivilServiceType.serviceList[serviceIndex];
                 this.serviceName = popCivilServiceType.serviceList.map((service: any) => service.name)
+                this.serviceListData = popCivilServiceType.serviceList
                 this.civilServiceId = popCivilServiceType.serviceList[serviceIndex].id
+                if(popCivilServiceType.serviceList[serviceIndex] && popCivilServiceType.serviceList[serviceIndex].name) {
+                  let civilServiceName = popCivilServiceType.serviceList[serviceIndex].name
+                  if((civilServiceName.trim() === 'Indian Administrative Office (IAS)') || 
+                    (civilServiceName.trim() === "Indian Police Service (IPS)") ||
+                    (civilServiceName.trim() === "Indian Forest Service (IFoS)")) {
+                    this.showBatchForNoCadre = false
+                  }
+                }
+                
                   if (!cadreValues.cadreName) {
                     this.startBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchStartYear
                     this.endBatch = popCivilServiceType.serviceList[serviceIndex].commonBatchEndYear

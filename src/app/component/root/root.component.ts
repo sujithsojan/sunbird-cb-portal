@@ -497,9 +497,8 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   getHeaderFooterConfiguration() {
     const baseUrl = this.configSvc.sitePath
-    // console.log('baseUrl', baseUrl+'/page/home.json')
     // tslint:disable-next-line: prefer-template
-    return this.http.get(baseUrl + '/page/home.json').pipe(
+    return this.http.get(baseUrl + '/page/right-nav-config.json').pipe(
       map(data => ({ data, error: null })),
       catchError(err => of({ data: null, error: err })),
     )
