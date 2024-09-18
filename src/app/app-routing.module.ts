@@ -43,6 +43,7 @@ import { MicrositesModule } from './routes/microsites/microsites.module'
 import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
+import { AppHomePageResolverService } from './services/app-home-page-resolver.service'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -806,7 +807,7 @@ const routes: Routes = [
       module: 'Home',
     },
     resolve: {
-      pageData: PageResolve,
+      pageData: AppHomePageResolverService,
       // module: ModuleNameResolve,
       // pageId: PageNameResolve,
     },
