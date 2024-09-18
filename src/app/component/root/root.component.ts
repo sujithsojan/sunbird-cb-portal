@@ -507,7 +507,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
   ngAfterViewChecked() {
     const show = this.getTourGuide()
     if (show !== this.showTour) { // check if it change, tell CD update view
-      this.showTour = this.showTour
+      // this.showTour = this.showTour
     }
     this.changeDetector.detectChanges()
   }

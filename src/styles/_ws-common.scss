@@ -8,7 +8,6 @@
 }
 
 %page-center {
-  // max-width: $page-center;
   max-width: $max-screen;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -17,7 +16,6 @@
 %height-mat-toolbar-sibling {
   height: calc(100% - #{$mat-toolbar-xs});
 
-  // padding: $size-m;
   @include breakpoint-gt-xs {
     height: calc(100% - #{$mat-toolbar-gt-xs});
   }
@@ -68,7 +66,7 @@
 .action-button {
   opacity: 1;
   color: #fff;
-  font-family: Lato-Bold;
+  font-family: Lato-Bold, sans-serif;
   font-size: 14px;
   font-weight: 700;
   font-style: normal;

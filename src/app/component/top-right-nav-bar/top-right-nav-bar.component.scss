@@ -7,7 +7,6 @@
 ::ng-deep .right-nav-tooltip {
   background-color: #000 !important;
   color: #fff !important;
-  // height: 32px;
   border-radius: 4px;
   font-size: 14px;
   vertical-align: middle;
@@ -27,7 +26,6 @@
   font-size: 14px;
   height: 32px;
   max-width: 124px;
-  height: 32px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,7 +53,7 @@
   }
 
   .custom-lang {
-    font: 400 14px/21px Lato;
+    font: 400 14px/21px Lato, sans-serif;
     width: 126px;
     padding: 0 !important;
     position: relative;
@@ -88,7 +86,7 @@
 
   .checkmark::before {
     content:'L';
-    font-family: arial;
+    font-family: arial, sans-serif;
     -ms-transform: scaleX(-1) rotate(-35deg); /* IE 9 */
     -webkit-transform: scaleX(-1) rotate(-35deg); /* Chrome, Safari, Opera */
     transform: scaleX(-1) rotate(-35deg);
