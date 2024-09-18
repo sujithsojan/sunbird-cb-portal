@@ -116,6 +116,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     if (this.tocConfigSubscription) {
       this.tocConfigSubscription.unsubscribe()
     }
+    this.iframeUrl = ''
   }
 
   private raiseRealTimeProgress() {
@@ -389,6 +390,8 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
             }
           }
         }
+          } else {
+             this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('')
         }
       } else {
         setTimeout(
