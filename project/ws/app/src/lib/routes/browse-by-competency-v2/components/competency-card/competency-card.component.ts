@@ -61,7 +61,8 @@ export class CompetencyCardComponent implements OnInit {
   getCbps(viewChildren: boolean) {
     if (viewChildren) {
       this.displayLoader = true
-      this.searchReq.request.filters[`${this.compentencyKey.vKey}.${this.compentencyKey.vCompetencySubTheme}`].splice(0, 1, this.competency.name)
+      this.searchReq.request.filters[`${this.compentencyKey.vKey}.${this.compentencyKey.vCompetencySubTheme}`]
+      .splice(0, 1, this.competency.name)
       this.browseCompServ.fetchSearchData(this.searchReq).subscribe(
         (res: any) => {
           this.displayLoader = false
