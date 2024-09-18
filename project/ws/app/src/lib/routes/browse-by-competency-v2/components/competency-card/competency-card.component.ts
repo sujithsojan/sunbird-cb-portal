@@ -15,7 +15,7 @@ export class CompetencyCardComponent implements OnInit {
   public displayLoader = false
 
   searchReq: any = {}
-  compentencyKey!: NsContent.CompentencyKeys
+  compentencyKey!: NsContent.ICompentencyKeys
 
   constructor(
     private browseCompServ: BrowseCompetencyService,

@@ -42,7 +42,7 @@ export class CompetencyDetailsComponent implements OnInit, OnDestroy {
   private defaultSideNavBarOpenedSubscription: any
   public screenSizeIsLtMedium = false
   isLtMedium$ = this.valueSvc.isLtMedium$
-  compentencyKey!: NsContent.CompentencyKeys
+  compentencyKey!: NsContent.ICompentencyKeys
 
   stateData: {
     param: any, path: any
