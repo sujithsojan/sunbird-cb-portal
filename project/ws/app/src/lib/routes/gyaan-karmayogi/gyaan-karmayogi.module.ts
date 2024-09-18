@@ -30,6 +30,7 @@ import { AudioModule } from '@ws/viewer/src/lib/routes/audio/audio.module'
 import { YoutubeModule } from '@ws/viewer/src/lib/routes/youtube/youtube.module'
 import { GyaanYoutubeComponent } from './components/players/gyaan-youtube/gyaan-youtube.component'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
+import { ReplaceNbspTextPipe } from './pipes/replace-nbsp-text.pipe'
 
 // tslint:disable-next-line:function-name
 export function HttpLoaderFactory(http: HttpClient) {
@@ -39,7 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [GyaanKarmayogiHomeComponent, GyaanPlayerComponent,
     GyaanKarmayogiComponent, GyaanKarmayogiViewAllComponent,
-     PdfComponent, GyaanVideoComponent, GyaanFilterComponent, GyaanAudioComponent, GyaanYoutubeComponent],
+     PdfComponent, GyaanVideoComponent, GyaanFilterComponent, GyaanAudioComponent, GyaanYoutubeComponent, ReplaceNbspTextPipe],
   imports: [
     CommonModule,
     MatFormFieldModule,
