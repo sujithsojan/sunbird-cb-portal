@@ -187,7 +187,7 @@ export class NetworkHubComponent implements OnInit {
           continue
         }
 
-        if (fname.charAt(i) === fname.charAt(i)) {
+        if (fname && fname.charAt(i)) {
           initials += fname.charAt(i)
 
           if (initials.length === 2) {

@@ -12,7 +12,6 @@ describe('AppTocSessionCardComponent', () => {
     })
     .compileComponents()
   }))
-  
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppTocSessionCardNewComponent)

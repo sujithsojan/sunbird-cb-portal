@@ -173,11 +173,11 @@
                 <div class="flex flex-col gap-1" *ngIf="scrolled">
                 <div class="text-xl leading-6 text-white font-bold text-scrol-custom">{{ handleCapitalize(extContentReadData?.name) }}
                 </div>
-                <div class="text-sm source-text font-semibold break-words" #contentSource [ngClass]="{'sourceEllipsis': sourceEllipsis}" title="{{content?.source}}">
+                <!-- <div class="text-sm source-text font-semibold break-words" #contentSource [ngClass]="{'sourceEllipsis': sourceEllipsis}" title="{{content?.source}}">
                     {{ 'cardcontentv2.by' | translate }} 
                     <span *ngIf="extContentReadData?.contentPartner?.contentPartnerName">{{ extContentReadData?.contentPartner?.contentPartnerName }}</span>
                     <span *ngIf="!extContentReadData?.contentPartner?.contentPartnerName">{{ 'common.karmayogiBharat' | translate }}</span>
-                </div>
+                </div> -->
                 </div>
             </div>
             </div>

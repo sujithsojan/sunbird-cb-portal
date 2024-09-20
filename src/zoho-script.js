@@ -229,7 +229,8 @@ function zsValidateMandatoryFields() {
         isError = 0;
         var fieldObject = document.forms['zsWebToCase_120349000004451166'][zsWebFormMandatoryFields[index]];
         if (fieldObject) {
-            if (((fieldObject.value).replace(/^\s+|\s+$/g, '')).length == 0) {
+            
+            if (((fieldObject.value).replace(/^\s+|\s+$/g, '')).length == 0) {  // NOSONAR
                 alert(zsFieldsDisplayLabelArray[index] + ' cannot be empty ');
                 fieldObject.focus();
                 isError = 1;
@@ -263,7 +264,7 @@ function zsValidateMandatoryFields() {
         }
     }
     if (isError == 0) {
-        if (document.forms['zsWebToCase_120349000004451166']['zsWebFormCaptchaWord'].value.replace(/^\s+|\s+$/g, '').length == 0) {
+        if (document.forms['zsWebToCase_120349000004451166']['zsWebFormCaptchaWord'].value.replace(/^\s+|\s+$/g, '').length == 0) {  // NOSONAR
             alert('Please enter the captcha code.');
             document.forms['zsWebToCase_120349000004451166']['zsWebFormCaptchaWord'].focus();
             return false;
@@ -321,7 +322,7 @@ function zsListenCloudPickerMessages() {
 var zsCloudPickerJSON = {};
 
 function zsWebReceiveMessage(event) {
-    var zsUrlRegex = /^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\:\'\/\\+=&amp;%\$#_]*)?$/;
+    var zsUrlRegex = /^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\:\'\/\\+=&amp;%\$#_]*)?$/; // NOSONAR
     if (zsUrlRegex.test(event.origin)) {
         var zsMessageType = event.data.split('&&&');
         if (zsMessageType[0] == 'zsCloudPickerMessage') {

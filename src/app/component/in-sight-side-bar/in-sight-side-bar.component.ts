@@ -79,6 +79,8 @@ export class InsightSideBarComponent implements OnInit {
   randomlearnAdvisoryObj: any
   learnAdvisoryDataLength: any
   surveyForm: any
+  isNotMyUser = false
+  isIgotOrg = false
   constructor(
     private homePageSvc: HomePageService,
     private configSvc: ConfigurationsService,
@@ -102,7 +104,9 @@ export class InsightSideBarComponent implements OnInit {
       this.learnAdvisoryData = this.activatedRoute.snapshot.data.pageData.data.learnerAdvisory
       this.surveyForm = this.activatedRoute.snapshot.data.pageData.data.surveyForm
     }
-
+    // console.log(' this.userData--', this.configSvc.unMappedUser,  this.configSvc.unMappedUser.profileDetails.profileStatus)
+    this.isNotMyUser = this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    this.isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName === 'igot' ? true : false
     // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
     this.getInsights()
     this.getPendingRequestData()

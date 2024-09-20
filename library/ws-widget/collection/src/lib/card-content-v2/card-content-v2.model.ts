@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment'
 import { NsContent } from '../_services/widget-content.model'
 
 export namespace NsCardContent {
@@ -50,8 +51,10 @@ export namespace NsCardContent {
   }
 
   export enum IGOTConst {
-    COMPETENCIES = 'competencies_v5',
+    COMPETENCIES = 'competencies_v6',
     RETIRED = 'Retired',
   }
+
+  export const COMPENTENCYKEY = environment.compentencyVersionKey
 
 }

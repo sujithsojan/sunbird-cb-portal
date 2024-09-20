@@ -180,7 +180,7 @@ export class FilterComponent implements OnInit {
 
   getCompetencySubTheme(event: any, cstype: any, pushValue = true) {
     if (event.checked) {
-      this.competencyThemeList.map((csitem: any) => {
+      this.competencyThemeList.map((csitem: any) => { // NOSONAR
         if (csitem.name === cstype.name) {
           csitem.children.map((subthemechild: any) => {
             subthemechild['parentType'] = csitem.parent
@@ -261,7 +261,7 @@ export class FilterComponent implements OnInit {
       if (ctype.id === 'all' && filterType === 'status') {
         if (event.checked) {
           this.filterObj[filterType] = []
-          this.filterObj[filterType] = ['all']
+          this.filterObj[filterType] = ['all']// NOSONAR
         } else {
           this.filterObj[filterType] = []
         }

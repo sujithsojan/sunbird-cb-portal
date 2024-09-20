@@ -281,7 +281,7 @@ export class InitService {
     // lang selection
     if (this.configSvc.instanceConfig && this.configSvc.instanceConfig.isMultilingualEnabled) {
       if (this.configSvc.unMappedUser) {
-        if (this.configSvc.unMappedUser.profileDetails && this.configSvc.unMappedUser.profileDetails
+        if (this.configSvc.unMappedUser.profileDetails
           && this.configSvc.unMappedUser.profileDetails.additionalProperties
           && this.configSvc.unMappedUser.profileDetails.additionalProperties.webPortalLang) {
           const lang = this.configSvc.unMappedUser.profileDetails.additionalProperties.webPortalLang
@@ -352,6 +352,7 @@ export class InitService {
     this.configSvc.activeOrg = publicConfig.org[0]
     this.configSvc.appSetup = publicConfig.appSetup
     this.configSvc.positions = publicConfig.positions
+    this.configSvc.compentency = publicConfig.compentency
     return publicConfig
   }
 
