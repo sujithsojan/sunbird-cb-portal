@@ -263,5 +263,19 @@
   line-height: 16.8px;
   text-align: center;
   padding: 12px 24px;
-
  }
+ .dot {
+  background: white;
+  width: 12px;
+  height: 12px;
+  border-radius: 15px;
+ }
+ .line {
+  width: 44px;
+  height: 2px;
+  background: white;
+ }
+ .active {
+  background: #F3962F;
+ }
+ 

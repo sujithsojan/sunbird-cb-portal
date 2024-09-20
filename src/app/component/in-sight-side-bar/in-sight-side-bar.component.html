@@ -1,19 +1,31 @@
-<div class="margin-top-m">
+<div class="margin-top-m" *ngIf="nwlConfiguration">
     <div class="nlw-container">
         <div class="flex">
             <div class="nlw-title gap-3">
-                Celebrate National Learning Week
+                {{nwlConfiguration?.title}}
             </div>
             <div class="nlw-title">
                 <img class="nlw-animation" src="assets/images/national-learning/nlw.gif"/>
             </div>
         </div>
         <div class="flex nlw-description">
-            Digital Marketing conference dedicated to delivering actionable methods and strategies covering all aspects of online marketing
+            {{nwlConfiguration?.description}}
+        </div>
+        <div class="progress-wrapper mt-5">
+            <div class="flex items-center">
+                <div *ngFor="let n of [].constructor(totlaDays); let i = index">
+                    <div class="flex items-center">
+                        <div class="dot"></div>
+                        <div class="line"></div>
+                        <div class="dot" *ngIf="(totlaDays - 1) === i"></div>
+                    </div>                    
+                </div>
+            </div>
         </div>
         <div class="flex flex-align-end nlw-redirect margin-top-l">
             <button (click)="navigateToNationalLearning()"
-                class="nlw-view-more-btn mat-button mat-button-base text-white">View More
+                class="nlw-view-more-btn mat-button mat-button-base text-white">
+                {{nwlConfiguration?.buttonText}}
             </button>
         </div>
     </div>

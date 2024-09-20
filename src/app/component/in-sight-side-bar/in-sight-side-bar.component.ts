@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MatSnackBar } from '@angular/material'
+import moment from 'moment'
 
 const DEFAULT_WEEKLY_DURATION = 300
 const DEFAULT_DISCUSS_DURATION = 600
@@ -79,6 +80,8 @@ export class InsightSideBarComponent implements OnInit {
   randomlearnAdvisoryObj: any
   learnAdvisoryDataLength: any
   surveyForm: any
+  nwlConfiguration: any
+  totlaDays: number = 0
   constructor(
     private homePageSvc: HomePageService,
     private configSvc: ConfigurationsService,
@@ -103,6 +106,9 @@ export class InsightSideBarComponent implements OnInit {
       this.surveyForm = this.activatedRoute.snapshot.data.pageData.data.surveyForm
     }
 
+    // National learning week configurations
+    this.getNlwConfig()
+
     // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
     this.getInsights()
     this.getPendingRequestData()
@@ -121,6 +127,32 @@ export class InsightSideBarComponent implements OnInit {
   //   const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
   //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
   // }
+
+
+  getNlwConfig() {
+    this.homePageSvc.getNwlConfigiration(this.configSvc.baseUrl).subscribe((res: any) => {
+      if (res) {
+        this.nwlConfiguration = res
+        const startDate = moment(this.nwlConfiguration.startDate, "DD-MMYYYY")
+        const endDate = moment(this.nwlConfiguration.endDate, "DD-MMYYYY")
+        this.totlaDays = endDate.diff(startDate, 'days')
+        let currentDate = moment()
+        if (currentDate.isBetween(startDate, endDate, null, '[]')) {
+          // Calculate how many days have passed since the start date
+          let daysPassed = currentDate.diff(startDate, 'days');
+          console.log(`Days passed since the start date: ${daysPassed}`);
+        } else if (currentDate.isBefore(startDate)) {
+          console.log("The current date is before the start date.");
+        } else if (currentDate.isAfter(endDate)) {
+          let daysPassed = currentDate.diff(endDate, 'days');
+          console.log("The current date is after the end date.", daysPassed);
+        }
+      }
+      console.log(this.nwlConfiguration)
+    }, error=> {
+      console.log(error)
+    })
+  }
 
   getInsights() {
     this.profileDataLoading = true
