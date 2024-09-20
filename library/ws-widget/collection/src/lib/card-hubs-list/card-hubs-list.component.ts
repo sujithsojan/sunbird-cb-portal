@@ -176,7 +176,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
     }
   }
 
-  navigate() {
+  navigate(): any {
     const config = {
       menuOptions: [
         {
@@ -227,7 +227,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
     this.router.navigate(['/app/discussion-forum'], { queryParams: { page: 'home' }, queryParamsHandling: 'merge' })
   }
 
-  navigateToRoute(path: any) {
+  navigateToRoute(path: any):any {
     if (this.disableMenu) {
       return false
     }
@@ -267,7 +267,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
     }
 
   }
-  toggleVisibility() {
+  toggleVisibility():any {
     if (this.disableMenu) {
       return  false
     }
