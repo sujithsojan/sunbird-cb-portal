@@ -1,3 +1,14 @@
+<div class="not-my-user-container margin-top-m" *ngIf="isNotMyUser && !isIgotOrg">        
+    <div class="not-my-user-content">
+        <div>
+            <mat-icon class="warning-icon" [ngStyle]="{'color':'red'}">warning</mat-icon>
+        </div>
+        <div class="not-my-user-data">
+            <p>You are no longer recognized as a user by your current organization, and access to the platform will end in 48 hours. If you believe this is incorrect, contact your MDO or make a "Transfer Request" to select your proper organization.</p>
+        </div>
+    </div>
+</div>
+
 <div class="margin-top-m">
     <ws-widget-profile-card-stats (expandCollapse)="expandCollapse($event)" (activity)="goToActivity($event)"
         [profileData]="homePageData.profileCard" [insightsData]="insightsData"

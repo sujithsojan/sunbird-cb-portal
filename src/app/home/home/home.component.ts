@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   rejectedStatusList: any = []
   approvedStatus = false
   rejectedStatus = false
-
+  disableMenu = false
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
     duration: 20000,
@@ -74,6 +74,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    let isNotMyUser = false
+    let isIgotOrg = false
+    if(this.configSvc && this.configSvc.unMappedUser 
+      && this.configSvc.unMappedUser.profileDetails 
+      && this.configSvc.unMappedUser.profileDetails.profileStatus) {
+      isNotMyUser= this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if(this.configSvc && this.configSvc.unMappedUser 
+      && this.configSvc.unMappedUser.profileDetails 
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
+    //let isIgotOrg = true
+    if(isNotMyUser && isIgotOrg) {
+      this.disableMenu = true
+      // this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    } else {
+      this.disableMenu = false
+    }
+    if(this.disableMenu) {
+      this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    }
     if (this.configSvc) {
       this.jan26Change = this.configSvc.overrideThemeChanges
       if (this.configSvc.unMappedUser.profileDetails && this.configSvc.unMappedUser.profileDetails.additionalProperties) {

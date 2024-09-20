@@ -57,6 +57,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
   public showDashboardIcon = true
   isHubEnable!: boolean
   isMentor = false
+  disableMenu = false
   // private readonly featuresConfig: IGroupWithFeatureWidgets[] = []
 
   constructor(
@@ -74,6 +75,26 @@ export class CardHubsListComponent extends WidgetBaseComponent
   hubsList!: NsInstanceConfig.IHubs[]
   inactiveHubList!: NsInstanceConfig.IHubs[]
   ngOnInit() {
+    let isNotMyUser = false
+    let isIgotOrg = false
+    if(this.configSvc && this.configSvc.unMappedUser 
+      && this.configSvc.unMappedUser.profileDetails 
+      && this.configSvc.unMappedUser.profileDetails.profileStatus) {
+      isNotMyUser= this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if(this.configSvc && this.configSvc.unMappedUser 
+      && this.configSvc.unMappedUser.profileDetails 
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
+    // let isIgotOrg = true
+    if(isNotMyUser && isIgotOrg) {
+      this.disableMenu = true
+      // this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    } else {
+      this.disableMenu = false
+    }
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
           // certificate link check
@@ -102,9 +123,14 @@ export class CardHubsListComponent extends WidgetBaseComponent
           }
           this.visible = false
           localStorage.setItem('activeRoute', this.activeRoute)
-
+          
       }
+      
   })
+  if(this.disableMenu) {
+    this.router.navigateByUrl('app/person-profile/me#profileInfo')
+  }
+      //onclick="return false;"
     this.environment = environment
     this.environment.portals = this.environment.portals.filter(
       (obj: any) => ((obj.name !== 'Frac Dictionary') &&
@@ -142,6 +168,8 @@ export class CardHubsListComponent extends WidgetBaseComponent
         this.visible = false
       }
     })
+
+   
   }
   ngOnDestroy() {
     if (this.defaultMenuSubscribe) {
@@ -194,7 +222,17 @@ export class CardHubsListComponent extends WidgetBaseComponent
     }
     this.discussUtilitySvc.setDiscussionConfig(config)
     localStorage.setItem('home', JSON.stringify(config))
+    if(this.disableMenu) {
+      return false
+    }
     this.router.navigate(['/app/discussion-forum'], { queryParams: { page: 'home' }, queryParamsHandling: 'merge' })
+  }
+
+  navigateToRoute(path:any) {
+    if(this.disableMenu) {
+      return false
+    }
+    this.router.navigate([path])
   }
 
   trackTelemetry(name: any) {
@@ -231,6 +269,9 @@ export class CardHubsListComponent extends WidgetBaseComponent
 
   }
   toggleVisibility() {
+    if(this.disableMenu) {
+      return  false
+    }
     if (!this.visible) {
       this.visible = !this.visible
       this.configSvc.changeNavBarFullView.next(this.visible)
