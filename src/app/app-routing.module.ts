@@ -44,6 +44,7 @@ import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
 import { AppHomePageResolverService } from './services/app-home-page-resolver.service'
+import { HomeResolverService } from './home/home/home-resolver.service'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -610,6 +611,7 @@ const routes: Routes = [
       pageId: 'app/seeAll',
       module: 'Home',
     },
+    resolve: { home: HomeResolverService },
   },
   {
     path: 'app/social',
@@ -838,6 +840,7 @@ const routes: Routes = [
       pageData: PageResolve,
       module: ModuleNameResolve,
       pageId: PageNameResolve,
+      home: HomeResolverService,
     },
     canActivate: [GeneralGuard],
   },
@@ -859,6 +862,9 @@ const routes: Routes = [
     path: 'learner-advisory',
     component: LearnerAdvisoryComponent,
     canActivate: [GeneralGuard],
+    resolve: {
+      resolve: { home: HomeResolverService },
+    },
     // data: {
     //   module: 'learner-advisory',
     //   // pageId: 'page/learner-advisory',

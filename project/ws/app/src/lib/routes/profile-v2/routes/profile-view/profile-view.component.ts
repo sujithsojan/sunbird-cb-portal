@@ -198,6 +198,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   noCadreDetails = true
   saveChanges = false
   noHtmlCharacter = new RegExp(/<[^>]*>|(function[^\s]+)|(javascript:[^\s]+)/i)
+  isNotMyUser = false
+  isIgotOrg = false
   constructor(
     public dialog: MatDialog,
     private configService: ConfigurationsService,
@@ -337,6 +339,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInsightsData()
     this.fetchCadreData()
     // this.getAssessmentData()
+    if (this.configService && this.configService.unMappedUser
+      && this.configService.unMappedUser.profileDetails
+      && this.configService.unMappedUser.profileDetails.profileStatus) {
+      this.isNotMyUser = this.configService.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if (this.configService && this.configService.unMappedUser
+      && this.configService.unMappedUser.profileDetails
+      && this.configService.unMappedUser.profileDetails.employmentDetails
+      && this.configService.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        this.isIgotOrg = this.configService.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
 
   }
 
@@ -1549,7 +1562,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.civilServiceId = popCivilServiceType.serviceList[serviceIndex].id
                 if(popCivilServiceType.serviceList[serviceIndex] && popCivilServiceType.serviceList[serviceIndex].name) {
                   let civilServiceName = popCivilServiceType.serviceList[serviceIndex].name
-                  if((civilServiceName.trim() === 'Indian Administrative Office (IAS)') || 
+                  if((civilServiceName.trim() === 'Indian Administrative Service (IAS)') || 
                     (civilServiceName.trim() === "Indian Police Service (IPS)") ||
                     (civilServiceName.trim() === "Indian Forest Service (IFoS)")) {
                     this.showBatchForNoCadre = false

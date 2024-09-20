@@ -30,8 +30,9 @@
           <ng-container [ngTemplateOutlet]="navbarSide" [ngTemplateOutletContext]="{ item: item }"
             *ngFor="let item of primaryNavbarConfig?.mediumScreen?.left">
           </ng-container>
+          
           <ng-container *ngIf="!isforPreview">
-            <ws-app-search-input-home placeHolder="{{ 'appnavbar.searchforLearningContents' | translate}}" class="my-search flex-1" [ref]="'home'">
+            <ws-app-search-input-home  placeHolder="{{ 'appnavbar.searchforLearningContents' | translate}}" class="my-search flex-1" [ref]="'home'">
             </ws-app-search-input-home>
           </ng-container>
           <span class="spacer"></span>

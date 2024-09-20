@@ -389,6 +389,24 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.rootSvc.showNavbarDisplay$.pipe(delay(500)).subscribe((display: any) => {
       this.showNavbar = display
     })
+
+    let isNotMyUser = false
+    let isIgotOrg = false
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.profileStatus) {
+      isNotMyUser = this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
+    // let isIgotOrg = true
+    if (isNotMyUser && isIgotOrg) {
+      this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    }
   }
 
   changeBg26Jan() {
