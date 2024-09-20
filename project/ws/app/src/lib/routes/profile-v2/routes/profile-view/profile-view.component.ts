@@ -1549,7 +1549,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.civilServiceId = popCivilServiceType.serviceList[serviceIndex].id
                 if(popCivilServiceType.serviceList[serviceIndex] && popCivilServiceType.serviceList[serviceIndex].name) {
                   let civilServiceName = popCivilServiceType.serviceList[serviceIndex].name
-                  if((civilServiceName.trim() === 'Indian Administrative Office (IAS)') || 
+                  if((civilServiceName.trim() === 'Indian Administrative Service (IAS)') || 
                     (civilServiceName.trim() === "Indian Police Service (IPS)") ||
                     (civilServiceName.trim() === "Indian Forest Service (IFoS)")) {
                     this.showBatchForNoCadre = false

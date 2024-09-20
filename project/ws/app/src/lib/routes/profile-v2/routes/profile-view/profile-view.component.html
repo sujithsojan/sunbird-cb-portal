@@ -521,7 +521,7 @@
               <div class="info-div" *ngIf="otherDetailsForm.get('serviceType').value && 
               otherDetailsForm.get('isCadre').value 
               && otherDetailsForm.get('typeOfCivilService').value && (
-                otherDetailsForm.get('serviceType').value === 'Indian Administrative Office (IAS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Administrative Service (IAS)' || 
                 otherDetailsForm.get('serviceType').value === 'Indian Police Service (IPS)' || 
                 otherDetailsForm.get('serviceType').value === 'Indian Forest Service (IFoS)' 
               )">
@@ -542,13 +542,13 @@
               <!-- showBatchForNoCadre && otherDetailsForm.get('serviceType').value  || otherDetailsForm.get('cadre').value && otherDetailsForm.get('isCadre').value && otherDetailsForm.get('serviceType').value && otherDetailsForm.get('typeOfCivilService').value|| !editDetails && this.cadreStatus -->
               <div class="info-div" *ngIf="(otherDetailsForm.get('serviceType').value && 
               otherDetailsForm.get('isCadre').value && otherDetailsForm.get('typeOfCivilService').value && (
-                otherDetailsForm.get('serviceType').value === 'Indian Administrative Office (IAS)' || 
+                otherDetailsForm.get('serviceType').value === 'Indian Administrative Service (IAS)' || 
                 otherDetailsForm.get('serviceType').value === 'Indian Police Service (IPS)' || 
                 otherDetailsForm.get('serviceType').value === 'Indian Forest Service (IFoS)' 
               ) && otherDetailsForm.get('cadre').value)  ? true : ((otherDetailsForm.get('serviceType').value && 
               otherDetailsForm.get('isCadre').value 
               && otherDetailsForm.get('typeOfCivilService').value && (
-                otherDetailsForm.get('serviceType').value !== 'Indian Administrative Office (IAS)' && 
+                otherDetailsForm.get('serviceType').value !== 'Indian Administrative Service (IAS)' && 
                 otherDetailsForm.get('serviceType').value !== 'Indian Police Service (IPS)' && 
                 otherDetailsForm.get('serviceType').value !== 'Indian Forest Service (IFoS)' 
               ))) ? true : false">
