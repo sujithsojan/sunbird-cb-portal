@@ -778,7 +778,10 @@
                   <mat-icon class="warning-icon" [ngStyle]="{'color':'red'}">warning</mat-icon>
               </div>
               <div class="not-my-user-data">
-                  <p>Your access has been revoked because your organization no longer identifies you as a user. To regain access, please submit a "Transfer Request" and choose the correct organization.</p>
+                  <p>
+                    {{ 'profileInfo.notMyUseAccessRevoke' | translate }}
+                    
+                  </p>
               </div>
           </div>
       </div>
