@@ -339,18 +339,18 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInsightsData()
     this.fetchCadreData()
     // this.getAssessmentData()
-    if(this.configService && this.configService.unMappedUser 
-      && this.configService.unMappedUser.profileDetails 
+    if (this.configService && this.configService.unMappedUser
+      && this.configService.unMappedUser.profileDetails
       && this.configService.unMappedUser.profileDetails.profileStatus) {
-      this.isNotMyUser= this.configService.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+      this.isNotMyUser = this.configService.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
     }
-    if(this.configService && this.configService.unMappedUser 
-      && this.configService.unMappedUser.profileDetails 
+    if (this.configService && this.configService.unMappedUser
+      && this.configService.unMappedUser.profileDetails
       && this.configService.unMappedUser.profileDetails.employmentDetails
       && this.configService.unMappedUser.profileDetails.employmentDetails.departmentName) {
         this.isIgotOrg = this.configService.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
     }
-    
+
   }
 
   // Sujith

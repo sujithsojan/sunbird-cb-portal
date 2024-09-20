@@ -611,7 +611,7 @@ const routes: Routes = [
       pageId: 'app/seeAll',
       module: 'Home',
     },
-    resolve: { home: HomeResolverService }
+    resolve: { home: HomeResolverService },
   },
   {
     path: 'app/social',
@@ -840,7 +840,7 @@ const routes: Routes = [
       pageData: PageResolve,
       module: ModuleNameResolve,
       pageId: PageNameResolve,
-      home: HomeResolverService
+      home: HomeResolverService,
     },
     canActivate: [GeneralGuard],
   },
@@ -864,7 +864,7 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
     resolve: {
       resolve: { home: HomeResolverService },
-    }
+    },
     // data: {
     //   module: 'learner-advisory',
     //   // pageId: 'page/learner-advisory',
