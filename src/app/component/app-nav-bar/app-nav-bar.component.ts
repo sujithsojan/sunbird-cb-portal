@@ -3,7 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 import { Router, NavigationStart, NavigationEnd } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 
-import { IBtnAppsConfig, CustomTourService } from '@sunbird-cb/collection'
+import { IBtnAppsConfig, CustomTourService, WidgetUserService } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ConfigurationsService, EventService, MultilingualTranslationsService, NsInstanceConfig, NsPage, WsEvents } from '@sunbird-cb/utils-v2'
 
@@ -67,7 +67,8 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     private translate: TranslateService,
     private events: EventService,
     private langtranslations: MultilingualTranslationsService,
-    private urlService: UrlService
+    private urlService: UrlService,
+    private userSvc: WidgetUserService
   ) {
     this.btnAppsConfig = { ...this.basicBtnAppsConfig }
     if (this.configSvc.restrictedFeatures) {
@@ -195,6 +196,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     // let isIgotOrg = true
     if (isNotMyUser && isIgotOrg) {
       this.disableMenu = true
+      this.fetchEnrollmentList()
       // this.router.navigateByUrl('app/person-profile/me#profileInfo')
     } else {
       this.disableMenu = false
@@ -397,6 +399,18 @@ export class AppNavBarComponent implements OnInit, OnChanges {
 
   public getItem(item: any) {
     return { ...item, forPreview: !this.isforPreview, enableLang: this.enableLang }
+  }
+
+  fetchEnrollmentList() {
+    let userId: any
+
+    if (this.configSvc.userProfile) {
+      userId = this.configSvc.userProfile.userId || ''
+    }
+
+    this.userSvc.fetchUserBatchList(userId).subscribe((_res)=>{
+
+    })
   }
 
 }
