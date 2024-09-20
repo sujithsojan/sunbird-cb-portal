@@ -342,12 +342,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.configService && this.configService.unMappedUser
       && this.configService.unMappedUser.profileDetails
       && this.configService.unMappedUser.profileDetails.profileStatus) {
+        // tslint:disable-next-line:max-line-length
       this.isNotMyUser = this.configService.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
     }
     if (this.configService && this.configService.unMappedUser
       && this.configService.unMappedUser.profileDetails
       && this.configService.unMappedUser.profileDetails.employmentDetails
       && this.configService.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        // tslint:disable-next-line:max-line-length
         this.isIgotOrg = this.configService.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
     }
 
