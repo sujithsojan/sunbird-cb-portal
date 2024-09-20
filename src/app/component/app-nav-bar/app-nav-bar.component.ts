@@ -367,7 +367,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     }
   }
 
-  viewKarmapoints():any {
+  viewKarmapoints(): any {
     if (this.disableMenu) {
       return false
     }
@@ -408,7 +408,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
       userId = this.configSvc.userProfile.userId || ''
     }
 
-    this.userSvc.fetchUserBatchList(userId).subscribe((_res)=>{
+    this.userSvc.fetchUserBatchList(userId).subscribe(_res => {
 
     })
   }
