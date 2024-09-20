@@ -4,7 +4,11 @@
             <mat-icon class="warning-icon" [ngStyle]="{'color':'red'}">warning</mat-icon>
         </div>
         <div class="not-my-user-data">
-            <p>You are no longer recognized as a user by your current organization, and access to the platform will end in 48 hours. If you believe this is incorrect, contact your MDO or make a "Transfer Request" to select your proper organization.</p>
+            <p>
+                <span>{{ 'home.notMyUser1' | translate }}</span>
+                <b>{{ 'home.notMyUser2' | translate }}</b>. 
+                <span>{{ 'home.notMyUser3' | translate }}</span>
+            </p>
         </div>
     </div>
 </div>
