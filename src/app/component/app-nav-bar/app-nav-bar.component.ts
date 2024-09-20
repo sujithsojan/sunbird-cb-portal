@@ -365,7 +365,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     }
   }
 
-  viewKarmapoints() {
+  viewKarmapoints():any {
     if (this.disableMenu) {
       return false
     }
