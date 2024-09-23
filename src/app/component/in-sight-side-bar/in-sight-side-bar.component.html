@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<div class="margin-top-m" *ngIf="nwlConfiguration">
+<div class="margin-top-m" *ngIf="nwlConfiguration?.enabled && canShowNlwCard">
     <div class="nlw-container">
         <div class="flex">
             <div class="nlw-title gap-3">
@@ -29,8 +29,8 @@
             <div class="flex items-center">
                 <div *ngFor="let n of [].constructor(totlaDays); let i = index">
                     <div class="flex items-center">
-                        <div class="dot"></div>
-                        <div class="line"></div>
+                        <div class="dot {{daysCompleted > i ? 'active' : ''}}" ></div>
+                        <div class="line {{daysCompleted > i ? 'active' : ''}}"></div>
                         <div class="dot" *ngIf="(totlaDays - 1) === i"></div>
                     </div>                    
                 </div>

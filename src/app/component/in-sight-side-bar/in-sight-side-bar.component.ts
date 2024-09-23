@@ -83,7 +83,9 @@ export class InsightSideBarComponent implements OnInit {
   isNotMyUser = false
   isIgotOrg = false
   nwlConfiguration: any
+  canShowNlwCard = false
   totlaDays: number = 0
+  daysCompleted = 0
   constructor(
     private homePageSvc: HomePageService,
     private configSvc: ConfigurationsService,
@@ -106,12 +108,15 @@ export class InsightSideBarComponent implements OnInit {
       this.homePageData = this.activatedRoute.snapshot.data.pageData.data
       this.learnAdvisoryData = this.activatedRoute.snapshot.data.pageData.data.learnerAdvisory
       this.surveyForm = this.activatedRoute.snapshot.data.pageData.data.surveyForm
+      // Fetch National learning week configurations
+      this.nwlConfiguration = this.activatedRoute.snapshot.data.pageData.data.nationalLearningWeek
+      if (this.nwlConfiguration && this.nwlConfiguration.enabled) {
+        this.getNlwConfig()
+      }
     }
     // console.log(' this.userData--', this.configSvc.unMappedUser,  this.configSvc.unMappedUser.profileDetails.profileStatus)
     this.isNotMyUser = this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
     this.isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName === 'igot' ? true : false
-    // National learning week configurations
-    this.getNlwConfig()
 
     // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
     this.getInsights()
@@ -134,28 +139,24 @@ export class InsightSideBarComponent implements OnInit {
 
 
   getNlwConfig() {
-    this.homePageSvc.getNwlConfigiration(this.configSvc.baseUrl).subscribe((res: any) => {
-      if (res) {
-        this.nwlConfiguration = res
-        const startDate = moment(this.nwlConfiguration.startDate, "DD-MMYYYY")
-        const endDate = moment(this.nwlConfiguration.endDate, "DD-MMYYYY")
-        this.totlaDays = endDate.diff(startDate, 'days')
-        let currentDate = moment()
-        if (currentDate.isBetween(startDate, endDate, null, '[]')) {
-          // Calculate how many days have passed since the start date
-          let daysPassed = currentDate.diff(startDate, 'days');
-          console.log(`Days passed since the start date: ${daysPassed}`);
-        } else if (currentDate.isBefore(startDate)) {
-          console.log("The current date is before the start date.");
-        } else if (currentDate.isAfter(endDate)) {
-          let daysPassed = currentDate.diff(endDate, 'days');
-          console.log("The current date is after the end date.", daysPassed);
-        }
+    const startDate = moment(this.nwlConfiguration.startDate, "DD-MMYYYY")
+    const endDate = moment(this.nwlConfiguration.endDate, "DD-MMYYYY")
+    this.totlaDays = endDate.diff(startDate, 'days')
+    let currentDate = moment()
+    if (currentDate.isBetween(startDate, endDate, null, '[]')) {
+      let daysPassed = currentDate.diff(startDate, 'days');
+      this.canShowNlwCard = true
+      this.daysCompleted = daysPassed
+
+    } else if (currentDate.isBefore(startDate)) {
+      this.canShowNlwCard = false
+    } else if (currentDate.isAfter(endDate)) {
+      let daysPassed = currentDate.diff(endDate, 'days');
+      if (daysPassed == 0) {
+        this.canShowNlwCard = true
+        this.daysCompleted = 6
       }
-      console.log(this.nwlConfiguration)
-    }, error=> {
-      console.log(error)
-    })
+    }
   }
 
   getInsights() {

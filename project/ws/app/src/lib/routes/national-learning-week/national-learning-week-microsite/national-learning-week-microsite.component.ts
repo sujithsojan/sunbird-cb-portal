@@ -10,6 +10,7 @@ import { ConfigurationsService } from '@sunbird-cb/utils-v2';
 export class NationalLearningWeekMicrositeComponent implements OnInit {
 
   sectionList: any = []
+  nwlConfig: any
 
   constructor(private route: ActivatedRoute, private configService: ConfigurationsService) { }
 
@@ -22,6 +23,14 @@ export class NationalLearningWeekMicrositeComponent implements OnInit {
       && this.route.snapshot.data.formData.data.result.form.data.sectionList
     ) {
       this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList
+    }
+    if (this.route.snapshot.data
+        && this.route.snapshot.data.configData
+        && this.route.snapshot.data.configData.data
+        && this.route.snapshot.data.configData.data.nationalLearningWeek
+      ) {
+      this.nwlConfig = this.route.snapshot.data.configData.data.nationalLearningWeek
+      console.log("nwlConfig ", this.nwlConfig)
     }
     console.log("configService ", this.configService)
   }
