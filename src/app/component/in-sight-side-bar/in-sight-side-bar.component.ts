@@ -380,6 +380,17 @@ export class InsightSideBarComponent implements OnInit {
   }
 
   navigateToNationalLearning() {
+    this.events.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        id: 'national-learning-week',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
+
     this.router.navigateByUrl('app/learn/national-learning-week')
   }
 

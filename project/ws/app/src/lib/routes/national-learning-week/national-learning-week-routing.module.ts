@@ -9,25 +9,14 @@ const routes: Routes = [
         path: '',
         component: NationalLearningWeekMicrositeComponent,
         data: {
-            module: 'Learn',
+            module: 'National Learning Week',
+            pageId: 'app/learn/national-learning-week'
         },
         resolve: {
             formData: NationalLearningWeekFormService,
             configData: NationalLearningConfigService,
         },
     },
-    {
-        path: 'see-all',
-        component: NationalLearningWeekMicrositeComponent,
-        data: {
-            pageId: 'see-all',
-            module: 'Learn',
-        },
-        resolve: {
-            formData: NationalLearningWeekFormService,
-        },
-
-    } 
 ]
 
 @NgModule({
