@@ -306,8 +306,8 @@ const routes: Routes = [
       import('./routes/route-national-learning-week.module').then(u => u.RouteNationalLearningWeekModule),
     canActivate: [GeneralGuard],
     data: {
-      pageId: 'app/learn/national-learning-week',
-      module: 'explore',
+      //pageId: 'app/learn/national-learning-week',
+      module: 'National Learning Week',
     },
     resolve: {
       pageData: PageResolve,
