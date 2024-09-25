@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { ConfigurationsService, MultilingualTranslationsService, WidgetContentService } from '@sunbird-cb/utils-v2'
 import { LoaderService } from '@ws/author/src/public-api'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { CertificateService } from '../../../certificate/services/certificate.service'
 
 @Component({
@@ -22,7 +22,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
     offSetTop: 0,
     BottomPos: 0,
   }
-  @ViewChild('rightContainer', { static: false }) rcElement!: ElementRef
+  @ViewChild('rightContainer') rcElement!: ElementRef
   scrollLimit: any
   scrolled: boolean | undefined
   isMobile = false

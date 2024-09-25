@@ -6,31 +6,6 @@ import { AppTocRoutingModule } from './app-toc-routing.module'
 import { NgCircleProgressModule } from 'ng-circle-progress'
 import { TranslateModule } from '@ngx-translate/core'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
-import {
-  MatToolbarModule,
-  MatIconModule,
-  MatButtonModule,
-  MatMenuModule,
-  MatCardModule,
-  MatTooltipModule,
-  MatTabsModule,
-  MatChipsModule,
-  MatDividerModule,
-  MatProgressBarModule,
-  MatListModule,
-  MatDialogModule,
-  MatRadioModule,
-  MatExpansionModule,
-  MatProgressSpinnerModule,
-  MatCheckboxModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatSelectModule,
-  MatSnackBarModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatAutocompleteModule,
-} from '@angular/material'
 
 // custom modules
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
@@ -137,6 +112,29 @@ import { AppTocCohortsDirective } from './routes/app-toc-cohorts/app-toc-cohorts
 import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-single-page.directive'
 import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatButtonModule } from '@angular/material/button'
+import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatDividerModule } from '@angular/material/divider'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatIconModule } from '@angular/material/icon'
+import { MatInputModule } from '@angular/material/input'
+import { MatListModule } from '@angular/material/list'
+import { MatMenuModule } from '@angular/material/menu'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatRadioModule } from '@angular/material/radio'
+import { MatSelectModule } from '@angular/material/select'
+import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [
