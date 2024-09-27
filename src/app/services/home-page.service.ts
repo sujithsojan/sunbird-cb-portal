@@ -59,7 +59,7 @@ export class HomePageService {
     return this.http.get(API_END_POINTS.LEADER_BOARD)
   }
 
-  getNwlConfigiration(url: any): Observable<any>{
+  getNwlConfigiration(url: any): Observable<any> {
     return this.http.get(`${url}/nlw.json`)
   }
 }

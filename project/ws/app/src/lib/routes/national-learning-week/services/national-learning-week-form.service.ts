@@ -18,8 +18,8 @@ resolve(
     _state: RouterStateSnapshot,
 ): Observable<IResolveResponse<any>> {
     const orgId = '123456789'
-    let subTypeValue: any = 'microsite'
-    
+    const subTypeValue: any = 'microsite'
+
     const requestData: any = {
       'request': {
       'type': 'National Learning Week',
@@ -28,7 +28,7 @@ resolve(
         'component': 'portal',
         'rootOrgId': orgId,
       },
-  }       
+  }
     return this.formSvc.formReadData(requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),
       tap((resolveData: any) => {
@@ -39,4 +39,3 @@ resolve(
       )
   }
 }
-

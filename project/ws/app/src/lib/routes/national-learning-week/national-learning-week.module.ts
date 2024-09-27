@@ -45,7 +45,7 @@ import { MdoChannelFormService } from '../mdo-channels/service/mdo-channel-form.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MdoChannelDataService } from '../mdo-channels/service/mdo-channel-data.service'
 import { AllContentService } from '../mdo-channels/service/all-content.service'
-import { NationalLearningWeekRoutingModule } from './national-learning-week-routing.module';
+import { NationalLearningWeekRoutingModule } from './national-learning-week-routing.module'
 import { NationalLearningWeekMicrositeComponent } from './national-learning-week-microsite/national-learning-week-microsite.component'
 
 @NgModule({

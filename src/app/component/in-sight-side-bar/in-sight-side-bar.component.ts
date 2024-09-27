@@ -84,7 +84,7 @@ export class InsightSideBarComponent implements OnInit {
   isIgotOrg = false
   nwlConfiguration: any
   canShowNlwCard = false
-  totlaDays: number = 0
+  totlaDays = 0
   daysCompleted = 0
   constructor(
     private homePageSvc: HomePageService,
@@ -137,22 +137,21 @@ export class InsightSideBarComponent implements OnInit {
   //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
   // }
 
-
   getNlwConfig() {
-    const startDate = moment(this.nwlConfiguration.startDate, "DD-MMYYYY")
-    const endDate = moment(this.nwlConfiguration.endDate, "DD-MMYYYY")
+    const startDate = moment(this.nwlConfiguration.startDate, 'DD-MMYYYY')
+    const endDate = moment(this.nwlConfiguration.endDate, 'DD-MMYYYY')
     this.totlaDays = endDate.diff(startDate, 'days')
-    let currentDate = moment()
+    const currentDate = moment()
     if (currentDate.isBetween(startDate, endDate, null, '[]')) {
-      let daysPassed = currentDate.diff(startDate, 'days');
+      const daysPassed = currentDate.diff(startDate, 'days')
       this.canShowNlwCard = true
       this.daysCompleted = daysPassed
 
     } else if (currentDate.isBefore(startDate)) {
       this.canShowNlwCard = false
     } else if (currentDate.isAfter(endDate)) {
-      let daysPassed = currentDate.diff(endDate, 'days');
-      if (daysPassed == 0) {
+      const daysPassed = currentDate.diff(endDate, 'days')
+      if (daysPassed === 0) {
         this.canShowNlwCard = true
         this.daysCompleted = 6
       }

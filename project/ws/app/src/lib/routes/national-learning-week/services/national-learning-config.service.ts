@@ -22,9 +22,9 @@ resolve(
         'subType': 'home',
         'action': 'page-configuration',
         'component': 'portal',
-        'rootOrgId': "*",
+        'rootOrgId': '*',
       },
-  }       
+  }
     return this.formSvc.homeFormReadData(requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),
       tap((resolveData: any) => {
@@ -35,5 +35,3 @@ resolve(
       )
   }
 }
-
-

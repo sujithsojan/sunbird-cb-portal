@@ -4,13 +4,13 @@ import { NationalLearningWeekMicrositeComponent } from './national-learning-week
 import { NationalLearningWeekFormService } from './services/national-learning-week-form.service'
 import { NationalLearningConfigService } from './services/national-learning-config.service'
 
-const routes: Routes = [   
+const routes: Routes = [
     {
         path: '',
         component: NationalLearningWeekMicrositeComponent,
         data: {
             module: 'National Learning Week',
-            pageId: 'app/learn/national-learning-week'
+            pageId: 'app/learn/national-learning-week',
         },
         resolve: {
             formData: NationalLearningWeekFormService,
