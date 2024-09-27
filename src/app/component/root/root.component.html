@@ -21,7 +21,8 @@
     (isXSmall$ | async) === false &&
     isShowNavbar &&
     navBarRequired &&
-    !isCustomHeight && !hideHeaderAndFooter
+    !isCustomHeight && !hideHeaderAndFooter && !disableHeightOnTop,
+  'height-on-top-not-valid-user': (isXSmall$ | async) === false && disableHeightOnTop
 }">
 
   <div class="abc" [ngClass]="{'margin186': mobileTopHeaderVisibilityStatus && showHubs, 'mt-0': !mobileTopHeaderVisibilityStatus && showHubs, 'mt-136': mobileTopHeaderVisibilityStatus && !showHubs && !viewerPage && !hideHeaderAndFooter, 'mt-4': !mobileTopHeaderVisibilityStatus && !showHubs && !viewerPage }">
