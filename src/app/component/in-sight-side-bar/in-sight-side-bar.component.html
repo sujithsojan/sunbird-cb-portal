@@ -13,7 +13,7 @@
     </div>
 </div>
 <div class="margin-top-m" *ngIf="nwlConfiguration?.enabled && canShowNlwCard">
-    <div class="nlw-container">
+    <div class="nlw-container cursor-pointer" (click)="navigateToNationalLearning()">
         <div class="flex">
             <div class="nlw-title gap-3">
                 {{nwlConfiguration?.title}}
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="flex flex-align-end nlw-redirect margin-top-l">
-            <button (click)="navigateToNationalLearning()"
+            <button
                 class="nlw-view-more-btn mat-button mat-button-base text-white">
                 {{nwlConfiguration?.buttonText}}
             </button>
