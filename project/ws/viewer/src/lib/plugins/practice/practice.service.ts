@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { NSPractice } from './practice.model'
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs'
 import { map, retry } from 'rxjs/operators'
@@ -21,6 +21,10 @@ const API_END_POINTS = {
   SAVE_AND_NEXT_QUESTION: `apis/proxies/v8/assessment/save`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
   CAN_ATTEMPT_V5: (assessmentId: any) => `/apis/proxies/v8/user/assessment/v5/retake/${assessmentId}`,
+  PUBLIC_QUESTION_READ: `api/public/assessment/v5/read`,
+  PUBLIC_QUESTION_LIST: `/api/public/assessment/v1/question/list`,
+  PUBLIC_ASSESSMENT_SUBMIT: `api/public/assessment/v5/assessment/submit`,
+  PUBLIC_ASSESSMENT_RESULT: `api/public/assessment/v5/result`,
 }
 const forcreator = window.location.href.includes('editMode=true')
 @Injectable({
@@ -38,6 +42,7 @@ export class PracticeService {
   displayCorrectAnswer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   checkAlreadySubmitAssessment = new Subject()
   clearResponse = new Subject()
+
   constructor(
     private http: HttpClient,
   ) {
@@ -105,14 +110,26 @@ export class PracticeService {
     }))
   }
 
-  quizResult(req: any) {
-    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_RESULT_V4, req).pipe(map(response => {
+  publicSubmit(req: NSPractice.IQuizSubmit, userDetails?: any): Observable<any> {
+
+    const headers = new HttpHeaders(userDetails)
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(
+      API_END_POINTS.PUBLIC_ASSESSMENT_SUBMIT, req, { headers }).pipe(map(response => {
       return response
     }))
   }
 
-  quizResultV5(req: any) {
-    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_RESULT_V5, req).pipe(map(response => {
+  quizResult(req: any, forPreview?: any) {
+    const url = forPreview ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V4
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(
+      url, req).pipe(map(response => {
+      return response
+    }))
+  }
+
+  quizResultV5(req: any, forPreview?: any) {
+    const url = forPreview ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V5
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(url, req).pipe(map(response => {
       return response
     }))
   }
@@ -220,16 +237,20 @@ export class PracticeService {
     return requestData
   }
 
-  getSection(sectionId: string): Observable<NSPractice.ISectionResponse> {
-    if (forcreator) {
-      // tslint:disable-next-line: max-line-length
-      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}?editMode=true`).pipe(retry(2))
+  getSection(sectionId: string, forPreview?: any, postReqData?: any): Observable<any> {
+    if (forPreview) {
+      return this.http.post<NSPractice.ISectionResponse>(API_END_POINTS.PUBLIC_QUESTION_READ, postReqData).pipe(retry(2))
     }
-      // tslint:disable-next-line: max-line-length
-      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}`).pipe(retry(2))
+      if (forcreator) {
+        // tslint:disable-next-line: max-line-length
+        return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}?editMode=true`).pipe(retry(2))
+      }
+        // tslint:disable-next-line: max-line-length
+        return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS}/${sectionId}`).pipe(retry(2))
 
   }
-  getQuestions(identifiers: string[], assessmentId: string): Observable<{ count: Number, questions: any[] }> {
+  getQuestions(identifiers: string[], assessmentId: string,
+               forPreview?: any, userDetails?: any): Observable<{ count: Number, questions: any[] }> {
     const data = {
       assessmentId,
       request: {
@@ -238,25 +259,34 @@ export class PracticeService {
         },
       },
     }
-    if (forcreator) {
-      // tslint:disable-next-line: max-line-length
-      return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS}?editMode=true`, data)
-    }
+    if (forPreview) {
+      const headers = new HttpHeaders(userDetails)
+      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.PUBLIC_QUESTION_LIST, data, { headers })
 
-      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS, data)
+    }
+      if (forcreator) {
+        // tslint:disable-next-line: max-line-length
+        return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS}?editMode=true`, data)
+      }
+
+        return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS, data)
 
   }
 
-  getSectionV4(sectionId: string): Observable<NSPractice.ISectionResponse> {
-    if (forcreator) {
-      // tslint:disable-next-line: max-line-length
-      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}?editMode=true`).pipe(retry(2))
+  getSectionV4(sectionId: string, forPreview?: any, postReqData?: any): Observable<any> {
+    if (forPreview) {
+      return this.http.post<NSPractice.ISectionResponse>(API_END_POINTS.PUBLIC_QUESTION_READ, postReqData).pipe(retry(2))
     }
-      // tslint:disable-next-line: max-line-length
-      return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}`).pipe(retry(2))
+      if (forcreator) {
+        // tslint:disable-next-line: max-line-length
+        return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}?editMode=true`).pipe(retry(2))
+      }
+        // tslint:disable-next-line: max-line-length
+        return this.http.get<NSPractice.ISectionResponse>(`${API_END_POINTS.QUESTION_PAPER_SECTIONS_V4}/${sectionId}`).pipe(retry(2))
 
   }
-  getQuestionsV4(identifiers: string[], assessmentId: string): Observable<{ count: Number, questions: any[] }> {
+  getQuestionsV4(identifiers: string[], assessmentId: string,
+                 forPreview?: any, userDetails?: any): Observable<{ count: Number, questions: any[] }> {
     const data = {
       assessmentId,
       request: {
@@ -265,12 +295,18 @@ export class PracticeService {
         },
       },
     }
-    if (forcreator) {
-      // tslint:disable-next-line: max-line-length
-      return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4}?editMode=true`, data)
+
+    if (forPreview) {
+      const headers = new HttpHeaders(userDetails)
+      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.PUBLIC_QUESTION_LIST, data, { headers })
+
     }
-      // tslint:disable-next-line: max-line-length
-      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4, data)
+      if (forcreator) {
+        // tslint:disable-next-line: max-line-length
+        return this.http.post<{ count: Number, questions: any[] }>(`${API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4}?editMode=true`, data)
+      }
+        // tslint:disable-next-line: max-line-length
+        return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.QUESTION_PAPER_QUESTIONS_V4, data)
 
   }
   shuffle(array: any[] | (string | undefined)[]) {

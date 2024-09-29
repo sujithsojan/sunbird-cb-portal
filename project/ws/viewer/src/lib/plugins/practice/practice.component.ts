@@ -8,6 +8,7 @@ import {
   SimpleChanges,
   ViewChild, ViewChildren,
   Renderer2,
+  TemplateRef,
 } from '@angular/core'
 import { MatDialog, MatSidenav, MatSnackBar, MatSnackBarConfig } from '@angular/material'
 import { Subscription, interval } from 'rxjs'
@@ -29,6 +30,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
 import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -145,7 +147,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   charactersPerPage = 1300
   showQuestionMarks = 'No'
   forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
-                window.location.href.includes('editMode'))
+                window.location.href.includes('editMode') || window.location.href.includes('preview=true'))
+  forCreatorMode = window.location.href.includes('editMode=true')
+
+  public publicUserInfoForm!: FormGroup
+  public submitted = false
+  emailLengthVal = false
+
+  @ViewChild('publicUserDialog', { static: true }) publicUserDialog!: TemplateRef<any>
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -155,6 +164,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private valueSvc: ValueService,
     // private vws: ViewerDataService,
+    private formBuilder: FormBuilder,
     public snackbar: MatSnackBar,
     private sanitized: DomSanitizer,
     private viewerDataSvc: ViewerDataService,
@@ -188,6 +198,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.isMobile = true
     } else {
       this.isMobile = false
+    }
+    if (this.primaryCategory === this.ePrimaryCategory.FINAL_ASSESSMENT && (this.quizData && this.quizData.isPublic)) {
+      this.getPublicUserDetails()
     }
     // if (this.coursePrimaryCategory === 'Standalone Assessment') {
     //   // this.getSections()
@@ -226,6 +239,25 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //     this.viewState = 'answer' || 'review'
     //   }
     // })
+  }
+
+  getPublicUserDetails() {
+    this.publicUserInfoForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      email: [
+        '', [
+          Validators.required,
+          Validators.pattern(`^[\\w\-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$`),
+        ],
+      ],
+    })
+    this.dialog.open(this.publicUserDialog, {
+      disableClose: true,
+      panelClass: 'public-user-dialog',
+      backdropClass: 'public-user-backdrop',
+      height : 'auto',
+      data: {},
+    })
   }
 
   retakeAssessment() {
@@ -284,6 +316,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
+    if (this.forPreview) {
+      this.init()
+      this.updateVisivility()
+    } else {
       if (this.selectedAssessmentCompatibilityLevel) {
         if (this.selectedAssessmentCompatibilityLevel < 7) {
           this.quizSvc.canAttend(this.identifier).subscribe(response => {
@@ -311,6 +347,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           })
         }
       }
+    }
 
     // }
   }
@@ -430,81 +467,92 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.startIfonlySection()
     } else {
       if (this.selectedAssessmentCompatibilityLevel < 7) {
-        this.quizSvc.getSectionV4(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
+
+        this.quizSvc.getSectionV4(this.identifier, this.forPreview,
+                                  this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
-          this.fetchingSectionsStatus = 'done'
-          if (section.responseCode && section.responseCode === 'OK') {
-            this.compatibilityLevel = section.result.questionSet.compatibilityLevel
-            this.assessmentType = section.result.questionSet.assessmentType
-            /** this is to enable or disable Timer */
-            const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
-            if (showTimer) {
-              this.quizJson.timeLimit = section.result.questionSet.expectedDuration
-            } else {
-              // this.quizJson.timeLimit = this.duration * 60
-              this.quizJson.timeLimit = this.quizJson.timeLimit
-            }
-            this.allSectionTimeLimit = section.result.questionSet.expectedDuration
-            // this.quizSvc.paperSections.next(section.result)
-            const tempObj = _.get(section, 'result.questionSet.children')
-            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
-            this.updataDB(tempObj)
-            this.paperSections = []
-            this.questionSectionTableData = []
-            let totalQuestions = 0
-            _.each(tempObj, o => {
-              if (this.paperSections) {
-                this.paperSections.push(o)
-                this.questionSectionTableData.push(o)
-                if (o.childNodes) {
-                  totalQuestions = totalQuestions + o.childNodes.length
-                }
+          if (section && section.result && section.result.response) {
+            this.showPublicUserPopUp('noAtempt')
+          } else {
+            this.fetchingSectionsStatus = 'done'
+            if (section.responseCode && section.responseCode === 'OK') {
+              this.compatibilityLevel = section.result.questionSet.compatibilityLevel
+              this.assessmentType = section.result.questionSet.assessmentType
+              /** this is to enable or disable Timer */
+              const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
+              if (showTimer) {
+                this.quizJson.timeLimit = section.result.questionSet.expectedDuration
+              } else {
+                // this.quizJson.timeLimit = this.duration * 60
+                this.quizJson.timeLimit = this.quizJson.timeLimit
               }
-            })
-            this.totalAssessemntQuestionsCount = totalQuestions
-            // this.paperSections = _.get(section, 'result.questionSet.children')
-            this.viewState = 'detail'
-            // this.updateTimer()
-            this.startIfonlySection()
+              this.allSectionTimeLimit = section.result.questionSet.expectedDuration
+              // this.quizSvc.paperSections.next(section.result)
+              const tempObj = _.get(section, 'result.questionSet.children')
+              this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
+              this.updataDB(tempObj)
+              this.paperSections = []
+              this.questionSectionTableData = []
+              let totalQuestions = 0
+              _.each(tempObj, o => {
+                if (this.paperSections) {
+                  this.paperSections.push(o)
+                  this.questionSectionTableData.push(o)
+                  if (o.childNodes) {
+                    totalQuestions = totalQuestions + o.childNodes.length
+                  }
+                }
+              })
+              this.totalAssessemntQuestionsCount = totalQuestions
+              // this.paperSections = _.get(section, 'result.questionSet.children')
+              this.viewState = 'detail'
+              // this.updateTimer()
+              this.startIfonlySection()
+            }
           }
         })
       } else {
-        this.quizSvc.getSection(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
+        this.quizSvc.getSection(this.identifier, this.forPreview,
+                                this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
-          this.fetchingSectionsStatus = 'done'
-          if (section.responseCode && section.responseCode === 'OK') {
-            this.compatibilityLevel = section.result.questionSet.compatibilityLevel
-            this.assessmentType = section.result.questionSet.assessmentType
-            /** this is to enable or disable Timer */
-            const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
-            if (showTimer) {
-              this.quizJson.timeLimit = section.result.questionSet.expectedDuration
-            } else {
-              // this.quizJson.timeLimit = this.duration * 60
-              this.quizJson.timeLimit = this.quizJson.timeLimit
-            }
-            this.allSectionTimeLimit  = section.result.questionSet.expectedDuration
-            // this.quizSvc.paperSections.next(section.result)
-            const tempObj = _.get(section, 'result.questionSet.children')
-            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
-            this.updataDB(tempObj)
-            this.paperSections = []
-            this.questionSectionTableData = []
-            let totalQuestions = 0
-            _.each(tempObj, o => {
-              if (this.paperSections) {
-                this.paperSections.push(o)
-                this.questionSectionTableData.push(o)
-                if (o.childNodes) {
-                  totalQuestions = totalQuestions + o.childNodes.length
-                }
+          if (section && section.result && section.result.response) {
+            this.showPublicUserPopUp('noAtempt')
+          } else {
+            this.fetchingSectionsStatus = 'done'
+            if (section.responseCode && section.responseCode === 'OK') {
+              this.compatibilityLevel = section.result.questionSet.compatibilityLevel
+              this.assessmentType = section.result.questionSet.assessmentType
+              /** this is to enable or disable Timer */
+              const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
+              if (showTimer) {
+                this.quizJson.timeLimit = section.result.questionSet.expectedDuration
+              } else {
+                // this.quizJson.timeLimit = this.duration * 60
+                this.quizJson.timeLimit = this.quizJson.timeLimit
               }
-            })
-            this.totalAssessemntQuestionsCount = totalQuestions
-            // this.paperSections = _.get(section, 'result.questionSet.children')
-            this.viewState = 'detail'
-            // this.updateTimer()
-            this.startIfonlySection()
+              this.allSectionTimeLimit  = section.result.questionSet.expectedDuration
+              // this.quizSvc.paperSections.next(section.result)
+              const tempObj = _.get(section, 'result.questionSet.children')
+              this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
+              this.updataDB(tempObj)
+              this.paperSections = []
+              this.questionSectionTableData = []
+              let totalQuestions = 0
+              _.each(tempObj, o => {
+                if (this.paperSections) {
+                  this.paperSections.push(o)
+                  this.questionSectionTableData.push(o)
+                  if (o.childNodes) {
+                    totalQuestions = totalQuestions + o.childNodes.length
+                  }
+                }
+              })
+              this.totalAssessemntQuestionsCount = totalQuestions
+              // this.paperSections = _.get(section, 'result.questionSet.children')
+              this.viewState = 'detail'
+              // this.updateTimer()
+              this.startIfonlySection()
+            }
           }
         })
       }
@@ -662,9 +710,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   getMultiQuestions(ids: string[]) {
     if (this.selectedAssessmentCompatibilityLevel < 7) {
-      return this.quizSvc.getQuestionsV4(ids, this.identifier).toPromise()
+      return this.quizSvc.getQuestionsV4(ids, this.identifier, this.forPreview, this.viewerSvc.publicUserDetails).toPromise()
     }
-      return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
+      return this.quizSvc.getQuestions(ids, this.identifier, this.forPreview, this.viewerSvc.publicUserDetails).toPromise()
   }
   getRhsValue(question: NSPractice.IQuestionV2) {
     if (question && question.qType) {
@@ -1497,20 +1545,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async submitAfterAllPromiseResolved() {
-    if (this.selectedAssessmentCompatibilityLevel < 7) {
-      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-          setTimeout(() => {
-            this.getQuizResult()
-          },         environment.quizResultTimeout)
-        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-          this.assignQuizResult(quizV4Res.result)
-        }
-      }
-    } else {
-      if(this.selectedAssessmentCompatibilityLevel >=8) {
-        const quizV4Res: any = await this.quizSvc.submitQuizV6(this.generateRequest).toPromise().catch(_error => {})
+    if(!this.forPreview){
+      if (this.selectedAssessmentCompatibilityLevel < 7) {
+        const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
         if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
           if (quizV4Res.result.primaryCategory === 'Course Assessment') {
             setTimeout(() => {
@@ -1521,18 +1558,41 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       } else {
-        const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
-        if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-          if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-            setTimeout(() => {
-              this.getQuizResult()
-            },         environment.quizResultTimeout)
-          } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-            this.assignQuizResult(quizV4Res.result)
+        if(this.selectedAssessmentCompatibilityLevel >=8) {
+          const quizV4Res: any = await this.quizSvc.submitQuizV6(this.generateRequest).toPromise().catch(_error => {})
+          if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+            if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+              setTimeout(() => {
+                this.getQuizResult()
+              },         environment.quizResultTimeout)
+            } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+              this.assignQuizResult(quizV4Res.result)
+            }
+          }
+        } else {
+          const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
+          if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+            if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+              setTimeout(() => {
+                this.getQuizResult()
+              },         environment.quizResultTimeout)
+            } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+              this.assignQuizResult(quizV4Res.result)
+            }
           }
         }
       }
-      
+    } else {
+      const quizV4Res: any = await this.quizSvc.publicSubmit(this.generateRequest, this.viewerSvc.publicUserDetails ).toPromise().catch(_error => {})
+          if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+            if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+              setTimeout(() => {
+                this.getQuizResult()
+              },         environment.quizResultTimeout)
+            } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+              this.assignQuizResult(quizV4Res.result)
+            }
+      }
     }
   }
 
@@ -1586,16 +1646,20 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async submitAfterAllPromiseResolvedForOptionWeightage() {
-    if (this.selectedAssessmentCompatibilityLevel < 7) {
-      await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-     
-    } else {
-      if (this.selectedAssessmentCompatibilityLevel >= 8) {
-        await this.quizSvc.submitQuizV6(this.generateRequest).toPromise().catch(_error => {}) 
+    if(!this.forPreview){
+      if (this.selectedAssessmentCompatibilityLevel < 7) {
+        await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+      
       } else {
-        await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {}) 
+        if (this.selectedAssessmentCompatibilityLevel >= 8) {
+          await this.quizSvc.submitQuizV6(this.generateRequest).toPromise().catch(_error => {}) 
+        } else {
+          await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {}) 
+        }
+            
       }
-          
+    } else {
+      await this.quizSvc.publicSubmit(this.generateRequest,this.viewerSvc.publicUserDetails ).toPromise().catch(_error => {}) 
     }
     this.updateProgress(2)
   }
@@ -1776,34 +1840,37 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.retake = true
         
         // this.init()
-        if(this.selectedAssessmentCompatibilityLevel < 7) {
-          // this.init()
-          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
-            this.quizSvc.canAttend(this.identifier).subscribe(response => {
-              if (response) {
-                  this.canAttempt = response
-                //  this.canAttempt = {
-                //   attemptsAllowed: 1,
-                //   attemptsMade: 0,
-                // }
-              }
-            })
-          }          
-          this.retakeAssessment()
-        } else {      
-          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
-            this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
-              if (response) {
-                  this.canAttempt = response
-                //  this.canAttempt = {
-                //   attemptsAllowed: 1,
-                //   attemptsMade: 0,
-                // }
-              }
-            })
-          }          
-          this.retakeAssessment()
+        if(!this.forPreview) {
+          if(this.selectedAssessmentCompatibilityLevel < 7) {
+            // this.init()
+            if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory ) {
+              this.quizSvc.canAttend(this.identifier).subscribe(response => {
+                if (response) {
+                    this.canAttempt = response
+                  //  this.canAttempt = {
+                  //   attemptsAllowed: 1,
+                  //   attemptsMade: 0,
+                  // }
+                }
+              })
+            }          
+            this.retakeAssessment()
+          } else {      
+            if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory && !this.forPreview) {
+              this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+                if (response) {
+                    this.canAttempt = response
+                  //  this.canAttempt = {
+                  //   attemptsAllowed: 1,
+                  //   attemptsMade: 0,
+                  // }
+                }
+              })
+            }          
+            this.retakeAssessment()
+          }
         }
+        
         
         break
     }
@@ -1904,29 +1971,39 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async getQuizResult() {
-    const req = {
+    const req: any = {
       request: {
         assessmentId: this.generateRequest.identifier,
         batchId: this.generateRequest.batchId,
         courseId: this.generateRequest.courseId,
       },
     }
+    if(this.forPreview) {
+      req.request['email'] = this.viewerSvc.publicUserDetails.email
+    }
     if(this.selectedAssessmentCompatibilityLevel < 7) {
-      const resultRes: any = await this.quizSvc.quizResult(req).toPromise().catch(_error => {})
+      const resultRes: any = await this.quizSvc.quizResult(req,this.forPreview).toPromise().catch(_error => {})
       if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
         if (resultRes.result) {
           this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
           this.assignQuizResult(resultRes.result)
         }
+        if(resultRes.result && resultRes.result.pass) {
+          this.showPublicUserPopUp('pass')
+        }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
         this.finalResponse = resultRes.responseCode
       }
     } else {
-      const resultRes: any = await this.quizSvc.quizResultV5(req).toPromise().catch(_error => {})
+      const resultRes: any = await this.quizSvc.quizResultV5(req,this.forPreview).toPromise().catch(_error => {})
       if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
         if (resultRes.result) {
           this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
           this.assignQuizResult(resultRes.result)
+        }
+
+        if(resultRes.result && resultRes.result.pass) {
+          this.showPublicUserPopUp('pass')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
         this.finalResponse = resultRes.responseCode
@@ -2318,4 +2395,70 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return 'countDownTimerGreen' 
   }
 
+  emailVerification(emailId: string) {
+    this.emailLengthVal = false
+    if (emailId && emailId.length > 0) {
+      const email = emailId.split('@')
+      if (email && email.length === 2) {
+        if ((email[0] && email[0].length > 64) || (email[1] && email[1].length > 255)) {
+          this.emailLengthVal = true
+        }
+      } else {
+        this.emailLengthVal = false
+      }
+    }
+  }
+  submitpublicUserInfo() {
+    this.viewerSvc.publicUserDetails =  this.publicUserInfoForm.value
+    this.dialog.closeAll()
+  }
+
+  getPublicContentRequestData(){
+    let assessmentReadReqData = {}
+
+    if(this.forPreview){
+      assessmentReadReqData = {
+        "assessmentIdentifier":this.identifier,
+        "contextId": this.collectionId,
+        ...this.viewerSvc.publicUserDetails
+      }
+    }
+    return assessmentReadReqData
+  }
+  showPublicUserPopUp(ontype: string) {
+    let msg: any = ''
+    switch(ontype) {
+      case 'pass':
+        msg = 'Congratulations! Your certificate will be sent to your email soon.'
+        break;
+      case 'noAtempt':
+        msg = 'You have successfully completed the assessment! If you have not received your certificate yet, don’t worry—we will resend them shortly.'
+        break;
+      default:
+        msg = 'Your certificate has been successfully resent to your email.'
+        break;
+    }
+    const dialogRef =  this.dialog.open(FinalAssessmentPopupComponent, {
+      data: {
+        assessmentType:'publicUserSuccess',
+        message: msg,
+        popUpType: ontype
+      },
+      width:'320px',
+      maxWidth: '90vw',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'final-assessment',
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       if(ontype === 'noAtempt') {
+        this.router.navigateByUrl(`public/toc/${this.collectionId}/overview`)
+       } else  if(ontype === 'pass') {
+        this.router.navigateByUrl(`public/toc/${this.collectionId}/overview`)
+       }
+      }
+    })
+  }
 }

@@ -51,7 +51,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
       if (data && data.pageData) {
         if (data && data.content && data.content.data && data.content.data.identifier) {
           const identifier =  data.content.data.identifier
-          if (identifier) {
+          if (identifier && !this.forPreview) {
             this.checkForAssessmentSubmitAlready(identifier)
           }
         }
