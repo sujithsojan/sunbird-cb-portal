@@ -199,7 +199,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.isMobile = false
     }
-    if (this.primaryCategory === this.ePrimaryCategory.FINAL_ASSESSMENT && (this.quizData && this.quizData.isPublic)) {
+
+    if (this.forPreview && 
+      this.primaryCategory === this.ePrimaryCategory.FINAL_ASSESSMENT &&
+       (this.quizData && this.quizData.isPublic)) {
       this.getPublicUserDetails()
     }
     // if (this.coursePrimaryCategory === 'Standalone Assessment') {
@@ -316,6 +319,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
+ 
     if (this.forPreview) {
       this.init()
       this.updateVisivility()
@@ -448,6 +452,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.quizJson.questions  = []
     }
 
+    if (this.forPreview && this.quizData.isPublic) {
+      this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.quizData)
+    }
     this.fetchingSectionsStatus = 'fetching'
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
       && _.get(this.quizSvc.paperSections, 'value.questionSet.children')) {
@@ -710,9 +717,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   getMultiQuestions(ids: string[]) {
     if (this.selectedAssessmentCompatibilityLevel < 7) {
-      return this.quizSvc.getQuestionsV4(ids, this.identifier, this.forPreview, this.viewerSvc.publicUserDetails).toPromise()
+      return this.quizSvc.getQuestionsV4(ids, this.identifier, this.forPreview,
+                                         this.viewerSvc.publicUserDetails, this.collectionId).toPromise()
     }
-      return this.quizSvc.getQuestions(ids, this.identifier, this.forPreview, this.viewerSvc.publicUserDetails).toPromise()
+      return this.quizSvc.getQuestions(ids, this.identifier, this.forPreview,
+                                       this.viewerSvc.publicUserDetails, this.collectionId).toPromise()
   }
   getRhsValue(question: NSPractice.IQuestionV2) {
     if (question && question.qType) {
@@ -1583,11 +1592,21 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     } else {
-      const quizV4Res: any = await this.quizSvc.publicSubmit(this.generateRequest, this.viewerSvc.publicUserDetails ).toPromise().catch(_error => {})
+      let requestData = this.generateRequest
+      requestData = {
+        ...requestData,
+        ...this.viewerSvc.publicUserDetails,
+        contextId: this.collectionId
+      }
+      
+      const quizV4Res: any = await this.quizSvc.publicSubmit(requestData).toPromise().catch(_error => {})
           if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
             if (quizV4Res.result.primaryCategory === 'Course Assessment') {
               setTimeout(() => {
                 this.getQuizResult()
+                if(this.forPreview && this.quizData.isPublic){
+                  this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
+                }
               },         environment.quizResultTimeout)
             } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
               this.assignQuizResult(quizV4Res.result)
@@ -1659,7 +1678,16 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             
       }
     } else {
-      await this.quizSvc.publicSubmit(this.generateRequest,this.viewerSvc.publicUserDetails ).toPromise().catch(_error => {}) 
+      let requestData : any = this.generateRequest
+      requestData = {
+        ...requestData,
+        ...this.viewerSvc.publicUserDetails,
+        contextId: this.collectionId
+      }
+      await this.quizSvc.publicSubmit(requestData ).toPromise().catch(_error => {}) 
+      if(this.forPreview && this.quizData.isPublic){
+        this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
+      }
     }
     this.updateProgress(2)
   }
@@ -1980,6 +2008,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     if(this.forPreview) {
       req.request['email'] = this.viewerSvc.publicUserDetails.email
+      req.request['assessmentIdentifier'] =  this.generateRequest.identifier
+      req.request['contextId'] =  this.generateRequest.courseId
     }
     if(this.selectedAssessmentCompatibilityLevel < 7) {
       const resultRes: any = await this.quizSvc.quizResult(req,this.forPreview).toPromise().catch(_error => {})
@@ -1988,13 +2018,18 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
           this.assignQuizResult(resultRes.result)
         }
-        if(resultRes.result && resultRes.result.pass) {
+        if(this.forPreview && resultRes.result && resultRes.result.pass) {
           this.showPublicUserPopUp('pass')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
         this.finalResponse = resultRes.responseCode
       }
     } else {
+      if(this.forPreview) {
+        req.request['email'] = this.viewerSvc.publicUserDetails.email
+        req.request['assessmentIdentifier'] =  this.generateRequest.identifier
+        req.request['contextId'] =  this.generateRequest.courseId
+      }
       const resultRes: any = await this.quizSvc.quizResultV5(req,this.forPreview).toPromise().catch(_error => {})
       if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
         if (resultRes.result) {
@@ -2002,7 +2037,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.assignQuizResult(resultRes.result)
         }
 
-        if(resultRes.result && resultRes.result.pass) {
+        if(this.forPreview && resultRes.result && resultRes.result.pass) {
           this.showPublicUserPopUp('pass')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
@@ -2061,7 +2096,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             mode: WsEvents.WsTimeSpentMode.Play,
             content: data,
             identifier: data ? data.identifier : null,
-            mimeType: NsContent.EMimeTypes.PDF,
+            mimeType: NsContent.EMimeTypes.QUESTION_SET,
             url: data ? data.artifactUrl : null,
             object: {
                 id: data ? data.identifier : null,

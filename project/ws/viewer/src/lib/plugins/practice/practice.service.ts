@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { NSPractice } from './practice.model'
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs'
 import { map, retry } from 'rxjs/operators'
@@ -110,11 +110,10 @@ export class PracticeService {
     }))
   }
 
-  publicSubmit(req: NSPractice.IQuizSubmit, userDetails?: any): Observable<any> {
+  publicSubmit(req: NSPractice.IQuizSubmit): Observable<any> {
 
-    const headers = new HttpHeaders(userDetails)
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(
-      API_END_POINTS.PUBLIC_ASSESSMENT_SUBMIT, req, { headers }).pipe(map(response => {
+      API_END_POINTS.PUBLIC_ASSESSMENT_SUBMIT, req).pipe(map(response => {
       return response
     }))
   }
@@ -250,7 +249,7 @@ export class PracticeService {
 
   }
   getQuestions(identifiers: string[], assessmentId: string,
-               forPreview?: any, userDetails?: any): Observable<{ count: Number, questions: any[] }> {
+               forPreview?: any, userDetails?: any, collectionId?: any): Observable<{ count: Number, questions: any[] }> {
     const data = {
       assessmentId,
       request: {
@@ -260,9 +259,18 @@ export class PracticeService {
       },
     }
     if (forPreview) {
-      const headers = new HttpHeaders(userDetails)
-      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.PUBLIC_QUESTION_LIST, data, { headers })
-
+      const forPreviewData = {
+        assessmentIdentifier: assessmentId,
+        contextId: collectionId,
+        request: {
+          search: {
+            identifier: identifiers,
+          },
+        },
+        ...userDetails,
+      }
+      return this.http.post<{ count: Number, questions: any[] }>(
+        API_END_POINTS.PUBLIC_QUESTION_LIST, forPreviewData)
     }
       if (forcreator) {
         // tslint:disable-next-line: max-line-length
@@ -286,7 +294,7 @@ export class PracticeService {
 
   }
   getQuestionsV4(identifiers: string[], assessmentId: string,
-                 forPreview?: any, userDetails?: any): Observable<{ count: Number, questions: any[] }> {
+                 forPreview?: any, userDetails?: any, collectionId?: any): Observable<{ count: Number, questions: any[] }> {
     const data = {
       assessmentId,
       request: {
@@ -297,9 +305,18 @@ export class PracticeService {
     }
 
     if (forPreview) {
-      const headers = new HttpHeaders(userDetails)
-      return this.http.post<{ count: Number, questions: any[] }>(API_END_POINTS.PUBLIC_QUESTION_LIST, data, { headers })
-
+      const forPreviewData = {
+        assessmentIdentifier: assessmentId,
+        contextId: collectionId,
+        request: {
+          search: {
+            identifier: identifiers,
+          },
+        },
+        ...userDetails,
+      }
+      return this.http.post<{ count: Number, questions: any[] }>(
+        API_END_POINTS.PUBLIC_QUESTION_LIST, forPreviewData)
     }
       if (forcreator) {
         // tslint:disable-next-line: max-line-length
