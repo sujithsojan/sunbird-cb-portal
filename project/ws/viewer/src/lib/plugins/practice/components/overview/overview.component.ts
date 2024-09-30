@@ -25,6 +25,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   @Output() userSelection = new EventEmitter<NSPractice.TUserSelectionType>()
   @Input() forPreview = false
   @Input() quizData: any
+  forCreatorMode = window.location.href.includes('editMode=true')
   questionTYP = NsContent.EPrimaryCategory
   // staticImage = '/assets/images/exam/practice-test.png'
   staticImage = '/assets/images/exam/practice-result.png'
@@ -139,7 +140,8 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   overviewed(event: NSPractice.TUserSelectionType) {
-    if (this.forPreview &&  this.primaryCategory === this.questionTYP.FINAL_ASSESSMENT) {
+    if ((this.forPreview && !this.forCreatorMode) &&
+      this.primaryCategory === this.questionTYP.FINAL_ASSESSMENT) {
       if (this.quizData && this.quizData.isPublic) {
         this.loading = true
         this.userSelection.emit(event)
