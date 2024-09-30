@@ -319,7 +319,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
- 
+
     if (this.forPreview) {
       this.init()
       this.updateVisivility()
@@ -479,8 +479,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                                   this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
           if (section && section.result && section.result.response) {
-            if((this.forPreview && !this.forCreatorMode))
-            {
+            if ((this.forPreview && !this.forCreatorMode)) {
               this.showPublicUserPopUp('noAtempt')
             }
           } else {
@@ -526,8 +525,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                                 this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
           if (section && section.result && section.result.response) {
-            if((this.forPreview && !this.forCreatorMode))
-              {
+            if ((this.forPreview && !this.forCreatorMode)) {
                 this.showPublicUserPopUp('noAtempt')
               }
           } else {
