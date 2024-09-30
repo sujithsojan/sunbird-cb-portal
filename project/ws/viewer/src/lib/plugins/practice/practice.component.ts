@@ -2023,8 +2023,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
           this.assignQuizResult(resultRes.result)
         }
-        if((this.forPreview && !this.forCreatorMode) && resultRes.result && resultRes.result.pass) {
-          this.showPublicUserPopUp('pass')
+        if((this.forPreview && !this.forCreatorMode) && resultRes.result ) {
+          this.showPublicUserPopUp(resultRes.result.pass? 'pass': 'fail')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
         this.finalResponse = resultRes.responseCode
@@ -2042,8 +2042,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.assignQuizResult(resultRes.result)
         }
 
-        if((this.forPreview && !this.forCreatorMode) && resultRes.result && resultRes.result.pass) {
-          this.showPublicUserPopUp('pass')
+        if((this.forPreview && !this.forCreatorMode) && resultRes.result) {
+          this.showPublicUserPopUp(resultRes.result.pass? 'pass': 'fail')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
         this.finalResponse = resultRes.responseCode
@@ -2474,6 +2474,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       case 'noAtempt':
         msg = 'You have successfully completed the assessment! If you have not received your certificate yet, don’t worry—we will resend them shortly.'
         break;
+      case 'fail':
+        msg = 'Unfortunately, you did not pass. Please retake the assessment.'
+        break
       default:
         msg = 'Your certificate has been successfully resent to your email.'
         break;
@@ -2498,6 +2501,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
        } else  if(ontype === 'pass') {
         this.router.navigateByUrl(`public/toc/${this.collectionId}/overview`)
        }
+      } else {
+        if(ontype !== 'fail') {
+          this.router.navigateByUrl(`public/toc/${this.collectionId}/overview`)
+        }
       }
     })
   }
