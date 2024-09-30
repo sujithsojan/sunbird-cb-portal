@@ -119,7 +119,7 @@ export class PracticeService {
   }
 
   quizResult(req: any, forPreview?: any) {
-    const url = forPreview ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V4
+    const url = (forPreview && !forcreator) ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V4
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(
       url, req).pipe(map(response => {
       return response
@@ -127,7 +127,7 @@ export class PracticeService {
   }
 
   quizResultV5(req: any, forPreview?: any) {
-    const url = forPreview ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V5
+    const url = (forPreview && !forcreator) ? API_END_POINTS.PUBLIC_ASSESSMENT_RESULT : API_END_POINTS.ASSESSMENT_RESULT_V5
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(url, req).pipe(map(response => {
       return response
     }))
@@ -237,7 +237,7 @@ export class PracticeService {
   }
 
   getSection(sectionId: string, forPreview?: any, postReqData?: any): Observable<any> {
-    if (forPreview) {
+    if (forPreview && !forcreator) {
       return this.http.post<NSPractice.ISectionResponse>(API_END_POINTS.PUBLIC_QUESTION_READ, postReqData).pipe(retry(2))
     }
       if (forcreator) {
@@ -258,7 +258,7 @@ export class PracticeService {
         },
       },
     }
-    if (forPreview) {
+    if (forPreview && !forcreator) {
       const forPreviewData = {
         assessmentIdentifier: assessmentId,
         contextId: collectionId,
@@ -282,7 +282,7 @@ export class PracticeService {
   }
 
   getSectionV4(sectionId: string, forPreview?: any, postReqData?: any): Observable<any> {
-    if (forPreview) {
+    if (forPreview && !forcreator) {
       return this.http.post<NSPractice.ISectionResponse>(API_END_POINTS.PUBLIC_QUESTION_READ, postReqData).pipe(retry(2))
     }
       if (forcreator) {
@@ -304,7 +304,7 @@ export class PracticeService {
       },
     }
 
-    if (forPreview) {
+    if (forPreview && !forcreator) {
       const forPreviewData = {
         assessmentIdentifier: assessmentId,
         contextId: collectionId,

@@ -258,7 +258,7 @@ color: rgb(27, 76, 161)
       .mobile-responsive-question-container{
          
           width: 100%;
-          height: calc(100vh - 350px);
+          height: calc(100vh - 276px);
           overflow-y: auto
           // height: 73%;
           // overflow-y: auto;
@@ -283,7 +283,7 @@ color: rgb(27, 76, 161)
   .mobile-responsive-question-container{
          
     width: 360px;
-    height: calc(100vh - 350px);
+    height: calc(100vh - 276px);
     overflow-y: auto
     // height: 73%;
     // overflow-y: auto;
@@ -303,9 +303,13 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 375px) and (max-width: 375px) {
   .mobile-responsive-question-container{
          
-    width: 375px;
-    height: calc(100vh - 350px);
-    overflow-y: auto
+    // width: 375px;
+    // height: calc(100vh - 350px);
+    // overflow-y: auto
+
+    width: 346px;
+    height: calc(100vh - 276px);
+    overflow-y: auto;
     // height: 73%;
     // overflow-y: auto;
   }
@@ -324,7 +328,7 @@ color: rgb(27, 76, 161)
   .mobile-responsive-question-container{
          
     width: 390px;
-    height: calc(100vh - 350px);
+    height: calc(100vh - 276px);
     overflow-y: auto
     // height: 73%;
     // overflow-y: auto;

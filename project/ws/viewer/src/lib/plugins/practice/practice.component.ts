@@ -320,7 +320,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.updateVisivility()
     // } else {
 
-    if (this.forPreview) {
+    if ((this.forPreview && !this.forCreatorMode)) {
       this.init()
       this.updateVisivility()
     } else {
@@ -1558,7 +1558,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async submitAfterAllPromiseResolved() {
-    if(!this.forPreview){
+    if(!this.forPreview || this.forCreatorMode){
       if (this.selectedAssessmentCompatibilityLevel < 7) {
         const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
         if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
@@ -1669,7 +1669,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async submitAfterAllPromiseResolvedForOptionWeightage() {
-    if(!this.forPreview){
+    if(!this.forPreview  || this.forCreatorMode){
       if (this.selectedAssessmentCompatibilityLevel < 7) {
         await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
       
