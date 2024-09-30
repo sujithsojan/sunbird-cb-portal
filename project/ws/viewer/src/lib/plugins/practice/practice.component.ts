@@ -200,7 +200,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.isMobile = false
     }
 
-    if (this.forPreview && 
+    if ((this.forPreview && !this.forCreatorMode) &&
       this.primaryCategory === this.ePrimaryCategory.FINAL_ASSESSMENT &&
        (this.quizData && this.quizData.isPublic)) {
       this.getPublicUserDetails()
@@ -479,7 +479,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                                   this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
           if (section && section.result && section.result.response) {
-            this.showPublicUserPopUp('noAtempt')
+            if((this.forPreview && !this.forCreatorMode))
+            {
+              this.showPublicUserPopUp('noAtempt')
+            }
           } else {
             this.fetchingSectionsStatus = 'done'
             if (section.responseCode && section.responseCode === 'OK') {
@@ -523,7 +526,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                                 this.getPublicContentRequestData()).subscribe((section: NSPractice.ISectionResponse) => {
           // console.log(section)
           if (section && section.result && section.result.response) {
-            this.showPublicUserPopUp('noAtempt')
+            if((this.forPreview && !this.forCreatorMode))
+              {
+                this.showPublicUserPopUp('noAtempt')
+              }
           } else {
             this.fetchingSectionsStatus = 'done'
             if (section.responseCode && section.responseCode === 'OK') {
@@ -1866,6 +1872,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
+        this.isSubmitted = false
         
         // this.init()
         if(!this.forPreview) {
@@ -2018,7 +2025,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
           this.assignQuizResult(resultRes.result)
         }
-        if(this.forPreview && resultRes.result && resultRes.result.pass) {
+        if((this.forPreview && !this.forCreatorMode) && resultRes.result && resultRes.result.pass) {
           this.showPublicUserPopUp('pass')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
@@ -2037,7 +2044,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.assignQuizResult(resultRes.result)
         }
 
-        if(this.forPreview && resultRes.result && resultRes.result.pass) {
+        if((this.forPreview && !this.forCreatorMode) && resultRes.result && resultRes.result.pass) {
           this.showPublicUserPopUp('pass')
         }
       } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
