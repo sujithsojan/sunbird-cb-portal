@@ -578,7 +578,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
    }
   }
   startSection(section: NSPractice.IPaperSection) {
-    
+
     this.sectionalInstruction = section.additionalInstructions
     this.selectedSectionIdentifier = section.identifier
     if (section.childNodes && section.childNodes.length) {
@@ -661,7 +661,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         // })
       }
 
-      if(section && section.questionParagraph) {
+      if (section && section.questionParagraph) {
         this.questionParagraph = section.questionParagraph
       } else {
         this.questionParagraph = ''
