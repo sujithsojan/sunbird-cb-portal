@@ -29,6 +29,7 @@ import { ResetRatingsService } from '@ws/app/src/lib/routes/app-toc/services/res
 import { ReviewsContentComponent } from '../reviews-content/reviews-content.component'
 import { CertificateDialogComponent } from '../../certificate-dialog/certificate-dialog.component'
 import { environment } from 'src/environments/environment'
+import { NsDiscussionV2 } from '@sunbird-cb/discussion-v2'
 
 interface IStripUnitContentData {
   key: string
@@ -184,9 +185,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   timer: any = {}
   isMobile = false
   compentencyKey!: NsContent.ICompentencyKeys
+  discussWidgetData!: NsDiscussionV2.ICommentWidgetData
 
   ngOnInit() {
-
     this.compentencyKey = this.configService.compentency[environment.compentencyVersionKey]
     if (window.innerWidth <= 1200) {
       this.isMobile = true
@@ -204,6 +205,17 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
 
     if (this.content) {
       this.content['subTheme'] = this.getSubThemes()
+    }
+
+    if(this.config && this.config.discussWidgetData) {
+      this.discussWidgetData = this.config.discussWidgetData
+      if (this.content && this.content.identifier ) {
+        this.discussWidgetData.newCommentSection.commentTreeData.entityId = this.content.identifier
+        if(this.discussWidgetData.commentsList.repliesSection && this.discussWidgetData.commentsList.repliesSection.newCommentReply) {
+          this.discussWidgetData.commentsList.repliesSection.newCommentReply.commentTreeData.entityId = this.content.identifier
+        }
+      }
+      this.discussWidgetData = {...this.discussWidgetData}
     }
   }
 
