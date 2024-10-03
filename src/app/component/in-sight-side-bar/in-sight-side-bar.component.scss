@@ -248,7 +248,9 @@
 .not-my-user-content p {
   // margin-left: 8px;
   color: #000000;
+  /* stylelint-disable */
   font-family: Lato;
+  /* stylelint-enable */
   font-size: 14px;
   z-index: 10;
   // padding: 0px 4px;
