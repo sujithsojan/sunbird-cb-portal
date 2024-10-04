@@ -148,7 +148,7 @@ export class ProfileCertificateDialogComponent implements OnInit {
       {
         type: WsEvents.EnumInteractTypes.CLICK,
         id: `${type}-${WsEvents.EnumInteractSubTypes.CERTIFICATE}`,
-        subType: action && action,
+        subType: action ? action : '',
       },
       {
         id: this.data.certId,   // id of the certificate

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+import { NsContent } from '@sunbird-cb/collection/src/public-api'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'ws-app-global-search',
@@ -14,8 +17,9 @@ export class GlobalSearchComponent implements OnInit {
   filtersPanel!: string | null
   selectedTab = 1
   tabs = ['All', 'Learn', 'Network', 'Discuss', 'Careers']
+  compentencyKey!: NsContent.ICompentencyKeys
 
-  constructor(private activated: ActivatedRoute, private translate: TranslateService) {
+  constructor(private activated: ActivatedRoute, private translate: TranslateService, private configService: ConfigurationsService) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       const lang = localStorage.getItem('websiteLanguage')!
@@ -24,6 +28,7 @@ export class GlobalSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.compentencyKey = this.configService.compentency[environment.compentencyVersionKey]
     this.activated.queryParamMap.subscribe(queryParams => {
       this.searchParam = ''
       this.userValue = ''

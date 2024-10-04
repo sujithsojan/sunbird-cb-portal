@@ -15,7 +15,7 @@
 }
 
 .font-14 {
-  font-family: lato;
+  font-family: lato, sans-serif;
   font-size: 14px !important;
   color: #000000;
 }
@@ -50,7 +50,6 @@
       margin-right: auto!important;
 
       img.footer_logo {
-        // height: 32px;
         width: 120px;
         background: #fff;
         border-radius: 2px 2px;
@@ -66,7 +65,6 @@
   .footer_sub_text {
     color: rgba(255, 255, 255, 0.7);
     background-color: transparent;
-    // margin-bottom: 12px;
   }
   a.feedback_link {
     color: #68BDFF;
@@ -99,9 +97,6 @@
     .top_footer_inner  {
       width: 100%;
       max-width: 100%;
-      // div {
-      //   margin-bottom: 16px;
-      // }
     }
   }
 }
@@ -131,15 +126,9 @@
 
 .footer_sub_text:hover::after {
   width: 100%;
-  //transition: width .3s;
 }
 
-// .top_footer_box {
-//   a.footer_sub_text:hover {
-//     text-decoration: underline !important;
-//     color: #F1921D !important;
-//   }
-// }
+
 
 .app-store-button {
   display: none;
@@ -234,6 +223,5 @@
 
 .footer_sub_text:hover::after {
   width: 100%;
-  //transition: width .3s;
 }
 }

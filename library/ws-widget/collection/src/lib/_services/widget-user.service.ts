@@ -17,14 +17,14 @@ const API_END_POINTS = {
     FETCH_CPB_PLANS: `/apis/proxies/v8/user/v1/cbplan`,
   FETCH_USER_ENROLLMENT_LIST: (userId: string | undefined) =>
     // tslint:disable-next-line: max-line-length
-    `/apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=orgName,email&licenseDetails=name,description,url&fields=contentType,primaryCategory,courseCategory,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,posterImage,duration,creatorLogo,license,version,versionKey,avgRating,additionalTags,${NsCardContent.IGOTConst.COMPETENCIES}&batchDetails=name,endDate,startDate,status,enrollmentType,createdBy,certificates,batchAttributes`,
+    `/apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=orgName,email&licenseDetails=name,description,url&fields=contentType,primaryCategory,courseCategory,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,posterImage,duration,creatorLogo,license,version,versionKey,avgRating,additionalTags,${NsCardContent.COMPENTENCYKEY}&batchDetails=name,endDate,startDate,status,enrollmentType,createdBy,certificates,batchAttributes`,
   FETCH_USER_ENROLLMENT_LIST_PROFILE: (userId: string | undefined) =>
     // tslint:disable-next-line: max-line-length
-    `/apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=orgName,email&licenseDetails=name,description,url&fields=contentType,primaryCategory,courseCategory,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,posterImage,duration,creatorLogo,license,version,versionKey,avgRating,additionalTags,${NsCardContent.IGOTConst.COMPETENCIES}&batchDetails=name,endDate,startDate,status,enrollmentType,createdBy,certificates,batchAttributes&retiredCoursesEnabled=true`,
+    `/apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=orgName,email&licenseDetails=name,description,url&fields=contentType,primaryCategory,courseCategory,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,posterImage,duration,creatorLogo,license,version,versionKey,avgRating,additionalTags,${NsCardContent.COMPENTENCYKEY}&batchDetails=name,endDate,startDate,status,enrollmentType,createdBy,certificates,batchAttributes&retiredCoursesEnabled=true`,
   // tslint:disable-next-line: max-line-length
   FETCH_USER_ENROLLMENT_LIST_V2: (userId: string | undefined, orgdetails: string, licenseDetails: string, fields: string, batchDetails: string) =>
     // tslint:disable-next-line: max-line-length
-    `apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=${orgdetails}&licenseDetails=${licenseDetails}&fields=${fields},courseCategory,${NsCardContent.IGOTConst.COMPETENCIES}&batchDetails=${batchDetails}`,
+    `apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=${orgdetails}&licenseDetails=${licenseDetails}&fields=${fields},courseCategory,${NsCardContent.COMPENTENCYKEY}&batchDetails=${batchDetails}`,
 }
 
 @Injectable({
@@ -32,6 +32,8 @@ const API_END_POINTS = {
 })
 export class WidgetUserService {
   constructor(private http: HttpClient) { }
+
+  compentencyKey = environment.compentencyVersionKey
 
   handleError(error: ErrorEvent) {
     let errorMessage = ''
@@ -244,8 +246,8 @@ export class WidgetUserService {
           if (childEnrollData) {
             childData['contentStatus'] = childEnrollData.status
           }
-         if (childData.competencies_v5) {
-          childData.competencies_v5.forEach((element: any) => {
+         if (childData[this.compentencyKey]) {
+          childData[this.compentencyKey].forEach((element: any) => {
             if (!competencyArea.includes(element.competencyArea)) {
               competencyArea.push(element.competencyArea)
               competencyAreaId.push(element.competencyAreaId)

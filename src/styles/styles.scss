@@ -15,8 +15,6 @@ body {
   margin: 0px;
   font-family: $font-family-lato;
   scroll-behavior: smooth;
-  // letter-spacing: $letter-spacing;
-  // word-spacing: $word-spacing;
 }
 
 :host {
@@ -148,10 +146,6 @@ body {
     transform: translateY(-100%);
   }
 
-  // &.scrolling-up {
-  //   position: sticky;
-  //   top: 0;
-  // }
   &.scrolled-down.scrolling-no {
     transform: translateY(-100%);
   }
@@ -204,7 +198,6 @@ mat-toolbar {
 
   &.mat-toolbar-row,
   &.mat-toolbar-single-row {
-    // height: 56px;
     height: auto;
   }
 }
@@ -483,15 +476,11 @@ h3.shepherd-title {
 }
 
 .shepherd-enabled.shepherd-element {
-  // position: relative !important;
   top: 15px !important;
   margin-right: 10px !important;
   margin-left: 10px !important;
 }
 
-// .scrollRemove{
-//   overflow: hidden;
-// }
 
 .checkbox-sidenav>div.mat-drawer-inner-container {
   height: auto !important;
@@ -507,7 +496,6 @@ h3.shepherd-title {
 }
 
 .mat-flat-button {
-  // font-weight: bold;
   border: 1px solid;
 }
 
@@ -582,8 +570,6 @@ h3.shepherd-title {
       align-items: center;
     }
 
-    //  .mat-radio-label-content {}
-    //    .mat-radio-container {}
   }
 }
 
@@ -601,134 +587,6 @@ h3.shepherd-title {
     margin:0px auto!important;
 }
 
-ngx-guided-tour {
-  .tour-arrow {
-    display: none !important;
-  }
-
-  .tour-step {
-    .tour-block {
-      display: flex;
-      flex-direction: column;
-      padding: 28px !important;
-      margin-top: 24px !important;
-      text-align: center;
-      min-height: 60px !important;
-    }
-
-    .tour-content {
-      padding-bottom: 0px !important;
-      font-size: 16px !important;
-      min-height: 60px !important;
-    }
-  }
-
-  .tour-title {
-    text-align: center;
-    font-size: 1.5rem !important;
-    padding-bottom: 0 !important;
-  }
-
-  .tour-block {
-    position: relative;
-    background-color: #1C4CA1 !important;
-    color: white !important;
-    box-shadow: 0px 8px 24px rgba(0,0,0, 0.24) !important;
-  }
-
-  .tour-buttons {
-    .back-button {
-      border-radius: 4px !important;
-      border: 1px solid rgba(0,0,0, 0.08) !important;
-      opacity: 1 !important;
-      background-color: transparent !important;
-      color: white !important;
-      box-sizing: border-box;
-      position: relative;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: pointer;
-      outline: 0;
-      -webkit-tap-highlight-color: transparent;
-      display: inline-block;
-      white-space: nowrap;
-      text-decoration: none;
-      vertical-align: baseline;
-      text-align: center;
-      margin: 0;
-      min-width: 64px;
-      line-height: 36px;
-      padding: 0 16px;
-      overflow: visible;
-      font-family: Lato;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .next-button {
-      background-color: #F3962E !important;
-      color: #373434 !important;
-      box-sizing: border-box;
-      position: relative;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: pointer;
-      outline: 0;
-      border: none;
-      -webkit-tap-highlight-color: transparent;
-      display: inline-block;
-      white-space: nowrap;
-      text-decoration: none;
-      vertical-align: baseline;
-      text-align: center;
-      margin: 0;
-      min-width: 64px;
-      line-height: 36px;
-      padding: 0 16px;
-      border-radius: 4px;
-      overflow: visible;
-      font-family: Lato;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .skip-button {
-      color: #373434 !important;
-      box-sizing: border-box;
-      position: relative;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: pointer;
-      outline: 0;
-      border: none;
-      -webkit-tap-highlight-color: transparent;
-      display: inline-block;
-      white-space: nowrap;
-      text-decoration: none;
-      vertical-align: baseline;
-      text-align: center;
-      margin: 0;
-      min-width: 64px;
-      line-height: 36px;
-      padding: 0 16px;
-      border-radius: 4px;
-      overflow: visible;
-      font-family: Lato;
-      font-size: 14px;
-      font-weight: 700;
-    }
-  }
-
-  .tour-step.tour-bottom-left .tour-arrow::before {
-    border-bottom: 1rem solid #F3962E !important;
-  }
-}
 
 body:has(.requires-no-scroll) {
   overflow: hidden;
@@ -905,7 +763,141 @@ body:has(.requires-no-scroll) {
   width: 55px !important;
 }
 
+
+
+.tour_learn_mobile_container.top-panel:after, .tour_discuss_mobile_container.top-panel:after {
+  height: 320px !important;
+  top: -134px !important;
+  left: 156px !important;
+}
+
 ngx-guided-tour {
+  .tour-arrow {
+    display: none !important;
+  }
+
+  .tour-step {
+    .tour-block {
+      display: flex;
+      flex-direction: column;
+      padding: 28px !important;
+      margin-top: 24px !important;
+      text-align: center;
+      min-height: 60px !important;
+    }
+
+    .tour-content {
+      padding-bottom: 0px !important;
+      font-size: 16px !important;
+      min-height: 60px !important;
+    }
+  }
+
+  .tour-title {
+    text-align: center;
+    font-size: 1.5rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .tour-block {
+    position: relative;
+    background-color: #1C4CA1 !important;
+    color: white !important;
+    box-shadow: 0px 8px 24px rgba(0,0,0, 0.24) !important;
+  }
+
+  .tour-buttons {
+    .back-button {
+      border-radius: 4px !important;
+      border: 1px solid rgba(0,0,0, 0.08) !important;
+      opacity: 1 !important;
+      background-color: transparent !important;
+      color: white !important;
+      box-sizing: border-box;
+      position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: 0;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-block;
+      white-space: nowrap;
+      text-decoration: none;
+      vertical-align: baseline;
+      text-align: center;
+      margin: 0;
+      min-width: 64px;
+      line-height: 36px;
+      padding: 0 16px;
+      overflow: visible;
+      font-family: Lato, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .next-button {
+      background-color: #F3962E !important;
+      color: #373434 !important;
+      box-sizing: border-box;
+      position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: 0;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-block;
+      white-space: nowrap;
+      text-decoration: none;
+      vertical-align: baseline;
+      text-align: center;
+      margin: 0;
+      min-width: 64px;
+      line-height: 36px;
+      padding: 0 16px;
+      border-radius: 4px;
+      overflow: visible;
+      font-family: Lato, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .skip-button {
+      color: #373434 !important;
+      box-sizing: border-box;
+      position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: 0;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-block;
+      white-space: nowrap;
+      text-decoration: none;
+      vertical-align: baseline;
+      text-align: center;
+      margin: 0;
+      min-width: 64px;
+      line-height: 36px;
+      padding: 0 16px;
+      border-radius: 4px;
+      overflow: visible;
+      font-family: Lato, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  .tour-step.tour-bottom-left .tour-arrow::before {
+    border-bottom: 1rem solid #F3962E !important;
+  }
   .tour_profile_container {
     margin-left: 0.8rem;
   }
@@ -979,33 +971,6 @@ ngx-guided-tour {
     }
   }
 
-  .tour_search_mobile_container {
-    top: 86% !important;
-    left: 12% !important;
-
-    &::after {
-      left: 49% !important;
-    }
-
-    .arrow {
-      .circle {
-        width: 56px !important;
-        height: 228px !important;
-        margin-top: -24px !important;
-      }
-
-      .circle-start-dot {
-        margin-left: -51% !important;
-        margin-top: 18px !important;
-      }
-
-      .triangle {
-        margin-top: -32px !important;
-        margin-left: 16px !important;
-        transform: rotate(40deg) !important;
-      }
-    }
-  }
 
   .tour_profile_mobile_container {
     top: 120px !important;
@@ -1060,7 +1025,7 @@ ngx-guided-tour {
 
     .back-button {
       color: rgba(255,255,255,1) !important;
-      font-family: "Lato-Bold" !important;
+      font-family: "Lato-Bold", sans-serif !important;
       font-size: 12px !important;
       font-weight: 700 !important;
       font-style: normal !important;
@@ -1075,16 +1040,33 @@ ngx-guided-tour {
       border-radius: 4px !important;
     }
   }
-}
 
-.tour_learn_mobile_container.top-panel:after, .tour_discuss_mobile_container.top-panel:after {
-  height: 320px !important;
-  top: -134px !important;
-  left: 156px !important;
-}
-
-ngx-guided-tour {
   .tour_search_mobile_container {
+    top: 86% !important;
+    left: 12% !important;
+
+    &::after {
+      left: 49% !important;
+    }
+
+    .arrow {
+      .circle {
+        width: 56px !important;
+        height: 228px !important;
+        margin-top: -24px !important;
+      }
+
+      .circle-start-dot {
+        margin-left: -51% !important;
+        margin-top: 18px !important;
+      }
+
+      .triangle {
+        margin-top: -32px !important;
+        margin-left: 16px !important;
+        transform: rotate(40deg) !important;
+      }
+    }
     .tour-button-container {
       position: absolute;
       display: flex;
@@ -1095,7 +1077,7 @@ ngx-guided-tour {
 
     .back-button {
       color: rgba(255,255,255,1) !important;
-      font-family: "Lato-Bold" !important;
+      font-family: "Lato-Bold", sans-serif !important;
       font-size: 12px !important;
       font-weight: 700 !important;
       font-style: normal !important;
@@ -1109,23 +1091,7 @@ ngx-guided-tour {
       border-radius: 4px !important;
     }
   }
-  .tour_profile_mobile_container {
-    .next-button {
-      border-radius: 4px !important;
-    }
-    .back-button {
-      color: rgba(255,255,255,1) !important;
-      font-family: "Lato-Bold" !important;
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      font-style: normal !important;
-      letter-spacing: 0.5px !important;
-      text-align: center !important;
-      border-radius: 4px !important;
-      border: 1px solid rgba(255,255,255, 0.4) !important;
-      opacity: 1 !important;
-    }
-  }
+  
 }
 
 .tour_profile_mobile_container {
@@ -1165,7 +1131,6 @@ ngx-guided-tour {
 }
 
 .arrow-bottom {
-  transform: rotate(352deg);
   left: 10rem !important;
   top: -1rem !important;
   transform: rotate(178deg);
@@ -1197,7 +1162,6 @@ ngx-guided-tour {
   right: 80px !important;
   transform: rotate(180deg);
   bottom: -30px !important;
-  right: 50px;
 
   .circle {
     clip-path: inset(0 50% 80% 0) !important;
@@ -1228,7 +1192,7 @@ ngx-guided-tour {
 .tour-panel-title {
   opacity: 1;
   color: rgba(27, 76, 161, 0.95) !important;
-  font-family: "Montserrat-SemiBold";
+  font-family: "Montserrat-SemiBold", sans-serif;
   font-size: 24px;
   font-weight: 600;
   font-style: normal;
@@ -1240,7 +1204,7 @@ ngx-guided-tour {
 .tour-panel-desc {
   opacity: 1;
   color: rgba(27, 76, 161, 0.95) !important;
-  font-family: "Lato-Regular";
+  font-family: "Lato-Regular", sans-serif;
   font-size: 14px;
   font-weight: 400;
   font-style: normal;
@@ -1250,8 +1214,6 @@ ngx-guided-tour {
 }
 
 .skeleton-box {
-  // display: inline-block;
-  // min-height: 1rem;
   position: relative;
   overflow: hidden;
   background-color: #DDDBDD;
@@ -1304,13 +1266,7 @@ ngx-guided-tour {
     width: 85%;
   }
 
-  // .circle, .circle-start-dot, .triangle, .top-connector .circle-start-dot, .bottom-connector .circle-start-dot {
-  //   display: none;
-  // }
-
-  // .tour_learn_mobile_container.top-panel:after, .tour_discuss_mobile_container.top-panel:after {
-    
-  // }
+ 
 }
 
 @media only screen and (max-width: 768px) {
