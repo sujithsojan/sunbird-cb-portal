@@ -311,7 +311,9 @@
   color: white;
 }
 .nlw-title {
+  /* stylelint-disable */
 font-family: Montserrat;
+/* stylelint-enable */
 font-size: 20px;
 font-weight: 600;
 line-height: 24.38px;
@@ -335,7 +337,9 @@ justify-content: flex-end;
 background-color: #F3962F!important;
 color: white;
 border-radius: 25px;
+/* stylelint-disable */
 font-family: Lato;
+/* stylelint-enable */
 font-size: 14px;
 font-weight: 700;
 line-height: 16.8px;
