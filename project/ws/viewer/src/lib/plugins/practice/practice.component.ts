@@ -668,10 +668,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         Promise.all(prom).then(qqr => {
           this.fetchingQuestionsStatus = 'done'
           const question = { questions: _.flatten(_.map(qqr, 'result.questions')) }
+          // console.log('question--', question)
           const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
           this.quizSvc.startSection(section)
           // console.log(this.quizSvc.secAttempted.value)
-          _.eachRight(question.questions, q => {
+          _.each(question.questions, q => {
             // const qHtml = document.createElement('div')
             // qHtml.innerHTML = q.editorState.question
             if (codes.indexOf(section.identifier) === -1) {
@@ -699,7 +700,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         //   const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
         //   this.quizSvc.startSection(section)
         //   // console.log(this.quizSvc.secAttempted.value)
-        //   _.eachRight(question.questions, q => {
+        //   _.each(question.questions, q => {
         //     // const qHtml = document.createElement('div')
         //     // qHtml.innerHTML = q.editorState.question
         //     if (codes.indexOf(section.identifier) === -1) {
@@ -1485,12 +1486,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             prom.push(this.getMultiQuestions(l))
           })
           Promise.all(prom).then(qqr => {
-            console.log('qqr', qqr)
             allPromiseResolvedCount++;
             const question = { questions: _.flatten(_.map(qqr, 'result.questions')) }
             const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
             // console.log(this.quizSvc.secAttempted.value)
-            _.eachRight(question.questions, q => {
+            _.each(question.questions, q => {
               // const qHtml = document.createElement('div')
               // qHtml.innerHTML = q.editorState.question
               if (codes.indexOf(section.identifier) === -1) {
@@ -1635,7 +1635,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           const question = { questions: _.flatten(_.map(qqr, 'result.questions')) }
           const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
           // console.log(this.quizSvc.secAttempted.value)
-          _.eachRight(question.questions, q => {
+          _.each(question.questions, q => {
             // const qHtml = document.createElement('div')
             // qHtml.innerHTML = q.editorState.question
             if (codes.indexOf(section.identifier) === -1) {
