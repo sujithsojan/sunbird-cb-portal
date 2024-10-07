@@ -107,10 +107,10 @@
     padding: 16px 8px;
     border: 1px solid #00000070;
     border-radius: 5px;
-    margin-top: -5px;
+    // margin-top: -5px;
   }
   width:98%;
-  word-wrap: break-word;
+  word-break: break-word;
 }
 .mtf-flag {
   margin-left: auto;
@@ -121,6 +121,11 @@
   @include breakpoint-lt-m {
     padding: 16px 20px;
   }
+}
+
+.paragraph {
+  width: 98%;
+  word-break: break-word;
 }
 
 .right-border {
@@ -286,14 +291,14 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 360px) and (max-width: 360px) {
   .mobile-responsive-question-container{
          
-    width: 360px;
+    width: 98%;
     height: calc(100vh - 350px);
     overflow-y: auto
     // height: 73%;
     // overflow-y: auto;
   }
   .mobile-responsive-question-container-expand {
-    width: 360px;
+    width: 98%;
     height: calc(100vh - 500px);
     overflow-y: auto
   }
@@ -307,14 +312,14 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 375px) and (max-width: 375px) {
   .mobile-responsive-question-container{
          
-    width: 375px;
+    width: 98%;
     height: calc(100vh - 350px);
     overflow-y: auto
     // height: 73%;
     // overflow-y: auto;
   }
   .mobile-responsive-question-container-expand {
-    width: 375px;
+    width: 98%;
     height: calc(100vh - 500px);
     overflow-y: auto
   }
@@ -327,14 +332,14 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 390px) and (max-width: 390px) {
   .mobile-responsive-question-container{
          
-    width: 390px;
+    width: 98%;
     height: calc(100vh - 350px);
     overflow-y: auto
     // height: 73%;
     // overflow-y: auto;
   }
   .mobile-responsive-question-container-expand {
-    width: 390px;
+    width: 98%;
     height: calc(100vh - 500px);
     overflow-y: auto
   }
@@ -350,6 +355,6 @@ video {
 
 @media only screen and (min-width : 240px) and (max-width: 767px) { 
   video {
-      width: 98% !important;
+      width: 96% !important;
   }
 }
