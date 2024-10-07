@@ -109,7 +109,7 @@
     border-radius: 5px;
     margin-top: -5px;
   }
-  // width:98%;
+  width:98%;
   word-wrap: break-word;
 }
 .mtf-flag {
@@ -250,6 +250,10 @@ color: rgb(27, 76, 161)
   }
   .standalone-assessment.respo {
     margin: 0 !important
+  }
+
+  .respo_inner {
+    width:auto
   }
 
 }
