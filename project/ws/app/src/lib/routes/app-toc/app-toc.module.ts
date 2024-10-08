@@ -137,6 +137,7 @@ import { AppTocCohortsDirective } from './routes/app-toc-cohorts/app-toc-cohorts
 import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-single-page.directive'
 import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
+import { UserProfileService } from '../user-profile/services/user-profile.service'
 
 @NgModule({
   declarations: [
@@ -256,6 +257,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
     TocKpiValuesModule,
     KarmaPointsModule,
     TipsForLearnerModule,
+    ReactiveFormsModule
   ],
   providers: [
     AppTocResolverService,
@@ -272,6 +274,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
     ActionService,
     MultilingualTranslationsService,
     CommonMethodsService,
+    UserProfileService,
   ],
   exports: [
     AppTocDiscussionComponent,

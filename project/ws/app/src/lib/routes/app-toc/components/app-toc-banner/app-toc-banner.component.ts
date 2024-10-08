@@ -496,6 +496,7 @@ export class AppTocBannerComponent implements OnInit, OnChanges, OnDestroy {
                 courseId,
                 courseName,
                 apiData,
+                batchData,
 
               },
               disableClose: false,
