@@ -112,6 +112,11 @@
   width:98%;
   word-break: break-word;
 }
+
+.respo_inner p {
+  word-wrap: break-word;
+}
+
 .mtf-flag {
   margin-left: auto;
   margin-right: 55px;
@@ -291,7 +296,7 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 360px) and (max-width: 360px) {
   .mobile-responsive-question-container{
          
-    width: 360px;
+    width: 330px;
     height: calc(100vh - 276px);
     overflow-y: auto
     // height: 73%;
@@ -336,7 +341,7 @@ color: rgb(27, 76, 161)
 @media only screen and (min-width : 390px) and (max-width: 390px) {
   .mobile-responsive-question-container{
          
-    width: 390px;
+    width: 360px;
     height: calc(100vh - 276px);
     overflow-y: auto
     // height: 73%;

@@ -159,7 +159,7 @@
         </div>
       </div>
       <div class="respo flex flex-column padding-top-m">
-        <div class="flex flex-1- flex-column respo_inner">
+        <div class="flex flex-column respo_inner">
           <div class="flex flex-1 flex-column">
             <ng-container *ngIf="question.questionType !== 'ftb'">
               <h2 [innerHTML]="question?.question | QuestionSafeUrl" class="m-auto quiz-question mat-h2">
@@ -311,7 +311,7 @@
           </div>
         </div>
       <div class="respo flex flex-column " *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
-        <div class="flex flex-1 flex-column respo_inner">          
+        <div class="flex  flex-column respo_inner">          
           <div class="flex flex-1 flex-column">
             <ng-container *ngIf="question.questionType !== 'ftb'">
               <h2 [innerHTML]="question?.question | QuestionSafeUrl" class="m-auto quiz-question mat-h2">
