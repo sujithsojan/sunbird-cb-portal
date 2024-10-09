@@ -69,7 +69,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showMarkForReview: any = false
   @Input() assessmentType = ''
   expandedQuestionSetSubscription: any
-  
+
   constructor(
     // private elementRef: ElementRef,
     private practiceSvc: PracticeService,
