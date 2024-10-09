@@ -722,7 +722,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       if (section && section.questionParagraph) {
-        let questionParagraph = section.questionParagraph
+        const questionParagraph = section.questionParagraph
         this.questionParagraph = questionParagraph.replace(/&nbsp;/g, ' ')
       } else {
         this.questionParagraph = ''
