@@ -32,7 +32,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   designationData: any[] = []
   private destroySubject$ = new Subject()
   isInValidOrgSelection = false
-  onLoad: boolean = true
+  onLoad = true
 
   constructor(
     public dialogRef: MatDialogRef<TransferRequestComponent>,
@@ -186,7 +186,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   }
 
   assignValue(): void {
-    if(this.onLoad){
+    if (this.onLoad) {
       this.deptFilterData = this.departmentData
       this.onLoad = false
     }
