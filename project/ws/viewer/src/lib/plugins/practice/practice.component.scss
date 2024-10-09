@@ -1637,3 +1637,19 @@ $nav-height: 40px;
     padding: 0 !important;
   }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .quiz-question-left-container {
+    width: 65%;
+  }
+  .quiz-question-right-container {
+    width: 35%;
+    background-color: #EDF1F7;
+    display: block;
+    overflow-y: auto;
+  }
+
+  .butto_box {
+    margin-top: 0;
+  }
+}

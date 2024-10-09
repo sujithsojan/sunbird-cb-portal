@@ -1114,9 +1114,11 @@
 <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 7">
   <div #quizContainer class="quiz-container-standalone"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
+    
     <div class="margin-m"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
       <div class="standalone-left-container">
+        
         <div class="flex flex-row justify-between align-center assessment-header">
           <div>
             <div (click)="back()" class="no-border flex cursor-pointer back_button">
@@ -1134,9 +1136,10 @@
                 <div>{{( allSectionTimeLimit | pipeDurationTransform: 'hms')}}</div>
               </div>
             </div>
-          </div>
+          </div>          
         </div>
         <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-between': 'justify-right'">
+          
           <div class="section-dd-container" *ngIf="assessmentType !== 'optionalWeightage'">
             <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
               <div>
@@ -1181,6 +1184,7 @@
       </div>
 
       <div class="standalone-quiz-container flex flex-row">
+        
         <div 
           [ngClass]="expandFalse ? ( assessmentType !== 'optionalWeightage' ? 'quiz-question-left-container' : 'quiz-question-left-container-full') : 'quiz-question-left-container-full'">
 
@@ -1192,6 +1196,7 @@
               </mat-progress-bar>
             </div>
             <ng-container *ngIf="current_Question && !process">
+              
               <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
                 [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
                 [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
