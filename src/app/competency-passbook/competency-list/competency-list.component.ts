@@ -9,7 +9,8 @@ import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 // Project files and components
 import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
-import { WidgetUserService } from '@sunbird-cb/collection/src/public-api'
+
+import { WidgetUserServiceLib } from '@sunbird-cb/consumption'
 import { TranslateService } from '@ngx-translate/core'
 
 @Component({
@@ -124,7 +125,7 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
   certificateMappedObject: any = {}
 
   constructor(
-    private widgetService: WidgetUserService,
+    private widgetService: WidgetUserServiceLib,
     private configService: ConfigurationsService,
     private router: Router,
     private matSnackBar: MatSnackBar,
@@ -153,13 +154,14 @@ export class CompetencyListComponent implements OnInit, OnDestroy {
 
   getUserEnrollmentList(): void {
 
-    const enrollmentMapData = JSON.parse(localStorage.getItem('enrollmentMapData') as any)
+    let enrollmentMapData: any = {}
     const userId: any = this.configService && this.configService.userProfile && this.configService.userProfile.userId
     this.widgetService.fetchUserBatchList(userId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe(
         (response: any) => {
           let competenciesV5: any[] = []
+          enrollmentMapData = this.widgetService.mapEnrollmentData(response)
           response.courses.forEach((eachCourse: any) => {
             // To eliminate In progress or Yet to start courses...
             if (enrollmentMapData[eachCourse.contentId].status !== 2) { return }
