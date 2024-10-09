@@ -1597,7 +1597,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
           
     }
-    this.updateProgress(2)
+    if (!(this.quizJson.primaryCategory === 'Course Assessment' || this.quizJson.primaryCategory === 'Practice Question Set')) {
+      this.updateProgress(2)
+    }
   }
 
   showAnswers() {
@@ -1936,7 +1938,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   assignQuizResult(res: NSPractice.IQuizSubmitResponseV2) {
-    this.updateProgress(2)
+    if (!(this.quizJson.primaryCategory === 'Course Assessment' || this.quizJson.primaryCategory === 'Practice Question Set')) {
+      this.updateProgress(2)
+    }
     this.finalResponse = res
     if (this.quizJson.isAssessment) {
       this.isIdeal = true
