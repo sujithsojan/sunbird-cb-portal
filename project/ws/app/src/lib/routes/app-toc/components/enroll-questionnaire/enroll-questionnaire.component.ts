@@ -141,6 +141,17 @@ export class EnrollQuestionnaireComponent implements OnInit {
   }
 
   getService(event: any) {
+    const serviceTypeControl = this.userDetailsForm.get('serviceType')
+    const cadreControl = this.userDetailsForm.get('cadre')
+    const batchControl = this.userDetailsForm.get('batch')
+    const cadreControllingAuthorityControl = this.userDetailsForm.get('cadreControllingAuthority')
+
+    if (serviceTypeControl) { serviceTypeControl.reset() }
+    if (cadreControl) { cadreControl.reset() }
+    if (batchControl) { batchControl.reset() }
+    if (cadreControllingAuthorityControl) { cadreControllingAuthorityControl.reset() }
+
+    this.serviceType = this.civilServiceData.civilServiceTypeList.find((element: any) => element.name === event)
     this.serviceType = this.civilServiceData.civilServiceTypeList.find((element: any) => element.name === event)
     if (this.serviceType) {
       this.serviceListData = this.serviceType.serviceList
@@ -166,8 +177,6 @@ export class EnrollQuestionnaireComponent implements OnInit {
       this.civilServiceId = this.selectedService.id
       this.cadre = this.selectedService.cadreList.map((cadre: any) => cadre.name)
     }
-
-    
     if (this.selectedService && this.selectedService.cadreControllingAuthority) {
       this.cadreControllingAuthority = this.selectedService.cadreControllingAuthority
     } else {
