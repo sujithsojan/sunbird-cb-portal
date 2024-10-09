@@ -101,7 +101,6 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-debugger
     this.enrollmentList = this.activatedRoute.snapshot.data.enrollmentData
     && this.activatedRoute.snapshot.data.enrollmentData.data || []
     // this.getAuthDataIdentifer()

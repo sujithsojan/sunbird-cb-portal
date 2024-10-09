@@ -1246,6 +1246,31 @@ $nav-height: 40px;
     pointer-events: none;
   }
 }
+
+@media only screen and (min-width: 345px) and (max-width: 600px) {
+  .quiz-container-standalone {
+    height: calc(100vh - 176px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+@media only screen and (min-width: 280px) and (max-width: 344px) {
+  .quiz-container-standalone {
+    height: calc(100vh - 344px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
 @media only screen and (min-width: 375px) and (max-width: 375px) {
   .info-hover {
     display: block;
@@ -1283,6 +1308,8 @@ $nav-height: 40px;
     position: absolute;
     pointer-events: none;
   }
+
+  
 }
 @media only screen and (min-width: 390px) and (max-width: 393px) {
   .info-hover {
@@ -1608,5 +1635,21 @@ $nav-height: 40px;
 
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-subscript-wrapper {
     padding: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .quiz-question-left-container {
+    width: 65%;
+  }
+  .quiz-question-right-container {
+    width: 35%;
+    background-color: #EDF1F7;
+    display: block;
+    overflow-y: auto;
+  }
+
+  .butto_box {
+    margin-top: 0;
   }
 }
