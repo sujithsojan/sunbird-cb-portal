@@ -54,7 +54,7 @@ import { concat, interval, timer, of } from 'rxjs'
 export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   hideHeaderAndFooter = false
-
+  disableHeightOnTop = false
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -389,6 +389,27 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.rootSvc.showNavbarDisplay$.pipe(delay(500)).subscribe((display: any) => {
       this.showNavbar = display
     })
+
+    let isNotMyUser = false
+    let isIgotOrg = false
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.profileStatus) {
+      isNotMyUser = this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
+    // let isIgotOrg = true
+    if (isNotMyUser && isIgotOrg) {
+      this.disableHeightOnTop = true
+      this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    } else {
+      this.disableHeightOnTop = false
+    }
   }
 
   changeBg26Jan() {
@@ -497,9 +518,8 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   getHeaderFooterConfiguration() {
     const baseUrl = this.configSvc.sitePath
-    // console.log('baseUrl', baseUrl+'/page/home.json')
     // tslint:disable-next-line: prefer-template
-    return this.http.get(baseUrl + '/page/home.json').pipe(
+    return this.http.get(baseUrl + '/page/right-nav-config.json').pipe(
       map(data => ({ data, error: null })),
       catchError(err => of({ data: null, error: err })),
     )
@@ -508,7 +528,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
   ngAfterViewChecked() {
     const show = this.getTourGuide()
     if (show !== this.showTour) { // check if it change, tell CD update view
-      this.showTour = this.showTour
+      // this.showTour = this.showTour
     }
     this.changeDetector.detectChanges()
   }

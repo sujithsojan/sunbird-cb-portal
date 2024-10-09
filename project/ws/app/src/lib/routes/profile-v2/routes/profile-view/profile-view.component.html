@@ -10,7 +10,8 @@
                 matTooltip="{{ 'profileInfo.pdTooltipMsg' | translate }}"
                 (click)="pTooltip.toggle()">info_outline</mat-icon>
             </div>
-            <ng-container *ngIf="!enableWTR && !enableWR && isCurrentUser">
+            
+            <ng-container *ngIf="!enableWTR && !enableWR && isCurrentUser && !(isNotMyUser || isIgotOrg)">
               <div class="flex flex-row">
                 <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editProfile"
                   (click)="editProfile = !editProfile">
@@ -19,7 +20,8 @@
                 </div>
               </div>
             </ng-container>
-            <ng-container *ngIf="enableWTR">
+            
+            <ng-container *ngIf="enableWTR && !(isNotMyUser && isIgotOrg)">
               <div class="flex flex-row">
                 <div class="flex flex-row gap-2 items-center edit-button disable-button" [matTooltipPosition]="'below'"
                   #WRTooltip="matTooltip" matTooltip="{{ 'profileInfo.pdTooltipWarnMsg' | translate }}"
@@ -30,10 +32,10 @@
               </div>
             </ng-container>
   
-            <div class="withdraw-text edit-button" *ngIf="enableWR && isCurrentUser" (click)="showWithdrawRequestPopup()">{{
+            <div class="withdraw-text edit-button" *ngIf="enableWR && isCurrentUser && !(isNotMyUser && isIgotOrg)" (click)="showWithdrawRequestPopup()">{{
               'profileInfo.withdrawRequest' | translate }}</div>
           </div>
-  
+          
           <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col grid-container-2">
             <div class="info-div">
               <div class="label">{{ 'profileInfo.group' | translate }}</div>
@@ -754,6 +756,7 @@
             </div>          
           </div> 
         </div>
+      
         <!-- <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
           <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
@@ -768,7 +771,7 @@
           >Test</div> -->
           <mat-icon class="save cursor-pointer" (click)="handleUpdateName()">check</mat-icon>
           <mat-icon (click)="editName = !editName" class="cancel cursor-pointer">close</mat-icon>
-        </div>
+        </div>       
         <ng-container *ngIf="portalProfile?.professionalDetails?.length">
           <div class="position">{{ portalProfile?.professionalDetails[0]?.designation }}</div>
         </ng-container>
@@ -813,8 +816,21 @@
           </div>
         </ng-container>
         <div class="divider hide-for-mobile" *ngIf="isCurrentUser"></div>
+        <div class="not-my-user-container margin-top-m" *ngIf="isNotMyUser && isIgotOrg">        
+          <div class="not-my-user-content">
+              <div>
+                  <mat-icon class="warning-icon" [ngStyle]="{'color':'red'}">warning</mat-icon>
+              </div>
+              <div class="not-my-user-data">
+                  <p>
+                    {{ 'profileInfo.notMyUseAccessRevoke' | translate }}
+                    
+                  </p>
+              </div>
+          </div>
       </div>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile" *ngIf="isCurrentUser">
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile" *ngIf="isCurrentUser && !(isNotMyUser && isIgotOrg)">
         <button class="flex flex-row gap-2 items-center karma-points justify-center" [routerLink]="['/app/person-profile/karma-points']">
           <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
           {{ 'profileInfo.myKarmaPoints' | translate }}
@@ -832,7 +848,7 @@
     <mat-tab label="Profile">
       <ng-container [ngTemplateOutlet]="profileSection"></ng-container>
     </mat-tab>
-    <mat-tab label="My activities">
+    <mat-tab label="My activities" *ngIf="!(isNotMyUser && isIgotOrg)">
       <ng-container [ngTemplateOutlet]="activitySection"></ng-container>
     </mat-tab>
   </mat-tab-group>

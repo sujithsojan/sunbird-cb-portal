@@ -1950,4 +1950,15 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
   }
 
+  raiseTelemetryForPublic() {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        id: "view-assessment",
+        subType:"anonymous-assessment",
+      },{},
+      {
+        module: 'Landing Page',
+      })
+  }
 }

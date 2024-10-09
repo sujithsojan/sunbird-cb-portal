@@ -16,9 +16,6 @@
       <mat-form-field class="custom-lang float-right margin-right-xl">
         <img src="/assets/icons/top-nav/translate_icon.svg" alt="Language" class="margin-right-xs">
         <mat-select matNativeControl panelClass="custom-langselect" [ngModel]="selectedLanguage" (ngModelChange)="selectLanguage($event)">
-            <!-- <mat-option *ngFor="let lang of multiLang" [value]="lang.key" [ngClass]="{'checkmark':lang.key == selectedLanguage}">
-                {{lang.value}}
-            </mat-option> -->
           <span *ngFor="let lang of multiLang">
             <mat-option *ngIf="lang.active" [value]="lang.key" [ngClass]="{'checkmark':lang.key == selectedLanguage}">{{lang.value}}</mat-option>
           </span>
@@ -30,7 +27,7 @@
         <div class="flex items-center mr-5">
           <a class="cursor-pointer" (click)="goBackUrl()" tabindex="0" aria-disabled="false">
             <span class="flex">
-              <mat-icon class="mat-icon notranslate material-icons ws-mat-primary-text" role="img" aria-hidden="true">
+              <mat-icon class="mat-icon notranslate material-icons ws-mat-primary-text" aria-hidden="true">
                 arrow_back
               </mat-icon>
             </span>
@@ -80,7 +77,6 @@
                      placeholder="{{'publicrequest.enterYourEmailAddress' | translate}}" #email
                     formControlName="email" i18n-aria-label aria-label="Email input">
                   <mat-icon matSuffix class="ws-mat-green-text margin-xs" svgIcon="verified" [hidden]="!isEmailVerified"></mat-icon>
-                  <!-- <mat-hint>Please enter a government email ID</mat-hint> -->
                   <mat-error [hidden]="false" *ngIf="requestForm?.controls['email'].errors?.required"
                     i18n="Email Error|Explains name is required">
                     {{'publicrequest.pleaseEnterEmail' | translate}}
@@ -93,7 +89,6 @@
                     i18n="Email Error|Explains character validation">
                     {{'publicrequest.emailLengthValidation' | translate}}
                   </div>
-                    <!-- <mat-hint class="pos-hint">Do not have a government email id?<span class="float-right ws-mat-accent-text cursor-pointer font-bold" (click)="navigateTo('Domain')">Request for help</span></mat-hint> -->
                   </mat-form-field>
                 </div>
                 <div class="w-full" id="org-field">
@@ -117,7 +112,7 @@
                           <span>{{'publicrequest.resendOTPAfter' | translate}} {{timeLeftforOTPEmail | pipeDurationTransform: 'hms2M'}}</span>
                         </mat-hint>
                         <mat-hint *ngIf="timeLeftforOTPEmail <= 0 ">
-                          <span class="cursor-pointer ws-mat-default-text" (click)="resendOTPEmail()">
+                          <!-- //NOSONAR --> <span class="cursor-pointer ws-mat-default-text" (click)="resendOTPEmail()">
                             {{'publicrequest.resendOTP' | translate}} </span>
                         </mat-hint>
                       </mat-form-field>
@@ -156,7 +151,6 @@
                       i18n-aria-label aria-label="Please enter a valid 10 digit mobile number">
                       {{'publicrequest.validMobilenumber' | translate}}
                     </mat-error>
-                    <!-- <mat-hint align="start">Please add a valid mobile number</mat-hint> -->
                   </mat-form-field>
                 </div>
                 <div *ngIf="!isMobileVerified" class="flex flex-1 margin-top-s justify-end">
@@ -174,7 +168,7 @@
                           <span>{{'publicrequest.resendOTPAfter' | translate}} {{timeLeftforOTP | pipeDurationTransform: 'hms2M'}}</span>
                         </mat-hint>
                         <mat-hint *ngIf="timeLeftforOTP <= 0 ">
-                          <span class="cursor-pointer ws-mat-default-text" (click)="resendOTP()">
+                          <!-- //NOSONAR --> <span class="cursor-pointer ws-mat-default-text" (click)="resendOTP()">
                             {{'publicrequest.resendOTP' | translate}}
                           </span>
                         </mat-hint>
@@ -286,7 +280,7 @@
                   <mat-checkbox aria-label="I confirm that the above provided information are accurate." id="confirm"
                     [checked]="confirm" (change)="confirmChange()" i18n-aria-label
                     aria-label="I confirm that the above provided information are accurate. checkbox" required>
-                    <label class="margin-remove-bottom mat-body-2 ws-mat-black60-text" i18n-aria-label
+                    <!-- //NOSONAR --> <label class="margin-remove-bottom mat-body-2 ws-mat-black60-text" i18n-aria-label
                       aria-label="I confirm that the above provided information are accurate. checkbox label">
                       {{'publicrequest.confirmProvider' | translate}}
                     </label>

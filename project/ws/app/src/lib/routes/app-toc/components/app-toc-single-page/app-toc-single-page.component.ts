@@ -19,6 +19,7 @@ import _ from 'lodash'
 import { FormGroup, FormControl } from '@angular/forms'
 import { RatingService } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/rating.service'
 import { TranslateService } from '@ngx-translate/core'
+import { environment } from 'src/environments/environment'
 @Component({
   selector: 'ws-app-app-toc-single-page',
   templateUrl: './app-toc-single-page.component.html',
@@ -85,6 +86,7 @@ export class AppTocSinglePageComponent implements OnInit, OnChanges, OnDestroy {
   selectedBatchData: any
   batchSubscription: any
   // configSvc: any
+  compentencyKey = ''
 
   constructor(
     private router: Router,
@@ -128,6 +130,7 @@ export class AppTocSinglePageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    this.compentencyKey = environment.compentencyVersionKey
     this.batchSubscription = this.tocSharedSvc.getSelectedBatch.subscribe(batchData => {
       this.selectedBatchData = batchData
     })
@@ -255,9 +258,9 @@ export class AppTocSinglePageComponent implements OnInit, OnChanges, OnDestroy {
     if (this.content && this.content.identifier) {
       this.fetchRatingSummary()
     }
-    if (this.content && this.content.competencies_v5) {
-      this.content.competencies_v5 = this.content.competencies_v5
-      this.competencies = this.content.competencies_v5 || []
+    if (this.content && this.content[this.compentencyKey]) {
+      this.content[this.compentencyKey] = this.content[this.compentencyKey]
+      this.competencies = this.content[this.compentencyKey] || []
     }
 
     this.discussionConfig.contextIdArr = (this.content) ? [this.content.identifier] : []

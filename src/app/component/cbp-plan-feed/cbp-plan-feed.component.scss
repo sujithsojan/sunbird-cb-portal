@@ -18,7 +18,7 @@
 .heading {
     opacity: 1;
     color: rgba(0,0,0,0.87);
-    font: 600 16px/24px Montserrat-SemiBold;
+    font: 600 16px/24px Montserrat-SemiBold, sans-serif;
     font-style: normal;
     letter-spacing: 0.12px;
     text-align: left;
@@ -33,7 +33,7 @@
     p{
         opacity: 1;
         color: rgba(0, 0, 0, 0.87);
-        font-family: "Lato-Regular";
+        font-family: "Lato-Regular", sans-serif;
         font-size: 14px;
         font-weight: 400;
         font-style: Regular;
@@ -56,7 +56,7 @@
 .search-help-text {
     opacity: 1;
 color: rgba(0, 0, 0, 0.87);
-font-family: "Lato-Regular";
+font-family: "Lato-Regular", sans-serif;
 font-size: 14px;
 font-weight: 400;
 font-style: Regular;

@@ -22,21 +22,8 @@
   }
 }
 
-// .left_container {
-//   padding: 5rem 6rem;
-//   box-sizing: border-box;
-//   width: 55%;
-//   height: 100vh;
-
-//   @include breakpoint-xs {
-//     display: none !important;
-//   }
-// }
 .left_container {
   flex: 1;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
       position: relative;
       max-width: 100%;
 
@@ -58,7 +45,6 @@ width:300px;
 .slider_box {
   padding: 5rem 0 2rem 0;
   width: 320px;
-  box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -92,9 +78,7 @@ width:300px;
   cursor: pointer;
 }
 
-// .main_container {
-//   background-image : url(assets/instances/eagle/banners/home/9/Login_background.png) no-repeat center center fixed;
-// }
+
 
 ::ng-deep .top-nav-bar {
   display: none;
@@ -130,7 +114,7 @@ width:300px;
 }
 
 .mat-subheading-errmsg {
-  font: 500 16px/24px Montserrat!important;
+  font: 500 16px/24px Montserrat, sans-serif !important;
 }
 .parichay-errmsg {
     text-decoration: underline;
@@ -144,8 +128,4 @@ width:300px;
 }
 .features-image img {
   max-width: 90%;
-  // position: absolute;
-  // top: 10%;
-  // // left: 50%;
-  // transform: translate(-50%, -50%);
 }

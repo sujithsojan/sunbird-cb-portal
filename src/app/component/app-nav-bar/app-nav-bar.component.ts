@@ -3,7 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 import { Router, NavigationStart, NavigationEnd } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 
-import { IBtnAppsConfig, CustomTourService } from '@sunbird-cb/collection'
+import { IBtnAppsConfig, CustomTourService, WidgetUserService } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ConfigurationsService, EventService, MultilingualTranslationsService, NsInstanceConfig, NsPage, WsEvents } from '@sunbird-cb/utils-v2'
 
@@ -58,7 +58,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
   animationDuration: number | undefined
   isHubEnable!: boolean
   previousUrl = ''
-
+  disableMenu = false
   constructor(
     private domSanitizer: DomSanitizer,
     private configSvc: ConfigurationsService,
@@ -67,7 +67,8 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     private translate: TranslateService,
     private events: EventService,
     private langtranslations: MultilingualTranslationsService,
-    private urlService: UrlService
+    private urlService: UrlService,
+    private userSvc: WidgetUserService
   ) {
     this.btnAppsConfig = { ...this.basicBtnAppsConfig }
     if (this.configSvc.restrictedFeatures) {
@@ -179,6 +180,27 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     this.urlService.previousUrl$.subscribe((previousUrl: string) => {
       this.previousUrl = previousUrl
     })
+    let isNotMyUser = false
+    let isIgotOrg = false
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.profileStatus) {
+      isNotMyUser = this.configSvc.unMappedUser.profileDetails.profileStatus.toLowerCase() === 'not-my-user' ? true : false
+    }
+    if (this.configSvc && this.configSvc.unMappedUser
+      && this.configSvc.unMappedUser.profileDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails
+      && this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName) {
+        isIgotOrg = this.configSvc.unMappedUser.profileDetails.employmentDetails.departmentName.toLowerCase() === 'igot' ? true : false
+    }
+    // let isIgotOrg = true
+    if (isNotMyUser && isIgotOrg) {
+      this.disableMenu = true
+      this.fetchEnrollmentList()
+      // this.router.navigateByUrl('app/person-profile/me#profileInfo')
+    } else {
+      this.disableMenu = false
+    }
   }
 
   displayLogo() {
@@ -345,7 +367,10 @@ export class AppNavBarComponent implements OnInit, OnChanges {
     }
   }
 
-  viewKarmapoints() {
+  viewKarmapoints(): any {
+    if (this.disableMenu) {
+      return false
+    }
     this.raiseTelemetry()
     this.router.navigate(['/app/person-profile/karma-points'])
   }
@@ -374,6 +399,18 @@ export class AppNavBarComponent implements OnInit, OnChanges {
 
   public getItem(item: any) {
     return { ...item, forPreview: !this.isforPreview, enableLang: this.enableLang }
+  }
+
+  fetchEnrollmentList() {
+    let userId: any
+
+    if (this.configSvc.userProfile) {
+      userId = this.configSvc.userProfile.userId || ''
+    }
+
+    this.userSvc.fetchUserBatchList(userId).subscribe(_res => {
+
+    })
   }
 
 }

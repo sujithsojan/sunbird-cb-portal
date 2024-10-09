@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ContentTocComponent } from './content-toc.component';
+import { ContentTocComponent } from './content-toc.component'
 
 describe('ContentTocComponent', () => {
-  let component: ContentTocComponent;
-  let fixture: ComponentFixture<ContentTocComponent>;
+  let component: ContentTocComponent
+  let fixture: ComponentFixture<ContentTocComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentTocComponent ]
+      declarations: [ContentTocComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContentTocComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ContentTocComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

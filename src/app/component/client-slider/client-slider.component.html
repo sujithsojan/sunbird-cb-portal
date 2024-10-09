@@ -39,7 +39,7 @@
      <div class="customer-logos flex flex-1 flex-row slider" >
         <div class="flex slider-item" *ngFor="let item of clients">
             <a href="/app/learn/browse-by/provider/{{ item.clientName}}/{{item.orgId}}/micro-sites" target="_blank" class="client-link flex flex-col items-center justify-center">
-                <img src="{{ item.clientImageUrl }}" class="client-img flex">
+                <img src="{{ item.clientImageUrl }}" class="client-img flex" alt="{{ item.clientName }}">
                 <p class="mat-body-2 flex">{{ item.clientName }}</p>
             </a>
         </div>
