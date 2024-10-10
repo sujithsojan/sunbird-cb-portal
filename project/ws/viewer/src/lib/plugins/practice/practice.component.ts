@@ -212,7 +212,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       // ))
     ).subscribe(() => {
       if (this.viewState !== 'initial' && !this.isSubmitted) {
-        this.submitQuiz()
+        // this.submitQuiz()
       }
       // console.log(val)
     })
