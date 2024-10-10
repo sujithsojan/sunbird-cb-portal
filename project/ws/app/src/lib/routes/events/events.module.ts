@@ -41,7 +41,7 @@ import { PresenterCardComponent } from './components/presenter-card/presenter-ca
 import { EventService } from './services/events.service'
 import { TranslateModule } from '@ngx-translate/core'
 // import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
-import {YouTubePlayerModule} from '@angular/youtube-player';
+import { YouTubePlayerModule } from '@angular/youtube-player'
 // import * as NGYTPackage from '../../package.json';
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import {YouTubePlayerModule} from '@angular/youtube-player';
     EventDetailComponent,
     RelatedPostsComponent,
     RightMenuCardComponent,
-    PresenterCardComponent
+    PresenterCardComponent,
   ],
   imports: [
     CommonModule,
@@ -88,7 +88,7 @@ import {YouTubePlayerModule} from '@angular/youtube-player';
     HorizontalScrollerV2Module,
     ContentStripWithTabsModule,
     // NgxYoutubePlayerModule.forRoot(),
-    YouTubePlayerModule
+    YouTubePlayerModule,
   ],
   providers: [
     LoaderService,

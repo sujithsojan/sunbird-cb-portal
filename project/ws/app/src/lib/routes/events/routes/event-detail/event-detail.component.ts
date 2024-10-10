@@ -31,13 +31,13 @@ export class EventDetailComponent implements OnInit {
   pastEvent = false
   // fetchNewData = false
   showYouTubeVideoFlag = false
-  id = 'mUoa2rJr9G8';
+  id = 'mUoa2rJr9G8'
   // playerVars = {
   //   cc_lang_pref: 'en',
   // };
-  private player:YT.Player | any;
-  public ytEvent:any;
-  version:any = '...';
+  private player: YT.Player | any
+  public ytEvent: any
+  version: any = '...'
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -60,16 +60,16 @@ export class EventDetailComponent implements OnInit {
         this.translate.use(lang)
       }
     })
-   
+
   }
 
   ngOnInit() {
 
-    this.eventEnrollService.eventEnrollEvent.subscribe((data:any)=>{
-      if(data) {
-        if(this.eventData && this.eventData.registrationLink) {
-          let videoId = this.eventData.registrationLink.split("?v=")
-          if(videoId && videoId.length > 1 && videoId[1]) {
+    this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
+      if (data) {
+        if (this.eventData && this.eventData.registrationLink) {
+          const videoId = this.eventData.registrationLink.split('?v=')
+          if (videoId && videoId.length > 1 && videoId[1]) {
             this.id = videoId[1]
           }
         }
@@ -162,19 +162,19 @@ export class EventDetailComponent implements OnInit {
   //   })
   // }
 
-    onStateChange(event:any) {
-      this.ytEvent = event.data;
+    onStateChange(event: any) {
+      this.ytEvent = event.data
     }
-    savePlayer(player:any) {
-      this.player = player;
+    savePlayer(player: any) {
+      this.player = player
     }
 
     playVideo() {
-      this.player.playVideo();
+      this.player.playVideo()
     }
 
     pauseVideo() {
-      this.player.pauseVideo();
+      this.player.pauseVideo()
     }
 
 }

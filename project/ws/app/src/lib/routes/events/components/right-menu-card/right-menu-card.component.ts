@@ -181,8 +181,8 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       type: WsEvents.EnumInteractTypes.CLICK,
       id: 'event-enroll',
     },
-    {},
-    {
+                                       {},
+                                       {
       module: WsEvents.EnumTelemetrymodules.EVENTS,
     })
     this.eventEnrollService.eventEnrollEvent.next(true)
