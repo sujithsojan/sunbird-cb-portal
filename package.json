@@ -91,6 +91,7 @@
         "ngx-infinite-scroll": "8.0.0",
         "ngx-quill": "^7.1.2",
         "ngx-skeleton-loader": "^1.2.2",
+        "ngx-youtube-player": "^7.0.0",
         "object-sizeof": "^1.6.3",
         "pdfjs-dist": "2.1.266",
         "popper.js": "1.14.3",
@@ -112,7 +113,9 @@
         "vis-network": "^5.2.4",
         "vis-util": "^5.0.2",
         "xlsx": "^0.16.1",
-        "zone.js": "~0.10.1"
+        "zone.js": "~0.10.1",
+        "@angular/youtube-player": "^8.2.3"
+        
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.803.23",

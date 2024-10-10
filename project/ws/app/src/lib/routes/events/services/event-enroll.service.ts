@@ -11,7 +11,7 @@ const API_END_POINTS = {
 @Injectable({
   providedIn: 'root',
 })
-export class EventService {
+export class EventEnrollService {
   eventEnrollEvent = new Subject()
   constructor(private http: HttpClient) { }
 

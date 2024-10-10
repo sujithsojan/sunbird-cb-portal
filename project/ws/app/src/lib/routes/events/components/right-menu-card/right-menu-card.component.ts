@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
-
+import { EventEnrollService } from './../../services/event-enroll.service'
 @Component({
   selector: 'app-right-menu-card',
   templateUrl: './right-menu-card.component.html',
@@ -33,7 +33,8 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     // private route: ActivatedRoute,
     // configSvc: ConfigurationsService,
     private events: EventService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private eventEnrollService: EventEnrollService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -173,5 +174,17 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     }
       return this.eventData.registrationLink
 
+  }
+
+  showYoutubeVideo() {
+    this.events.raiseInteractTelemetry({
+      type: WsEvents.EnumInteractTypes.CLICK,
+      id: 'event-enroll',
+    },
+    {},
+    {
+      module: WsEvents.EnumTelemetrymodules.EVENTS,
+    })
+    this.eventEnrollService.eventEnrollEvent.next(true)
   }
 }
