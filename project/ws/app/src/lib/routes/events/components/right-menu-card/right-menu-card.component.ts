@@ -24,6 +24,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   futureEvent = false
   currentEvent = false
   isSpvEvent = false
+  youTubeLinkFlag = false
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
@@ -45,6 +46,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // this.completedPercent = 86
     if (this.eventData) {
+
       this.startTime = this.eventData.startTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
       this.endTime = this.eventData.endTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
       this.lastUpdate = this.eventData.lastUpdatedOn.split('T')[0]
@@ -75,6 +77,15 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
         if (eventDate > today && eventendDate > today) {
           this.futureEvent = true
           this.pastEvent = false
+        }
+      }
+
+      if (this.eventData && this.eventData.registrationLink) {
+        const videoId = this.eventData.registrationLink.split('?v=')
+        if (videoId && videoId.length > 1 && videoId[1]) {
+          this.youTubeLinkFlag = true
+        } else {
+          this.youTubeLinkFlag = false
         }
       }
     }
