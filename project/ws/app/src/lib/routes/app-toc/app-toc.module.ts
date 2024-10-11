@@ -138,6 +138,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
 import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { UserProfileService } from '../user-profile/services/user-profile.service'
+import { OtpService } from '../user-profile/services/otp.services'
 
 @NgModule({
   declarations: [
@@ -275,6 +276,7 @@ import { UserProfileService } from '../user-profile/services/user-profile.servic
     MultilingualTranslationsService,
     CommonMethodsService,
     UserProfileService,
+    OtpService,
   ],
   exports: [
     AppTocDiscussionComponent,

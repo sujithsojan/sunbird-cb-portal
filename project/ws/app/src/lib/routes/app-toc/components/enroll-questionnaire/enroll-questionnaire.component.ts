@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core'
+import { Component, OnInit, Inject, ViewChild } from '@angular/core'
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
@@ -8,8 +8,11 @@ import { Subject } from 'rxjs'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { ProfileV2Service } from '../../../profile-v2/services/profile-v2.servive'
+import { OtpService } from '../../../user-profile/services/otp.services'
+/* tslint:disable */
+import _ from 'lodash'
 
-// const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
+const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 const EMP_ID_PATTERN = /^[a-z0-9]+$/i
 
@@ -22,7 +25,7 @@ export class EnrollQuestionnaireComponent implements OnInit {
   public afterSubmitAction = this.checkAfterSubmit.bind(this)
   isReadOnly = false
   batchDetails: any
-  customForm: boolean = true
+  customForm: boolean = false
   userDetailsForm: FormGroup
   groupData: any | undefined
   private destroySubject$ = new Subject()
@@ -56,22 +59,39 @@ export class EnrollQuestionnaireComponent implements OnInit {
   exclusionYear: any
   selectedCadreName: any
   selectedCadre: any
-
+  verifyMobile: boolean = false
+  otpSent: boolean = false
+  otpEntered = ''
+  mVerified :boolean = false
+  @ViewChild('timerDiv', { static: false }) timerDiv !: any
+  timeLeft = 150
+  interval: any
+  showResendOTP = false
+  otpForm: FormGroup
   constructor(
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<EnrollQuestionnaireComponent>,
     private userProfileService: UserProfileService,
     private configSrc: ConfigurationsService,
     private profileV2Svc: ProfileV2Service,
+    private otpService: OtpService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { console.log("data ", data)
     console.log("configSrc ", this.configSrc)
     this.batchDetails = this.data.batchData
     if (this.data.batchData.batchAttributes.userProfileFileds && 
-      this.data.batchData.batchAttributes.userProfileFileds === "Custom section" || 
-      this.data.batchData.batchAttributes.userProfileFileds === "All fields") {
+      this.data.batchData.batchAttributes.userProfileFileds === "Full iGOT profile" || 
+      this.data.batchData.batchAttributes.userProfileFileds === "Custom iGOT profile") {
       this.customForm = true
     }
+
+    this.getUserDetails()
+
+    this.otpForm = new FormGroup({
+      otp: new FormControl('', Validators.required)
+    })
+
+    
     //this.customForm = this.batchDetails.batchAttributes.bpEnrolMandatoryProfileFields ? true : false
     
     this.userDetailsForm = new FormGroup({
@@ -79,7 +99,7 @@ export class EnrollQuestionnaireComponent implements OnInit {
       designation: new FormControl(''),
       employeeCode: new FormControl('', [Validators.pattern(EMP_ID_PATTERN)]),
       // primaryEmail: new FormControl('', ),
-      // mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
+      mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
       gender: new FormControl('', []),
       dob: new FormControl('', []),
       domicileMedium: new FormControl('', []),
@@ -92,6 +112,83 @@ export class EnrollQuestionnaireComponent implements OnInit {
       batch: new FormControl(''),
       cadreControllingAuthority: new FormControl(''),
     })
+
+    if (this.userDetailsForm.get('mobile')) {
+      this.userDetailsForm.get('mobile')!.valueChanges
+        .subscribe(res => {
+          if (res && !this.userProfileObject.profileDetails.personalDetails.phoneVerified) {
+            if (MOBILE_PATTERN.test(res)) {
+              this.verifyMobile = true
+              this.mVerified = false
+            } else {
+              this.verifyMobile = false
+            }
+          } else {
+            this.verifyMobile = false
+          }
+        })
+    }
+  }
+
+  handleGenerateOTP(verifyType?: string): void {
+    this.otpService.sendOtp(this.userDetailsForm.value['mobile'])
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.snackBar.open(this.handleTranslateTo('otpSentMobile'))
+      if (verifyType) {
+        this.otpSent = true
+        this.startTimer()
+        //this.handleVerifyOTP(verifyType, this.userDetailsForm.value['mobile'])
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.snackBar.open(this.handleTranslateTo('mobileOTPSentFail'))
+      }
+    })
+  }
+
+  handleResendOTP(): void {
+    this.timeLeft = 150
+    this.showResendOTP =true
+    this.startTimer()
+    let otpValue$: any
+    otpValue$ = this.otpService.resendOtp(this.userDetailsForm.controls['mobile'].value)
+
+    otpValue$.pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.snackBar.open(this.handleTranslateTo('otpSentMobile'))
+      },         (error: any) => {
+        if (!error.ok) {
+          this.snackBar.open(_.get(error, 'error.params.errmsg') || 'Unable to resend OTP, please try again later!')
+        }
+      })
+  }
+
+  verifyMobileOTP(): void {
+    this.otpService.verifyOTP(this.otpForm.controls['otp'].value, this.userDetailsForm.controls['mobile'].value)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.snackBar.open(this.handleTranslateTo('OTPSentSuccess'))
+      this.verifyMobile = true
+      this.mVerified = true
+      this.otpSent = false
+    }, (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.snackBar.open(_.get(error, 'error.params.errmsg') || this.handleTranslateTo('OTPVerifyFailed'))
+      }
+    })
+  }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft = this.timeLeft - 1
+        this.timerDiv.nativeElement.innerHTML = `${Math.floor(this.timeLeft / 60)}m: ${this.timeLeft % 60}s`
+      } else {
+        clearInterval(this.interval)
+        this.showResendOTP = true
+      }
+    },                          1000)
   }
 
   public checkAfterSubmit(_e: any) {
@@ -109,7 +206,7 @@ export class EnrollQuestionnaireComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserDetails()
+    
     this.getGroupData()
     this.loadDesignations()
     this.getMasterLanguage()
@@ -220,11 +317,11 @@ export class EnrollQuestionnaireComponent implements OnInit {
       if (resp && resp.result && resp.result.response) {
         this.userProfileObject = resp.result.response
         console.log(" userProfileObject ", this.userProfileObject)
-        if (this.userProfileObject.profileDetails.profileGroupStatus === "NOT-VERIFIED" || this.userProfileObject.profileDetails.profileDesignationStatus === "NOT-VERIFIED") {
-          this.eligible = false
-        } else {
-          this.eligible = true
-        }
+        // if (this.userProfileObject.profileDetails.profileGroupStatus === "NOT-VERIFIED" || this.userProfileObject.profileDetails.profileDesignationStatus === "NOT-VERIFIED") {
+        //   this.eligible = false
+        // } else {
+        //   this.eligible = true
+        // }
       }      
     })
   }
@@ -265,6 +362,14 @@ export class EnrollQuestionnaireComponent implements OnInit {
           this.snackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
         }
       })
+  }
+
+  handleEmpty(type: string): void {
+    if (type === 'mobile') {
+      if (!this.userDetailsForm.controls['mobile'].value) {
+        this.userDetailsForm.controls['mobile'].setErrors({ valid: false })
+      }
+    }    
   }
 
 }
