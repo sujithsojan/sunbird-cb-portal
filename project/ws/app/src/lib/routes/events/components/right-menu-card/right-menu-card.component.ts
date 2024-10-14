@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core'
 import moment from 'moment'
-import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, EventService as EventServiceGlobal, WsEvents } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { EventService } from '../../services/events.service'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
@@ -25,16 +27,22 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   currentEvent = false
   isSpvEvent = false
   youTubeLinkFlag = false
+  kparray: any = []
+  enrollFlowItems = ['Karmayogi Saptah']
+  enrollBtnLoading = false
+  videoId = ''
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
   // badges!: NSProfileDataV2.IBadgeResponse
   // currentEvent!: any
   constructor(
-    // private route: ActivatedRoute,
-    // configSvc: ConfigurationsService,
-    private events: EventService,
+    private route: ActivatedRoute,
+    private configSvc: ConfigurationsService,
+    private events: EventServiceGlobal,
     private translate: TranslateService,
+    private router: Router,
+    private eventSvc: EventService,
     private eventEnrollService: EventEnrollService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
@@ -44,6 +52,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
+    this.kparray = (this.route.parent && this.route.parent.snapshot.data.pageData.data.karmaPoints) || []
     // this.completedPercent = 86
     if (this.eventData) {
 
@@ -61,7 +70,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
       const spvOrgId = environment.spvorgID
       if (this.eventData.createdFor && this.eventData.createdFor[0] === spvOrgId) {
-        this.isSpvEvent =  true
+        this.isSpvEvent = true
       }
 
       if (isToday) {
@@ -84,6 +93,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
         if (this.eventData && this.eventData.registrationLink && this.eventData.resourceType === 'Karmayogi Saptah') {
           const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()  
           if (videoId) {
+            this.videoId = videoId
             this.youTubeLinkFlag = true
           } else {
             this.youTubeLinkFlag = false
@@ -118,10 +128,10 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     const currentTime = new Date().getHours() * 60 + new Date().getMinutes()
     const minustime = starttime - currentTime
     // tslint:disable-next-line:max-line-length
-    if (eventData.startDate === todaysdate && (minustime > 0 && minustime < 16) && (selectedStartDate > today || selectedEndDate < today))  {
+    if (eventData.startDate === todaysdate && (minustime > 0 && minustime < 16) && (selectedStartDate > today || selectedEndDate < today)) {
       return true
     }
-    if (eventData.startDate === todaysdate && (today >= selectedStartDate && today <= selectedEndDate))  {
+    if (eventData.startDate === todaysdate && (today >= selectedStartDate && today <= selectedEndDate)) {
       return true
     }
     return false
@@ -179,15 +189,56 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       {
         pageIdExt: 'event',
         module: WsEvents.EnumTelemetrymodules.EVENTS,
-    })
+      })
   }
 
   getLink() {
     if (this.eventData && this.eventData.recordedLinks && this.eventData.recordedLinks.length > 0) {
       return this.eventData.recordedLinks[0]
     }
-      return this.eventData.registrationLink
+    return this.eventData.registrationLink
+  }
 
+  get isenrollFlow() {
+    return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+  }
+
+  navigateToPLayer() {
+    if (this.isenrollFlow) {
+      this.router.navigate([`app/event-hub/player/${this.eventData.identifier}/youtube/${this.videoId}`])
+    }
+  }
+
+  enrolltoEvent() {
+    if(this.eventData.identifier && this.configSvc && this.configSvc.userProfile){
+      this.enrollBtnLoading = true
+      // const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
+      const req = {
+        request: {
+          userId: this.configSvc.userProfile.userId || '',
+          eventId: this.eventData.identifier || '',
+          batchId: '',
+        }
+      }
+      console.log('req ::', req)
+  
+      this.eventSvc.enrollEvent(req).subscribe(
+        () => {
+          // this.batchData = {
+          //   content: data.content,
+          //   enrolled: true,
+          // }
+          const batchId = ''
+          if (batchId) {
+            // this.navigateToPlayerPage(batchId)
+          }
+          this.enrollBtnLoading = false
+        },
+        (_error: any) => {
+          this.enrollBtnLoading = false
+        }
+      )
+    }
   }
 
   showYoutubeVideo() {

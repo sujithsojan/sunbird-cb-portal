@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, Input, ViewChild } from '@angular/core'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import videoJs from 'video.js'
 import 'videojs-youtube';
 //videoJsInitializer
@@ -47,11 +47,19 @@ export class EventYouTubeComponent implements OnInit {
   @Input() eventData: any
   @Input() videoId:any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
-  constructor(private router: Router) {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    
+    this.route.params.subscribe(params => {
+      
+      this.videoId = params.videoId
+     
+      // if (this.fetchNewData) {
+      //   this.getTIDData()
+      // }
+      // this.data = this.route.snapshot.data.topic.data
+    })
   }
 
   ngAfterViewInit(){

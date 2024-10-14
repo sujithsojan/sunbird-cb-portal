@@ -6,6 +6,9 @@ import { environment } from 'src/environments/environment'
 const API_END_POINTS = {
   EVENT_READ: `/apis/proxies/v8/event/v4/read`,
   GET_EVENTS: '/apis/proxies/v8/sunbirdigot/search',
+  ENROLL_EVENT: '/apis/proxies/v8/event/v1/enrol',
+  CONTENT_STATE_UPDATE: (eventId: string) => `/apis/proxies/v8/event-progres/${eventId}`,
+  EVENT_ENROLL_LIST: ``,
 }
 
 @Injectable({
@@ -26,5 +29,17 @@ export class EventService {
   getPublicUrl(url: string): string {
     const mainUrl = url.split('/content').pop() || ''
     return `${environment.contentHost}/${environment.contentBucket}/content${mainUrl}`
+  }
+
+  eventEnrollmentList(userId: string): Observable<any> {
+    return this.http.get<any>(`${API_END_POINTS.EVENT_ENROLL_LIST}/${userId}`)
+  }
+
+  enrollEvent(req: any) {
+    return this.http.post<any>(`${API_END_POINTS.ENROLL_EVENT}`, req)
+  }
+
+  contentStateUpdate(req: any) {
+    return this.http.patch<any>(`${API_END_POINTS.CONTENT_STATE_UPDATE}`, req)
   }
 }

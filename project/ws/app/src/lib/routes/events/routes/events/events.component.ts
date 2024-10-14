@@ -28,6 +28,7 @@ export class EventsComponent implements OnInit {
   todaysEvents: any = []
   featuredEvents: any = []
   curatedEvents: any = []
+  karmayogiSaptahEvents: any = []
   alltypeEvents: any = []
   currentFilterSort = 'desc'
   departmentID: any
@@ -149,6 +150,7 @@ export class EventsComponent implements OnInit {
       this.allEvents['todayEvents'] = []
       this.allEvents['featuredEvents'] = []
       this.allEvents['curatedEvents'] = []
+      this.allEvents['karmayogiSaptahEvents'] = []
       Object.keys(data).forEach((index: any) => {
         const obj = data[index]
         const expiryStartTimeFormat = this.customDateFormat(obj.startDate, obj.startTime)
@@ -199,6 +201,9 @@ export class EventsComponent implements OnInit {
         if (obj.createdFor && obj.createdFor[0] === this.spvOrgId) {
           this.allEvents['curatedEvents'].push(eventDataObj)
         }
+        if (obj.resourceType && obj.resourceType === 'Karmayogi Saptah') {
+          this.allEvents['karmayogiSaptahEvents'].push(eventDataObj)
+        }
 
         const now = new Date()
         const today = moment(now).format('YYYY-MM-DD HH:mm')
@@ -212,6 +217,7 @@ export class EventsComponent implements OnInit {
       this.filter('todayEvents')
       this.filter('featuredEvents')
       this.filter('curatedEvents')
+      this.filter('karmayogiSaptahEvents')
     }
   }
 
@@ -227,6 +233,7 @@ export class EventsComponent implements OnInit {
     const all: any[] = []
     const featuredEvents: any[] = []
     const curatedEvents: any[] = []
+    const karmayogiSaptahEvents: any[] = []
     if (this.allEvents['all'] && this.allEvents['all'].length > 0) {
       this.allEvents['all'].forEach((event: any) => {
         all.push(event)
@@ -250,6 +257,12 @@ export class EventsComponent implements OnInit {
       })
     }
 
+    if (this.allEvents['karmayogiSaptahEvents'] && this.allEvents['karmayogiSaptahEvents'].length > 0) {
+      this.allEvents['karmayogiSaptahEvents'].forEach((event: any) => {
+        karmayogiSaptahEvents.push(event)
+      })
+    }
+
     if (key) {
       this.currentFilter = key
       switch (key) {
@@ -264,6 +277,9 @@ export class EventsComponent implements OnInit {
           break
         case 'curatedEvents':
           this.curatedEvents = curatedEvents
+          break
+        case 'karmayogiSaptahEvents':
+          this.karmayogiSaptahEvents = karmayogiSaptahEvents
           break
       }
     }
