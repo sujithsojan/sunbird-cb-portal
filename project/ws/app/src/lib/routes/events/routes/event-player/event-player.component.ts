@@ -21,7 +21,7 @@ export class EventPlayerComponent implements OnInit {
   eventData: any
   currentEvent = false
   pastEvent = false
-
+  videoId = ''
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -47,8 +47,9 @@ export class EventPlayerComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      
       this.eventId = params.eventId
-      console.log('this.eventId ', this.eventId)
+     
       // if (this.fetchNewData) {
       //   this.getTIDData()
       // }

@@ -43,9 +43,9 @@ import { TranslateModule } from '@ngx-translate/core'
 import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module';
 import { EventPlayerComponent } from './routes/event-player/event-player.component';
 import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component';
-import { EventYoutubePlayerComponent } from './components/event-youtube-player/event-youtube-player.component'
 import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
+import { EventYouTubeComponent } from './components/event-you-tube/event-you-tube.component'
 
 @NgModule({
   declarations: [
@@ -59,7 +59,7 @@ import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/ske
     PresenterCardComponent,
     EventPlayerComponent,
     EventPdfPlayerComponent,
-    EventYoutubePlayerComponent,
+    EventYouTubeComponent
   ],
   imports: [
     CommonModule,

@@ -43,6 +43,7 @@
           </a>
       </div>
   </div> -->
+  <ng-container *ngIf="!showYouTubeVideoFlag">
     <div class="flex flex-1 flex-column mb-2">
       <span class="f-medium mat-title">{{ 'event.eventDescription' | translate }} </span>
     </div>
@@ -73,7 +74,14 @@
             </div>
         </ng-container>
     </div>
+  </ng-container>
+
+<ng-container *ngIf="showYouTubeVideoFlag">
+<!-- <youtube-player [videoId]="id"></youtube-player> -->
+ <app-event-you-tube [videoId]="id"></app-event-you-tube>
+</ng-container>
   </div>
+
 
   <!-- right menu -->
   <div class="info-section right margin-top-xl margin-left-xl margin-bottom-xl">

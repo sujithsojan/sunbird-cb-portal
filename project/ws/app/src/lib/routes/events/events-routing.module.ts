@@ -8,7 +8,7 @@ import { EventRecentResolve } from './resolvers/event-resolve'
 import { EventDetailResolve } from './resolvers/event-detail-resolve'
 import { EventPlayerComponent } from './routes/event-player/event-player.component'
 import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component'
-import { EventYoutubePlayerComponent } from './components/event-youtube-player/event-youtube-player.component'
+import { EventYouTubeComponent } from './components/event-you-tube/event-you-tube.component'
 
 const routes: Routes = [
   {
@@ -63,8 +63,8 @@ const routes: Routes = [
             },
           },
           {
-            path: 'youtube',
-            component: EventYoutubePlayerComponent,
+            path: 'youtube/:videoId',
+            component: EventYouTubeComponent,
             data: {
               resourceType: 'youtube',
               module: 'Events',

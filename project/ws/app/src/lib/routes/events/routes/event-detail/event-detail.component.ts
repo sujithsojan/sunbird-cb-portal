@@ -10,6 +10,7 @@ import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { EventEnrollService } from './../../services/event-enroll.service'
 /* tslint:enable */
 
 @Component({
@@ -29,13 +30,21 @@ export class EventDetailComponent implements OnInit {
   currentEvent = false
   pastEvent = false
   // fetchNewData = false
-
+  showYouTubeVideoFlag = false
+  id = 'mUoa2rJr9G8'
+  // playerVars = {
+  //   cc_lang_pref: 'en',
+  // };
+  private player: YT.Player | any
+  public ytEvent: any
+  version: any = '...'
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
+    private eventEnrollService: EventEnrollService
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
   ) {
@@ -51,9 +60,20 @@ export class EventDetailComponent implements OnInit {
         this.translate.use(lang)
       }
     })
+
   }
 
   ngOnInit() {
+
+    this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
+      if (data) {
+        if (this.eventData && this.eventData.registrationLink) {
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()          
+          this.id = videoId
+        }
+        this.showYouTubeVideoFlag = true
+      }
+    })
     this.route.params.subscribe(params => {
       this.eventId = params.eventId
       // if (this.fetchNewData) {
@@ -139,5 +159,20 @@ export class EventDetailComponent implements OnInit {
   //     duration,
   //   })
   // }
+
+    onStateChange(event: any) {
+      this.ytEvent = event.data
+    }
+    savePlayer(player: any) {
+      this.player = player
+    }
+
+    playVideo() {
+      this.player.playVideo()
+    }
+
+    pauseVideo() {
+      this.player.pauseVideo()
+    }
 
 }

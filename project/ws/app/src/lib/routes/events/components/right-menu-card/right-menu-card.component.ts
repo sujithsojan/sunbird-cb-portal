@@ -8,7 +8,7 @@ import { EventService } from '../../services/events.service'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
-
+import { EventEnrollService } from './../../services/event-enroll.service'
 @Component({
   selector: 'app-right-menu-card',
   templateUrl: './right-menu-card.component.html',
@@ -26,9 +26,11 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   futureEvent = false
   currentEvent = false
   isSpvEvent = false
+  youTubeLinkFlag = false
   kparray: any = []
   enrollFlowItems = ['Karmayogi Saptah']
   enrollBtnLoading = false
+  videoId = ''
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
@@ -40,7 +42,8 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     private events: EventServiceGlobal,
     private translate: TranslateService,
     private router: Router,
-    private eventSvc: EventService
+    private eventSvc: EventService,
+    private eventEnrollService: EventEnrollService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -52,6 +55,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     this.kparray = (this.route.parent && this.route.parent.snapshot.data.pageData.data.karmaPoints) || []
     // this.completedPercent = 86
     if (this.eventData) {
+
       this.startTime = this.eventData.startTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
       this.endTime = this.eventData.endTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
       this.lastUpdate = this.eventData.lastUpdatedOn.split('T')[0]
@@ -83,6 +87,19 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
           this.futureEvent = true
           this.pastEvent = false
         }
+      }
+
+      if (this.eventData && this.eventData.registrationLink) {
+        if (this.eventData && this.eventData.registrationLink && this.eventData.resourceType === 'Karmayogi Saptah') {
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()  
+          if (videoId) {
+            this.videoId = videoId
+            this.youTubeLinkFlag = true
+          } else {
+            this.youTubeLinkFlag = false
+          }
+        }
+        
       }
     }
   }
@@ -188,7 +205,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
   navigateToPLayer() {
     if (this.isenrollFlow) {
-      this.router.navigate([`app/event-hub/player/${this.eventData.identifier}/youtube`])
+      this.router.navigate([`app/event-hub/player/${this.eventData.identifier}/youtube/${this.videoId}`])
     }
   }
 
@@ -206,7 +223,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       console.log('req ::', req)
   
       this.eventSvc.enrollEvent(req).subscribe(
-        (data: any) => {
+        () => {
           // this.batchData = {
           //   content: data.content,
           //   enrolled: true,
@@ -222,5 +239,17 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
         }
       )
     }
+  }
+
+  showYoutubeVideo() {
+    this.events.raiseInteractTelemetry({
+      type: WsEvents.EnumInteractTypes.CLICK,
+      id: 'event-enroll',
+    },
+                                       {},
+                                       {
+      module: WsEvents.EnumTelemetrymodules.EVENTS,
+    })
+    this.eventEnrollService.eventEnrollEvent.next(true)
   }
 }
