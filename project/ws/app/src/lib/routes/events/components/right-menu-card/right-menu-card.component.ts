@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core'
 import moment from 'moment'
-import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, EventService as EventServiceGlobal, WsEvents } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { EventService } from '../../services/events.service'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
@@ -24,16 +26,21 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   futureEvent = false
   currentEvent = false
   isSpvEvent = false
+  kparray: any = []
+  enrollFlowItems = ['Karmayogi Saptah']
+  enrollBtnLoading = false
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
   // badges!: NSProfileDataV2.IBadgeResponse
   // currentEvent!: any
   constructor(
-    // private route: ActivatedRoute,
-    // configSvc: ConfigurationsService,
-    private events: EventService,
-    private translate: TranslateService
+    private route: ActivatedRoute,
+    private configSvc: ConfigurationsService,
+    private events: EventServiceGlobal,
+    private translate: TranslateService,
+    private router: Router,
+    private eventSvc: EventService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -42,6 +49,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
+    this.kparray = (this.route.parent && this.route.parent.snapshot.data.pageData.data.karmaPoints) || []
     // this.completedPercent = 86
     if (this.eventData) {
       this.startTime = this.eventData.startTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
@@ -58,7 +66,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
       const spvOrgId = environment.spvorgID
       if (this.eventData.createdFor && this.eventData.createdFor[0] === spvOrgId) {
-        this.isSpvEvent =  true
+        this.isSpvEvent = true
       }
 
       if (isToday) {
@@ -103,10 +111,10 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     const currentTime = new Date().getHours() * 60 + new Date().getMinutes()
     const minustime = starttime - currentTime
     // tslint:disable-next-line:max-line-length
-    if (eventData.startDate === todaysdate && (minustime > 0 && minustime < 16) && (selectedStartDate > today || selectedEndDate < today))  {
+    if (eventData.startDate === todaysdate && (minustime > 0 && minustime < 16) && (selectedStartDate > today || selectedEndDate < today)) {
       return true
     }
-    if (eventData.startDate === todaysdate && (today >= selectedStartDate && today <= selectedEndDate))  {
+    if (eventData.startDate === todaysdate && (today >= selectedStartDate && today <= selectedEndDate)) {
       return true
     }
     return false
@@ -164,14 +172,55 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       {
         pageIdExt: 'event',
         module: WsEvents.EnumTelemetrymodules.EVENTS,
-    })
+      })
   }
 
   getLink() {
     if (this.eventData && this.eventData.recordedLinks && this.eventData.recordedLinks.length > 0) {
       return this.eventData.recordedLinks[0]
     }
-      return this.eventData.registrationLink
+    return this.eventData.registrationLink
+  }
 
+  get isenrollFlow() {
+    return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+  }
+
+  navigateToPLayer() {
+    if (this.isenrollFlow) {
+      this.router.navigate([`app/event-hub/player/${this.eventData.identifier}/youtube`])
+    }
+  }
+
+  enrolltoEvent() {
+    if(this.eventData.identifier && this.configSvc && this.configSvc.userProfile){
+      this.enrollBtnLoading = true
+      // const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
+      const req = {
+        request: {
+          userId: this.configSvc.userProfile.userId || '',
+          eventId: this.eventData.identifier || '',
+          batchId: '',
+        }
+      }
+      console.log('req ::', req)
+  
+      this.eventSvc.enrollEvent(req).subscribe(
+        (data: any) => {
+          // this.batchData = {
+          //   content: data.content,
+          //   enrolled: true,
+          // }
+          const batchId = ''
+          if (batchId) {
+            // this.navigateToPlayerPage(batchId)
+          }
+          this.enrollBtnLoading = false
+        },
+        (_error: any) => {
+          this.enrollBtnLoading = false
+        }
+      )
+    }
   }
 }

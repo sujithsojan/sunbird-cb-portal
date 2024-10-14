@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
+import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
 import { EventsHomeComponent } from './routes/events-home/events-home.component'
 import { EventsComponent } from './routes/events/events.component'
 import { EventDetailComponent } from './routes/event-detail/event-detail.component'
 import { EventRecentResolve } from './resolvers/event-resolve'
 import { EventDetailResolve } from './resolvers/event-detail-resolve'
+import { EventPlayerComponent } from './routes/event-player/event-player.component'
+import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component'
+import { EventYoutubePlayerComponent } from './components/event-youtube-player/event-youtube-player.component'
 
 const routes: Routes = [
   {
@@ -41,6 +45,44 @@ const routes: Routes = [
         // resolve: {
         //   topic: EventDetailResolve,
         // },
+      },
+      {
+        path: 'player/:eventId',
+        component: EventPlayerComponent,
+        children: [
+          {
+            path: 'pdf',
+            component: EventPdfPlayerComponent,
+            data: {
+              resourceType: 'pdf',
+              module: 'Events',
+              pageId: 'pdf',
+            },
+            resolve: {
+              content: ViewerResolve,
+            },
+          },
+          {
+            path: 'youtube',
+            component: EventYoutubePlayerComponent,
+            data: {
+              resourceType: 'youtube',
+              module: 'Events',
+              pageId: 'youtube',
+            },
+            resolve: {
+              content: ViewerResolve,
+            },
+          }
+        ],
+        data: {
+          resourceType: 'pdf',
+          module: 'Events',
+          pageId: 'player/:eventId',
+        },
+        resolve: {
+          content: ViewerResolve,
+        },
       },
     ],
   },
