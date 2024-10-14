@@ -81,12 +81,15 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       }
 
       if (this.eventData && this.eventData.registrationLink) {
-        const videoId = this.eventData.registrationLink.split('?v=')
-        if (videoId && videoId.length > 1 && videoId[1]) {
-          this.youTubeLinkFlag = true
-        } else {
-          this.youTubeLinkFlag = false
+        if (this.eventData && this.eventData.registrationLink && this.eventData.resourceType === 'Karmayogi Saptah') {
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()  
+          if (videoId) {
+            this.youTubeLinkFlag = true
+          } else {
+            this.youTubeLinkFlag = false
+          }
         }
+        
       }
     }
   }

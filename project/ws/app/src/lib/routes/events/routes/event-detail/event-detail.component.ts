@@ -68,10 +68,8 @@ export class EventDetailComponent implements OnInit {
     this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
       if (data) {
         if (this.eventData && this.eventData.registrationLink) {
-          const videoId = this.eventData.registrationLink.split('?v=')
-          if (videoId && videoId.length > 1 && videoId[1]) {
-            this.id = videoId[1]
-          }
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()          
+          this.id = videoId
         }
         this.showYouTubeVideoFlag = true
       }
