@@ -35,7 +35,7 @@ export class EventDetailComponent implements OnInit {
   // playerVars = {
   //   cc_lang_pref: 'en',
   // };
-  private player: YT.Player | any
+  // private player: YT.Player | any
   public ytEvent: any
   version: any = '...'
   constructor(
@@ -68,7 +68,7 @@ export class EventDetailComponent implements OnInit {
     this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
       if (data) {
         if (this.eventData && this.eventData.registrationLink) {
-          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()          
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()
           this.id = videoId
         }
         this.showYouTubeVideoFlag = true
@@ -163,16 +163,16 @@ export class EventDetailComponent implements OnInit {
     onStateChange(event: any) {
       this.ytEvent = event.data
     }
-    savePlayer(player: any) {
-      this.player = player
-    }
+    // savePlayer(player: any) {
+    //   this.player = player
+    // }
 
-    playVideo() {
-      this.player.playVideo()
-    }
+    // playVideo() {
+    //   this.player.playVideo()
+    // }
 
-    pauseVideo() {
-      this.player.pauseVideo()
-    }
+    // pauseVideo() {
+    //   this.player.pauseVideo()
+    // }
 
 }

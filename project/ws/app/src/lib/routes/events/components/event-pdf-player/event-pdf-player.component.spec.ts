@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { EventPdfPlayerComponent } from './event-pdf-player.component';
+import { EventPdfPlayerComponent } from './event-pdf-player.component'
 
 describe('EventPdfPlayerComponent', () => {
-  let component: EventPdfPlayerComponent;
-  let fixture: ComponentFixture<EventPdfPlayerComponent>;
+  let component: EventPdfPlayerComponent
+  let fixture: ComponentFixture<EventPdfPlayerComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventPdfPlayerComponent ]
+      declarations: [EventPdfPlayerComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventPdfPlayerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(EventPdfPlayerComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

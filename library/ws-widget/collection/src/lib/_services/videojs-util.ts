@@ -377,7 +377,7 @@ export function youtubeInitializer(
   const yHeight = screenHeight
   const player = new (<any>window).YT.Player(elem, {
     videoId: youtubeId,
-  
+
     width: '100%',
     height: yHeight,
     playerVars: {
@@ -391,7 +391,7 @@ export function youtubeInitializer(
       },
     },
   })
-  
+
   const eventDispatcher = enableTelemetry
     ? generateEventDispatcherHelper(passThroughData, dispatcher, widgetSubType)
     : () => undefined
