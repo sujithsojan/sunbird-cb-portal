@@ -23,7 +23,7 @@ import { EventsComponent } from './routes/events/events.component'
 import { LoaderService } from '@ws/author/src/public-api'
 import { InitResolver } from '@ws/author/src/lib/services/init-resolve.service'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
-import { BtnPageBackModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
+import { BtnPageBackModule, BtnPageBackNavModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
 import { AvatarPhotoModule } from '@sunbird-cb/collection/src/lib/_common/avatar-photo/avatar-photo.module'
 import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule, HorizontalScrollerV2Module,
   PipeFilterModule,
@@ -40,6 +40,12 @@ import { RightMenuCardComponent } from './components/right-menu-card/right-menu-
 import { PresenterCardComponent } from './components/presenter-card/presenter-card.component'
 import { EventService } from './services/events.service'
 import { TranslateModule } from '@ngx-translate/core'
+import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module';
+import { EventPlayerComponent } from './routes/event-player/event-player.component';
+import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component';
+import { EventYoutubePlayerComponent } from './components/event-youtube-player/event-youtube-player.component'
+import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
+import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 
 @NgModule({
   declarations: [
@@ -51,6 +57,9 @@ import { TranslateModule } from '@ngx-translate/core'
     RelatedPostsComponent,
     RightMenuCardComponent,
     PresenterCardComponent,
+    EventPlayerComponent,
+    EventPdfPlayerComponent,
+    EventYoutubePlayerComponent,
   ],
   imports: [
     CommonModule,
@@ -85,11 +94,15 @@ import { TranslateModule } from '@ngx-translate/core'
     TranslateModule,
     HorizontalScrollerV2Module,
     ContentStripWithTabsModule,
+    KarmaPointsModule,
+    BtnPageBackNavModule,
+    SkeletonLoaderModule
   ],
   providers: [
     LoaderService,
     InitResolver,
     EventService,
+    ViewerResolve,
   ],
 })
 export class EventsModule { }
