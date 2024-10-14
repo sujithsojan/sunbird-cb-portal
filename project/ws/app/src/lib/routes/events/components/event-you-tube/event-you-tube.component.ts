@@ -1,18 +1,18 @@
-import { Component, ElementRef, OnInit, Input, ViewChild } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
-import videoJs from 'video.js'
-import 'videojs-youtube';
-//videoJsInitializer
+import { Component, ElementRef, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+// import videoJs from 'video.js'
+import 'videojs-youtube'
+// videoJsInitializer
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
-import { NsContent } from '@sunbird-cb/utils-v2';
-interface IYTOptions extends videoJs.PlayerOptions {
-  youtube: {
-    ytControls: 0 | 1 | 2
-    customVars?: {
-      wmode: 'transparent'
-    }
-  }
-}
+import { NsContent } from '@sunbird-cb/utils-v2'
+// interface IYTOptions extends videoJs.PlayerOptions {
+//   youtube: {
+//     ytControls: 0 | 1 | 2
+//     customVars?: {
+//       wmode: 'transparent'
+//     }
+//   }
+// }
 // const videoJsOptions: IYTOptions = {
 //   controls: true,
 //   autoplay: false,
@@ -39,22 +39,21 @@ interface IYTOptions extends videoJs.PlayerOptions {
 // };
 
 @Component({
-  selector: 'app-event-you-tube', 
+  selector: 'app-event-you-tube',
   templateUrl: './event-you-tube.component.html',
   styleUrls: ['./event-you-tube.component.scss'],
 })
-export class EventYouTubeComponent implements OnInit {
+export class EventYouTubeComponent implements OnInit, AfterViewInit {
   @Input() eventData: any
-  @Input() videoId:any
+  @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
   constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      
       this.videoId = params.videoId
-     
+
       // if (this.fetchNewData) {
       //   this.getTIDData()
       // }
@@ -62,7 +61,7 @@ export class EventYouTubeComponent implements OnInit {
     })
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     // let playerOptions = {
     //         autoplay: false,
     //         controls: true,
@@ -73,13 +72,17 @@ export class EventYouTubeComponent implements OnInit {
     //     }
     //     videoJs(`youtubeTag`, playerOptions, () => {console.log('pronto')});
     const dispatcher: telemetryEventDispatcherFunction = event => {
+      /* tslint:disable */
       console.log(event)
+      /* tslint:enable */
       // if (this.widgetData.identifier) {
       //   this.eventSvc.dispatchEvent(event)
       // }
     }
     const saveCLearning: saveContinueLearningFunction = data => {
+      /* tslint:disable */
       console.log(data)
+      /* tslint:enable */
       // if (this.widgetData.identifier) {
       //   if (this.activatedRoute.snapshot.queryParams.collectionType &&
       //     this.activatedRoute.snapshot.queryParams.collectionType.toLowerCase() === 'playlist') {
@@ -118,7 +121,9 @@ export class EventYouTubeComponent implements OnInit {
       // }
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
+      /* tslint:disable */
       console.log(identifier, data)
+      /* tslint:enable */
       // if (this.widgetData.identifier && identifier && data) {
       //   this.viewerSvc
       //     .realTimeProgressUpdate(identifier, data)
@@ -130,16 +135,16 @@ export class EventYouTubeComponent implements OnInit {
       dispatcher,
       saveCLearning,
       fireRProgress,
-      {},//passThrough Data,
+      {}, // passThrough Data,
       '',
-      false, //enable telemetry,
-      {}, //widget data
-      NsContent.EMimeTypes.YOUTUBE, //type
-      '600px', //height
+      false, // enable telemetry,
+      {}, // widget data
+      NsContent.EMimeTypes.YOUTUBE, // type
+      '600px', // height
     )
+    /* tslint:disable */
     console.log('initObj', initObj)
+    /* tslint:enable */
   }
-
-  
 
 }

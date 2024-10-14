@@ -40,9 +40,9 @@ import { RightMenuCardComponent } from './components/right-menu-card/right-menu-
 import { PresenterCardComponent } from './components/presenter-card/presenter-card.component'
 import { EventService } from './services/events.service'
 import { TranslateModule } from '@ngx-translate/core'
-import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module';
-import { EventPlayerComponent } from './routes/event-player/event-player.component';
-import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component';
+import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module'
+import { EventPlayerComponent } from './routes/event-player/event-player.component'
+import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component'
 import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { EventYouTubeComponent } from './components/event-you-tube/event-you-tube.component'
@@ -59,7 +59,7 @@ import { EventYouTubeComponent } from './components/event-you-tube/event-you-tub
     PresenterCardComponent,
     EventPlayerComponent,
     EventPdfPlayerComponent,
-    EventYouTubeComponent
+    EventYouTubeComponent,
   ],
   imports: [
     CommonModule,
@@ -96,7 +96,7 @@ import { EventYouTubeComponent } from './components/event-you-tube/event-you-tub
     ContentStripWithTabsModule,
     KarmaPointsModule,
     BtnPageBackNavModule,
-    SkeletonLoaderModule
+    SkeletonLoaderModule,
   ],
   providers: [
     LoaderService,

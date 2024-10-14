@@ -91,7 +91,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
       if (this.eventData && this.eventData.registrationLink) {
         if (this.eventData && this.eventData.registrationLink && this.eventData.resourceType === 'Karmayogi Saptah') {
-          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()  
+          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()
           if (videoId) {
             this.videoId = videoId
             this.youTubeLinkFlag = true
@@ -99,7 +99,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
             this.youTubeLinkFlag = false
           }
         }
-        
+
       }
     }
   }
@@ -210,7 +210,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   }
 
   enrolltoEvent() {
-    if(this.eventData.identifier && this.configSvc && this.configSvc.userProfile){
+    if (this.eventData.identifier && this.configSvc && this.configSvc.userProfile) {
       this.enrollBtnLoading = true
       // const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
       const req = {
@@ -218,10 +218,10 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
           userId: this.configSvc.userProfile.userId || '',
           eventId: this.eventData.identifier || '',
           batchId: '',
-        }
+        },
       }
-      console.log('req ::', req)
-  
+      // console.log('req ::', req)
+
       this.eventSvc.enrollEvent(req).subscribe(
         () => {
           // this.batchData = {

@@ -73,7 +73,7 @@ const routes: Routes = [
             resolve: {
               content: ViewerResolve,
             },
-          }
+          },
         ],
         data: {
           resourceType: 'pdf',
