@@ -148,11 +148,11 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           this.getKPData('Enroll')
         }
   
-        if(this.condition.isEnrolled && this.condition.enrolledEvent.completionPercentage < 100) {
+        if(this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage < 100) {
           this.getKPData('Start')
         }
   
-        if(this.condition.isEnrolled && this.condition.enrolledEvent.completionPercentage === 100) {
+        if(this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage === 100) {
           this.getKPData('complete')
         }
       }
@@ -194,7 +194,6 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
 
     nudgeData.sliderData = []
     nudgeData.sliderData = this.kpArray
-    debugger
     this.karmaPointsSlider = nudgeData
   }
 

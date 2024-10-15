@@ -10,7 +10,6 @@ import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
-import { EventEnrollService } from './../../services/event-enroll.service'
 /* tslint:enable */
 
 @Component({
@@ -38,14 +37,15 @@ export class EventDetailComponent implements OnInit {
   // private player: YT.Player | any
   public ytEvent: any
   version: any = '...'
+  skeletonLoader = false
   enrolledEvent: any
+  batchId: string = ''
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
-    private eventEnrollService: EventEnrollService,
     private configSvc: ConfigurationsService
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
@@ -66,7 +66,10 @@ export class EventDetailComponent implements OnInit {
   }
 
   get isenrollFlow() {
-    return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+    if(this.eventData) {
+      return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+    }
+    
   }
 
   ngOnInit() {
@@ -79,9 +82,15 @@ export class EventDetailComponent implements OnInit {
     })
     this.eventSvc.getEventData(this.eventId).subscribe((data: any) => {
       this.eventData = data.result.event
-      this.eventEnrollService.eventData = data.result.event
+      this.eventSvc.eventData = data.result.event
+      if(this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
+      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+        this.batchId = this.eventData.batches[0].batchId || ''
+      }
       /* tslint:disable */
-      console.log(this.eventEnrollService)
+      console.log(this.eventSvc)
       /* tslint:enable */
       const creatordata = this.eventData.creatorDetails
       const str = creatordata.replace(/\\/g, '')
@@ -120,10 +129,11 @@ export class EventDetailComponent implements OnInit {
       userId = this.configSvc.userProfile.userId || ''
     }
     if(this.eventData && userId) {
-      this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.eventData.batchId).subscribe((data: any) => {
+      this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.batchId).subscribe((data: any) => {
         console.log('data --- ', data)
         if(data && data.result && data.result.events && data.result.events.length > 0 ) {
           this.enrolledEvent = data.result.events.find( (d:any ) => d.eventid === this.eventData.identifier)
+          this.enrolledEvent = {...this.enrolledEvent}
         }
       })
     }

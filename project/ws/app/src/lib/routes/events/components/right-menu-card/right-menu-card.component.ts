@@ -8,7 +8,6 @@ import { EventService } from '../../services/events.service'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
-import { EventEnrollService } from './../../services/event-enroll.service'
 @Component({
   selector: 'app-right-menu-card',
   templateUrl: './right-menu-card.component.html',
@@ -47,8 +46,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     private events: EventServiceGlobal,
     private translate: TranslateService,
     private router: Router,
-    private eventSvc: EventService,
-    private eventEnrollService: EventEnrollService
+    private eventSvc: EventService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -57,21 +55,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
-    this.isEnrolled = this.enrolledEvent ? true : false
-    if (this.enrolledEvent && this.enrolledEvent.batchDetails) {
-      if(Array.isArray(this.enrolledEvent.batchDetails) && this.enrolledEvent.batchDetails.length > 0){
-        this.batchId = this.enrolledEvent.batchDetails[0].batchId || ''
-        this.navigateToSamePagewithBatchId(this.batchId)
-      }
-    } else {
-      if(this.eventData && typeof this.eventData.batches === 'string') {
-        this.eventData.batches = JSON.parse(this.eventData.batches)
-      }
-      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
-        this.batchId = this.eventData.batches[0].batchId || ''
-        this.navigateToSamePagewithBatchId(this.batchId)
-      }
-    }
+    this.loadEnrolledEventData()
     this.kparray = (this.route.parent && this.route.parent.snapshot.data.pageData.data.karmaPoints) || []
     if (this.eventData) {
 
@@ -121,6 +105,11 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
       }
     }
+  }
+
+  ngOnChanges() {
+    this.loadEnrolledEventData()
+    // console.log(this.enrolledEvent)
   }
 
   customDateFormat(date: any, time: any) {
@@ -278,6 +267,24 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
                                        {
       module: WsEvents.EnumTelemetrymodules.EVENTS,
     })
-    this.eventEnrollService.eventEnrollEvent.next(true)
+    this.eventSvc.eventEnrollEvent.next(true)
+  }
+
+  loadEnrolledEventData() {
+    this.isEnrolled = this.enrolledEvent ? true : false
+    if (this.enrolledEvent && this.enrolledEvent.batchDetails) {
+      if(Array.isArray(this.enrolledEvent.batchDetails) && this.enrolledEvent.batchDetails.length > 0){
+        this.batchId = this.enrolledEvent.batchDetails[0].batchId || ''
+        this.navigateToSamePagewithBatchId(this.batchId)
+      }
+    } else {
+      if(this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
+      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+        this.batchId = this.eventData.batches[0].batchId || ''
+        this.navigateToSamePagewithBatchId(this.batchId)
+      }
+    }
   }
 }
