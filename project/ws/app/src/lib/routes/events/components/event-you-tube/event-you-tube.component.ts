@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-// import videoJs from 'video.js'
-import 'videojs-youtube'
+import videoJs from 'video.js'
+import  'videojs-youtube'
 // videoJsInitializer
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
 import { NsContent } from '@sunbird-cb/utils-v2'
+import { EventEnrollService } from './../../services/event-enroll.service'
 // interface IYTOptions extends videoJs.PlayerOptions {
 //   youtube: {
 //     ytControls: 0 | 1 | 2
@@ -47,11 +48,16 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
   @Input() eventData: any
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
-  constructor(private route: ActivatedRoute) {
+  private player: videoJs.Player | null = null
+  private dispose: (() => void) | null = null
+  constructor(private route: ActivatedRoute, private eventEnrollService: EventEnrollService) {
   }
 
   ngOnInit(): void {
+    console.log('eventData',this.eventEnrollService.eventData)
+    this.eventData = this.eventEnrollService.eventData
     this.route.params.subscribe(params => {
+      console.log('params', params)
       this.videoId = params.videoId
 
       // if (this.fetchNewData) {
@@ -119,6 +125,29 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
       //       .catch()
       //   }
       // }
+      let dataobj:any = JSON.parse(data.data)
+      let completionPercentage:any = (dataobj.progress/data.dateAccessed)*100
+      let req  = {
+        "userId": '',
+        "events": [
+            {
+                "eventId": this.eventData.identifier,
+                "batchId": '',
+                "status": completionPercentage > 50 ? 2 : 1,
+                "lastAccessTime": data.dateAccessed, 
+                "progressdetails": {
+                    "max_size": this.eventData.duration, 
+                    "current": [
+                      dataobj.progress
+                    ],
+                    "timeSpent": "",
+                    "mimeType": "application/html"
+                },
+                "completionPercentage": completionPercentage
+            }
+        ]
+    }
+      this.eventEnrollService.saveEventProgressUpdate(req).toPromise().catch()
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       /* tslint:disable */
@@ -129,7 +158,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
       //     .realTimeProgressUpdate(identifier, data)
       // }
     }
-    const initObj = youtubeInitializer(
+    let initObj = youtubeInitializer(
       this.youtubeTag.nativeElement,
       this.videoId,
       dispatcher,
@@ -137,14 +166,27 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
       fireRProgress,
       {}, // passThrough Data,
       '',
-      false, // enable telemetry,
+      true, // enable telemetry,
       {}, // widget data
       NsContent.EMimeTypes.YOUTUBE, // type
       '600px', // height
     )
+    this.dispose = initObj.dispose
+    // this.player = new (<any>window).YT.Player
     /* tslint:disable */
-    console.log('initObj', initObj)
+    console.log('initObj', this.dispose)
     /* tslint:enable */
+  }
+
+  ngOnDestroy() {
+    console.log(this.player)
+    if(this.player) {
+      this.player.dispose() 
+    }
+    if (this.dispose) {
+      this.dispose()
+    }
+    
   }
 
 }

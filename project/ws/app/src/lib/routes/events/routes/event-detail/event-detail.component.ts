@@ -83,6 +83,8 @@ export class EventDetailComponent implements OnInit {
     })
     this.eventSvc.getEventData(this.eventId).subscribe((data: any) => {
       this.eventData = data.result.event
+      this.eventEnrollService.eventData = data.result.event
+      console.log(this.eventEnrollService)
       const creatordata = this.eventData.creatorDetails
       const str = creatordata.replace(/\\/g, '')
       if (str.length > 0) {
