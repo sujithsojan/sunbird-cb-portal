@@ -1,7 +1,9 @@
-import { Component, ElementRef, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core'
+import { Component, ElementRef, OnInit, Input, ViewChild, AfterViewInit, OnDestroy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import videoJs from 'video.js'
+/* tslint:disable */
 import  'videojs-youtube'
+/* tslint:enable */
 // videoJsInitializer
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
 import { NsContent } from '@sunbird-cb/utils-v2'
@@ -44,7 +46,7 @@ import { EventEnrollService } from './../../services/event-enroll.service'
   templateUrl: './event-you-tube.component.html',
   styleUrls: ['./event-you-tube.component.scss'],
 })
-export class EventYouTubeComponent implements OnInit, AfterViewInit {
+export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() eventData: any
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
@@ -54,10 +56,11 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log('eventData',this.eventEnrollService.eventData)
+    /* tslint:disable */
+    console.log('eventData', this.eventEnrollService.eventData)
+    /* tslint:enabel */
     this.eventData = this.eventEnrollService.eventData
     this.route.params.subscribe(params => {
-      console.log('params', params)
       this.videoId = params.videoId
 
       // if (this.fetchNewData) {
@@ -125,27 +128,27 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
       //       .catch()
       //   }
       // }
-      let dataobj:any = JSON.parse(data.data)
-      let completionPercentage:any = (dataobj.progress/data.dateAccessed)*100
-      let req  = {
-        "userId": '',
-        "events": [
+      const dataobj: any = JSON.parse(data.data)
+      const completionPercentage: any = (dataobj.progress / data.dateAccessed) * 100
+      const req  = {
+        'userId': '',
+        'events': [
             {
-                "eventId": this.eventData.identifier,
-                "batchId": '',
-                "status": completionPercentage > 50 ? 2 : 1,
-                "lastAccessTime": data.dateAccessed, 
-                "progressdetails": {
-                    "max_size": this.eventData.duration, 
-                    "current": [
-                      dataobj.progress
+                'eventId': this.eventData.identifier,
+                'batchId': '',
+                'status': completionPercentage > 50 ? 2 : 1,
+                'lastAccessTime': data.dateAccessed,
+                'progressdetails': {
+                    'max_size': this.eventData.duration,
+                    'current': [
+                      dataobj.progress,
                     ],
-                    "timeSpent": "",
-                    "mimeType": "application/html"
+                    'timeSpent': '',
+                    'mimeType': 'application/html',
                 },
-                "completionPercentage": completionPercentage
-            }
-        ]
+                'completionPercentage': completionPercentage,
+            },
+        ],
     }
       this.eventEnrollService.saveEventProgressUpdate(req).toPromise().catch()
     }
@@ -158,7 +161,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
       //     .realTimeProgressUpdate(identifier, data)
       // }
     }
-    let initObj = youtubeInitializer(
+    const initObj = youtubeInitializer(
       this.youtubeTag.nativeElement,
       this.videoId,
       dispatcher,
@@ -179,14 +182,16 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
+    /* tslint:disable */
     console.log(this.player)
-    if(this.player) {
-      this.player.dispose() 
+    /* tslint:enable */
+    if (this.player) {
+      this.player.dispose()
     }
     if (this.dispose) {
       this.dispose()
     }
-    
+
   }
 
 }

@@ -385,8 +385,8 @@ export function youtubeInitializer(
       modestbranding: 0,
       showInfo: 0,
       fs: 0,
-      rel:0,
-      start: 120
+      rel: 0,
+      start: 120,
     },
     events: {
       onStateChange: (event: any) => {
@@ -406,21 +406,24 @@ export function youtubeInitializer(
   let currTime = 0
   let timespentTimer = 0
   const onPlayerStateChange = (event: any) => {
+    /* tslint:disable */
     console.log('event', event, (<any>window).YT.PlayerState.PLAYING)
+    /* tslint:enable */
     switch (event.data) {
       case (<any>window).YT.PlayerState.PLAYING:
         if (!loaded) {
-          
+
           eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
-          console.log('in')
-          heartBeatSubscription = interval(1 * 60000).subscribe(_ => {
+          heartBeatSubscription = interval(2 * 60000).subscribe(_ => {
+            /* tslint:disable */
             console.log('heartbeat')
+            /* tslint:enable */
             passThroughData['timeSpent'] = timespentTimer
             eventDispatcher(WsEvents.EnumTelemetrySubType.HeartBeat, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
-          })  
+          })
           loaded = true
         }
-        currentTimeInterval = interval(500).subscribe(_ => {          
+        currentTimeInterval = interval(500).subscribe(_ => {
           if (player.getCurrentTime() >= player.getDuration() * 5 / 100 && player.getCurrentTime() < player.getDuration() * 95 / 100
             && !readyToRaise) {
             readyToRaise = true
@@ -429,10 +432,10 @@ export function youtubeInitializer(
             fireRealTimeProgress(mimeType, widgetData, fireRProgress, player.getCurrentTime(), player.getDuration())
             readyToRaise = false
           }
-          currTime = player.getCurrentTime()          
+          currTime = player.getCurrentTime()
         })
 
-        timeSpentInterval = interval(1000).subscribe(()=>{
+        timeSpentInterval = interval(1000).subscribe(() => {
           timespentTimer = timespentTimer + 1
         })
         break
@@ -462,7 +465,7 @@ export function youtubeInitializer(
     if (heartBeatSubscription) {
       heartBeatSubscription.unsubscribe()
     }
-    if(timeSpentInterval) {
+    if (timeSpentInterval) {
       timeSpentInterval.unsubscribe()
     }
     if (currentTimeInterval) {
