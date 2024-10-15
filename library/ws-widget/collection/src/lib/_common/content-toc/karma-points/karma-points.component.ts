@@ -194,7 +194,6 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
 
     nudgeData.sliderData = []
     nudgeData.sliderData = this.kpArray
-    debugger
     this.karmaPointsSlider = nudgeData
   }
 
