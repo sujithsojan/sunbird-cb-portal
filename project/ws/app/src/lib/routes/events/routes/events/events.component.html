@@ -110,6 +110,18 @@
                 </section>
             </ng-template>
         </mat-tab>
+        <mat-tab label="{{ 'event.karmayogiSaptah' | translate }}" *ngIf="karmayogiSaptahEvents?.length">
+            <ng-template matTabContent>
+                <section id="content">
+                    <div class="w-full margin-top-xl margin-bottom-m">
+                        <ng-container *ngFor="let event of karmayogiSaptahEvents | pipeFilterV2:'eventName': searchInput.value">
+                            <ws-app-events-card class="w-fix" [eventData]="event" *ngIf="event !== -1"></ws-app-events-card>
+                            <h4 class="w-full text-center ws-mat-black60-text" *ngIf="event === -1">{{ 'msg.noSearchResultFound' | translate }}</h4>
+                        </ng-container>
+                    </div>
+                </section>
+            </ng-template>
+        </mat-tab>
         <mat-tab label="{{ 'event.mdoEvents' | translate }}" *ngIf="featuredEvents?.length">
             <ng-template matTabContent>
                 <section id="content">
@@ -133,19 +145,7 @@
                     </div>
                 </section>
             </ng-template>
-        </mat-tab>
-        <mat-tab label="{{ 'event.karmayogiSaptah' | translate }}" *ngIf="karmayogiSaptahEvents?.length">
-            <ng-template matTabContent>
-                <section id="content">
-                    <div class="w-full margin-top-xl margin-bottom-m">
-                        <ng-container *ngFor="let event of karmayogiSaptahEvents | pipeFilterV2:'eventName': searchInput.value">
-                            <ws-app-events-card class="w-fix" [eventData]="event" *ngIf="event !== -1"></ws-app-events-card>
-                            <h4 class="w-full text-center ws-mat-black60-text" *ngIf="event === -1">{{ 'msg.noSearchResultFound' | translate }}</h4>
-                        </ng-container>
-                    </div>
-                </section>
-            </ng-template>
-        </mat-tab>
+        </mat-tab>       
         
     </mat-tab-group>
 </div>

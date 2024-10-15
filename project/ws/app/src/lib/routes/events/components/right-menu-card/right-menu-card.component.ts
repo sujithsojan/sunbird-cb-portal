@@ -8,7 +8,6 @@ import { EventService } from '../../services/events.service'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
-import { EventEnrollService } from './../../services/event-enroll.service'
 @Component({
   selector: 'app-right-menu-card',
   templateUrl: './right-menu-card.component.html',
@@ -19,6 +18,9 @@ import { EventEnrollService } from './../../services/event-enroll.service'
 })
 export class RightMenuCardComponent implements OnInit, OnDestroy {
   @Input() eventData: any
+  @Input() isenrollFlow: any
+  @Input() enrollFlowItems: any
+  @Input() enrolledEvent: any
   startTime: any
   endTime: any
   lastUpdate: any
@@ -28,9 +30,11 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   isSpvEvent = false
   youTubeLinkFlag = false
   kparray: any = []
-  enrollFlowItems = ['Karmayogi Saptah']
   enrollBtnLoading = false
   videoId = ''
+  eventEnrollmentList: any
+  isEnrolled = false
+  batchId = ''
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
@@ -42,8 +46,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     private events: EventServiceGlobal,
     private translate: TranslateService,
     private router: Router,
-    private eventSvc: EventService,
-    private eventEnrollService: EventEnrollService
+    private eventSvc: EventService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -52,8 +55,8 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
+    this.loadEnrolledEventData()
     this.kparray = (this.route.parent && this.route.parent.snapshot.data.pageData.data.karmaPoints) || []
-    // this.completedPercent = 86
     if (this.eventData) {
 
       this.startTime = this.eventData.startTime.split('+')[0].replace(/(.*)\D\d+/, '$1')
@@ -102,6 +105,11 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
 
       }
     }
+  }
+
+  ngOnChanges() {
+    this.loadEnrolledEventData()
+    // console.log(this.enrolledEvent)
   }
 
   customDateFormat(date: any, time: any) {
@@ -199,40 +207,49 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     return this.eventData.registrationLink
   }
 
-  get isenrollFlow() {
-    return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
-  }
-
   navigateToPLayer() {
     if (this.isenrollFlow) {
       this.router.navigate([`app/event-hub/player/${this.eventData.identifier}/youtube/${this.videoId}`])
     }
   }
 
+  navigateToSamePagewithBatchId(batchId: string) {
+    if(batchId) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { batchId: batchId },
+          queryParamsHandling: 'merge',
+        })
+    }
+  }
+
   enrolltoEvent() {
-    if (this.eventData.identifier && this.configSvc && this.configSvc.userProfile) {
+    if (this.eventData.identifier && this.configSvc && this.configSvc.userProfile && this.batchId) {
       this.enrollBtnLoading = true
       // const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
       const req = {
         request: {
           userId: this.configSvc.userProfile.userId || '',
           eventId: this.eventData.identifier || '',
-          batchId: '',
+          batchId: this.batchId,
         },
       }
       // console.log('req ::', req)
 
       this.eventSvc.enrollEvent(req).subscribe(
-        () => {
-          // this.batchData = {
-          //   content: data.content,
-          //   enrolled: true,
-          // }
-          const batchId = ''
-          if (batchId) {
+        (res) => {
+          if(res.responseCode === 'OK' || res.result.response === 'SUCCESS') {
+
+          }
+          if (this.batchId) {
             // this.navigateToPlayerPage(batchId)
+            this.isEnrolled = true
+            this.navigateToSamePagewithBatchId(this.batchId)
           }
           this.enrollBtnLoading = false
+
         },
         (_error: any) => {
           this.enrollBtnLoading = false
@@ -250,6 +267,24 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
                                        {
       module: WsEvents.EnumTelemetrymodules.EVENTS,
     })
-    this.eventEnrollService.eventEnrollEvent.next(true)
+    this.eventSvc.eventEnrollEvent.next(true)
+  }
+
+  loadEnrolledEventData() {
+    this.isEnrolled = this.enrolledEvent ? true : false
+    if (this.enrolledEvent && this.enrolledEvent.batchDetails) {
+      if(Array.isArray(this.enrolledEvent.batchDetails) && this.enrolledEvent.batchDetails.length > 0){
+        this.batchId = this.enrolledEvent.batchDetails[0].batchId || ''
+        this.navigateToSamePagewithBatchId(this.batchId)
+      }
+    } else {
+      if(this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
+      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+        this.batchId = this.eventData.batches[0].batchId || ''
+        this.navigateToSamePagewithBatchId(this.batchId)
+      }
+    }
   }
 }

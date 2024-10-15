@@ -131,10 +131,13 @@ button.ws-mat-primary-background {
   padding: 16px;
 }
 
+.action-button a {
+  color: #fff;
+}
 
 .action-button {
   opacity: 1;
-  color: #fff;
+  color: #fff !important;
   font-family: Lato-Bold, sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -147,4 +150,10 @@ button.ws-mat-primary-background {
   border: none;
   width: auto;
   cursor: pointer;
+  background-color: #1b4ca1 !important;
+}
+
+.event-completed {
+  border: 1px solid rgb(27, 76, 161);
+  padding:8px;
 }

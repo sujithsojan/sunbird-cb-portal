@@ -9,8 +9,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
-import { EventEnrollService } from './../../services/event-enroll.service'
+import { MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 /* tslint:enable */
 
 @Component({
@@ -31,7 +30,7 @@ export class EventDetailComponent implements OnInit {
   pastEvent = false
   // fetchNewData = false
   showYouTubeVideoFlag = false
-  id = 'mUoa2rJr9G8'
+  enrollFlowItems = ['Karmayogi Saptah']
   // playerVars = {
   //   cc_lang_pref: 'en',
   // };
@@ -39,13 +38,15 @@ export class EventDetailComponent implements OnInit {
   public ytEvent: any
   version: any = '...'
   skeletonLoader = false
+  enrolledEvent: any
+  batchId: string = ''
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
-    private eventEnrollService: EventEnrollService
+    private configSvc: ConfigurationsService
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
   ) {
@@ -64,17 +65,14 @@ export class EventDetailComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  get isenrollFlow() {
+    if(this.eventData) {
+      return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+    }
+    
+  }
 
-    this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
-      if (data) {
-        if (this.eventData && this.eventData.registrationLink) {
-          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()
-          this.id = videoId
-        }
-        this.showYouTubeVideoFlag = true
-      }
-    })
+  ngOnInit() {
     this.route.params.subscribe(params => {
       this.eventId = params.eventId
       // if (this.fetchNewData) {
@@ -84,9 +82,15 @@ export class EventDetailComponent implements OnInit {
     })
     this.eventSvc.getEventData(this.eventId).subscribe((data: any) => {
       this.eventData = data.result.event
-      this.eventEnrollService.eventData = data.result.event
+      this.eventSvc.eventData = data.result.event
+      if(this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
+      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+        this.batchId = this.eventData.batches[0].batchId || ''
+      }
       /* tslint:disable */
-      console.log(this.eventEnrollService)
+      console.log(this.eventSvc)
       /* tslint:enable */
       const creatordata = this.eventData.creatorDetails
       const str = creatordata.replace(/\\/g, '')
@@ -113,7 +117,26 @@ export class EventDetailComponent implements OnInit {
       if (eventDate < today && eventendDate < today) {
         this.pastEvent = true
       }
+      if(this.isenrollFlow) {
+        this.getUserIsEnrolled()
+      }
     })
+  }
+
+  getUserIsEnrolled() {
+    let userId = ''
+    if (this.configSvc.userProfile) {
+      userId = this.configSvc.userProfile.userId || ''
+    }
+    if(this.eventData && userId) {
+      this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.batchId).subscribe((data: any) => {
+        console.log('data --- ', data)
+        if(data && data.result && data.result.events && data.result.events.length > 0 ) {
+          this.enrolledEvent = data.result.events.find( (d:any ) => d.eventid === this.eventData.identifier)
+          this.enrolledEvent = {...this.enrolledEvent}
+        }
+      })
+    }
   }
 
   customDateFormat(date: any, time: any) {

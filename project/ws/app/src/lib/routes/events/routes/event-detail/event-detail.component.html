@@ -103,12 +103,12 @@
                 aria-hidden="true">video_library</mat-icon>
               <div class="text-xs font-bold text-white leading-3 ng-star-inserted">{{eventData?.resourceType}}</div>
             </div>
-            <div class="ml-2" *ngIf="eventData?.resourceType === 'Webinar'">
+            <!-- <div class="ml-2" *ngIf="eventData?.resourceType === 'Webinar'">
               <button mat-raised-button type="button"
                 class="ws-mat-primary-background"><mat-icon>play_circle_filled</mat-icon> {{ 'event.typoWebinar' |
                 translate }}</button>
-            </div>
-            <div class="ml-2" *ngIf="eventData?.resourceType === 'Karmayogi Saptah' && !currentEvent">
+            </div> -->
+            <div class="ml-2" *ngIf="eventData?.resourceType === 'Karmayogi Saptah' && currentEvent">
               <button mat-raised-button type="button"
                 class="ws-mat-red-background"><mat-icon>play_circle_filled</mat-icon> Live </button>
             </div>
@@ -160,7 +160,7 @@
 <div class="fixed-width flex flex-wrap section-container">
 
   <!-- main content -->
-  <div class="meta-section">
+  <div class="meta-section mt-4">
 
     <!-- <div class="flex flex-1 flex-column mt-5">
       <div class="flex flex-1 filter">
@@ -174,7 +174,7 @@
   </div> -->
     <ng-container>
       <!-- *ngIf="(content?.completionStatus === 2 || content?.certificateObj?.certId) && !fromMarketPlace" -->
-      <ng-container>
+      <ng-container *ngIf="isenrollFlow && isEnrolled">
         <div class="certificate-container" *ngIf="!skeletonLoader">
           <div class="flex flex-row earned-certificate-container">
             <div class="ribbon"></div>
@@ -244,6 +244,7 @@
 
   <!-- right menu -->
   <div class="info-section right margin-top-xl margin-left-xl margin-bottom-xl">
-    <app-right-menu-card [eventData]="eventData" *ngIf="eventData"></app-right-menu-card>
+    <app-right-menu-card [eventData]="eventData" [enrollFlowItems]="enrollFlowItems" [isenrollFlow]="isenrollFlow" 
+    [enrolledEvent]="enrolledEvent"  *ngIf="eventData"></app-right-menu-card>
   </div>
 </div>
