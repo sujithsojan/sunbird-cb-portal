@@ -38,6 +38,7 @@ export class EventDetailComponent implements OnInit {
   // private player: YT.Player | any
   public ytEvent: any
   version: any = '...'
+  skeletonLoader = false
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,

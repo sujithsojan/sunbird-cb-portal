@@ -130,27 +130,30 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       // }
       const dataobj: any = JSON.parse(data.data)
       const completionPercentage: any = (dataobj.progress / data.dateAccessed) * 100
-      const req  = {
-        'userId': '',
-        'events': [
-            {
-                'eventId': this.eventData.identifier,
-                'batchId': '',
-                'status': completionPercentage > 50 ? 2 : 1,
-                'lastAccessTime': data.dateAccessed,
-                'progressdetails': {
-                    'max_size': this.eventData.duration,
-                    'current': [
-                      dataobj.progress,
-                    ],
-                    'timeSpent': '',
-                    'mimeType': 'application/html',
-                },
-                'completionPercentage': completionPercentage,
-            },
-        ],
-    }
-      this.eventEnrollService.saveEventProgressUpdate(req).toPromise().catch()
+      if(this.eventData) {
+        const req  = {
+          'userId': '',
+          'events': [
+              {
+                  'eventId': this.eventData.identifier,
+                  'batchId': '',
+                  'status': completionPercentage > 50 ? 2 : 1,
+                  'lastAccessTime': data.dateAccessed,
+                  'progressdetails': {
+                      'max_size': this.eventData.duration,
+                      'current': [
+                        dataobj.progress,
+                      ],
+                      'timeSpent': '',
+                      'mimeType': 'application/html',
+                  },
+                  'completionPercentage': completionPercentage,
+              },
+          ],
+      }
+        this.eventEnrollService.saveEventProgressUpdate(req).toPromise().catch()
+      }
+     
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       /* tslint:disable */
