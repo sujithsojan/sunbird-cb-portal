@@ -130,7 +130,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       // }
       const dataobj: any = JSON.parse(data.data)
       const completionPercentage: any = (dataobj.progress / data.dateAccessed) * 100
-      if(this.eventData) {
+      if (this.eventData) {
         const req  = {
           'userId': '',
           'events': [
@@ -153,7 +153,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
         this.eventService.saveEventProgressUpdate(req).toPromise().catch()
       }
-     
+
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       /* tslint:disable */

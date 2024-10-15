@@ -18,9 +18,11 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         // Hide loading indicator
+        /* tslint:disable */
         console.log(event)
-        let eventUrl = event.url.split('/').pop()
-        if(eventUrl && eventUrl.includes('do_')) {
+        /* tslint:enable */
+        const eventUrl = event.url.split('/').pop()
+        if (eventUrl && eventUrl.includes('do_')) {
           this.detailPageFlag = true
         } else {
           this.detailPageFlag = false

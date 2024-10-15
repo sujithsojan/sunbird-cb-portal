@@ -39,7 +39,7 @@ export class EventDetailComponent implements OnInit {
   version: any = '...'
   skeletonLoader = false
   enrolledEvent: any
-  batchId: string = ''
+  batchId = ''
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -66,10 +66,10 @@ export class EventDetailComponent implements OnInit {
   }
 
   get isenrollFlow() {
-    if(this.eventData) {
+    if (this.eventData) {
       return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
     }
-    
+
   }
 
   ngOnInit() {
@@ -83,10 +83,10 @@ export class EventDetailComponent implements OnInit {
     this.eventSvc.getEventData(this.eventId).subscribe((data: any) => {
       this.eventData = data.result.event
       this.eventSvc.eventData = data.result.event
-      if(this.eventData && typeof this.eventData.batches === 'string') {
+      if (this.eventData && typeof this.eventData.batches === 'string') {
         this.eventData.batches = JSON.parse(this.eventData.batches)
       }
-      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+      if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
         this.batchId = this.eventData.batches[0].batchId || ''
       }
       /* tslint:disable */
@@ -117,7 +117,7 @@ export class EventDetailComponent implements OnInit {
       if (eventDate < today && eventendDate < today) {
         this.pastEvent = true
       }
-      if(this.isenrollFlow) {
+      if (this.isenrollFlow) {
         this.getUserIsEnrolled()
       }
     })
@@ -128,12 +128,13 @@ export class EventDetailComponent implements OnInit {
     if (this.configSvc.userProfile) {
       userId = this.configSvc.userProfile.userId || ''
     }
-    if(this.eventData && userId) {
+    if (this.eventData && userId) {
       this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.batchId).subscribe((data: any) => {
+        /* tslint:disable */
         console.log('data --- ', data)
-        if(data && data.result && data.result.events && data.result.events.length > 0 ) {
-          this.enrolledEvent = data.result.events.find( (d:any ) => d.eventid === this.eventData.identifier)
-          this.enrolledEvent = {...this.enrolledEvent}
+        if (data && data.result && data.result.events && data.result.events.length > 0) {
+          this.enrolledEvent = data.result.events.find((d: any) => d.eventid === this.eventData.identifier)
+          this.enrolledEvent = { ...this.enrolledEvent }
         }
       })
     }
