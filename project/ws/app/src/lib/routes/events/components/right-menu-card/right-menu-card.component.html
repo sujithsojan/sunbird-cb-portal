@@ -2,10 +2,10 @@
   <mat-card class="right-menu-card">   
     <mat-card-content role="link" tabindex="0">
       <!-- new enroll flow -->
-      <ng-container *ngIf="isenrollFlow && (currentEvent || currentEvent)">
+      <ng-container *ngIf="isenrollFlow">
         <ng-container *ngIf="!enrollBtnLoading">
           <!--Not enrolled -->
-          <ng-container>
+          <ng-container *ngIf="!isEnrolled && (futureEvent || currentEvent)">
             <div class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all">
               <a mat-button class="flex-1" target="_blank" (click)="enrolltoEvent()">
                 <span i18n>{{ 'eventDetailsRightCard.enroll' | translate }}</span>
@@ -13,7 +13,7 @@
             </div>
           </ng-container>
           <!--enrolled -->
-          <ng-container>
+          <ng-container *ngIf="isEnrolled">
             <div class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="pastEvent">
               <p mat-button class="flex-1 margin-top-xs margin-bottom-xs" *ngIf="isSpvEvent">
                 <a class="flex-1"  [href]="getLink()" target="_blank" (click)="raiseTelemetry('view-recording')">
@@ -66,6 +66,20 @@
       </ng-container>
     </mat-card-content>
     <mat-card-content>
+      <div class="progressDiv mb-5" *ngIf="isEnrolled && enrolledEvent && enrolledEvent.completionPercentage">
+        <div class="flex-1">
+          <div class="flex flex-col gap-2">
+            <div class="flex flex-row gap-4 text-sm">
+              <div class="flex-1 text-xs">{{ 'apptocsinglepage.overallProgress' | translate }}</div>
+              <div class="text-xs" *ngIf="enrolledEvent?.completionPercentage > 0"> {{ enrolledEvent?.completionPercentage }} %</div>
+            </div>
+            <ws-widget-content-progress *ngIf="enrolledEvent?.eventid" [forPreview]="forPreview"
+              [contentId]="enrolledEvent?.eventid" [progress]="enrolledEvent?.completionPercentage" [progressType]="'percentage'"
+              [customClassName]="'content-progress'" >
+            </ws-widget-content-progress>
+          </div>
+        </div>
+      </div>
       <div class="timediv">
         <span class="mat-subheading-2" role="link" tabindex="0">{{eventData?.startDate | date }}</span>
         <div class="flex flex-wrap" role="link" tabindex="0">
@@ -75,7 +89,7 @@
         </div>
       </div>
       <div class="margin-top-m karma-points-div">
-        <ws-widget-karma-points [data]="kparray"></ws-widget-karma-points>
+        <ws-widget-karma-points [data]="kparray" [condition]="{event: eventData, isEnrolled: isEnrolled, enrolledEvent: enrolledEvent }"></ws-widget-karma-points>
       </div>
       <div class="margin-top-m">
         <span class="mat-subheading-2 ws-mat-accent-text" role="link" tabindex="0">{{ 'eventDetailsRightCard.eventType' | translate }}</span>

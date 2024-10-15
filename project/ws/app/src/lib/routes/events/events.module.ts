@@ -23,7 +23,7 @@ import { EventsComponent } from './routes/events/events.component'
 import { LoaderService } from '@ws/author/src/public-api'
 import { InitResolver } from '@ws/author/src/lib/services/init-resolve.service'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
-import { BtnPageBackModule, BtnPageBackNavModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
+import { BtnPageBackModule, BtnPageBackNavModule, ContentProgressModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
 import { AvatarPhotoModule } from '@sunbird-cb/collection/src/lib/_common/avatar-photo/avatar-photo.module'
 import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule, HorizontalScrollerV2Module,
   PipeFilterModule,
@@ -97,6 +97,7 @@ import { EventYouTubeComponent } from './components/event-you-tube/event-you-tub
     KarmaPointsModule,
     BtnPageBackNavModule,
     SkeletonLoaderModule,
+    ContentProgressModule,
   ],
   providers: [
     LoaderService,
