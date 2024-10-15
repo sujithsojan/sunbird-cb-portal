@@ -85,6 +85,7 @@
 
   <!-- right menu -->
   <div class="info-section right margin-top-xl margin-left-xl margin-bottom-xl">
-    <app-right-menu-card [eventData]="eventData" *ngIf="eventData"></app-right-menu-card>
+    <app-right-menu-card [eventData]="eventData" [enrollFlowItems]="enrollFlowItems" [isenrollFlow]="isenrollFlow" 
+    [enrolledEvent]="enrolledEvent"  *ngIf="eventData"></app-right-menu-card>
   </div>
 </div>

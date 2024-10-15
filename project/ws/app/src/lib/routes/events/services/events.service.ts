@@ -6,9 +6,11 @@ import { environment } from 'src/environments/environment'
 const API_END_POINTS = {
   EVENT_READ: `/apis/proxies/v8/event/v4/read`,
   GET_EVENTS: '/apis/proxies/v8/sunbirdigot/search',
-  ENROLL_EVENT: '/apis/proxies/v8/event/v1/enrol',
+  ENROLL_EVENT: '/apis/proxies/v8/event/batch/enroll',
   CONTENT_STATE_UPDATE: (eventId: string) => `/apis/proxies/v8/event-progres/${eventId}`,
-  EVENT_ENROLL_LIST: ``,
+  ALL_EVENT_ENROLL_LIST: (userId: string) => `/apis/proxies/v8/v1/user/events/list/${userId}`,
+  IS_ENROLLED: (userId: string, eventId: string, batchId?: string) => 
+    `/apis/proxies/v8/user/event/read/${userId}?eventId=${eventId}&batchId=${batchId}`
 }
 
 @Injectable({
@@ -31,8 +33,12 @@ export class EventService {
     return `${environment.contentHost}/${environment.contentBucket}/content${mainUrl}`
   }
 
-  eventEnrollmentList(userId: string): Observable<any> {
-    return this.http.get<any>(`${API_END_POINTS.EVENT_ENROLL_LIST}/${userId}`)
+  AllEventEnrollList(userId: string): Observable<any> {
+    return this.http.get<any>(`${API_END_POINTS.ALL_EVENT_ENROLL_LIST(userId)}`)
+  }
+
+  getIsEnrolled(userId: string, eventId: string, batchId?: string): Observable<any> {
+    return this.http.get<any>(`${API_END_POINTS.IS_ENROLLED(userId, eventId, batchId)}`)
   }
 
   enrollEvent(req: any) {

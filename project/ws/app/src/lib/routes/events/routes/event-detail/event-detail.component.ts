@@ -9,7 +9,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { EventEnrollService } from './../../services/event-enroll.service'
 /* tslint:enable */
 
@@ -31,20 +31,22 @@ export class EventDetailComponent implements OnInit {
   pastEvent = false
   // fetchNewData = false
   showYouTubeVideoFlag = false
-  id = 'mUoa2rJr9G8'
+  enrollFlowItems = ['Karmayogi Saptah']
   // playerVars = {
   //   cc_lang_pref: 'en',
   // };
   // private player: YT.Player | any
   public ytEvent: any
   version: any = '...'
+  enrolledEvent: any
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
-    private eventEnrollService: EventEnrollService
+    private eventEnrollService: EventEnrollService,
+    private configSvc: ConfigurationsService
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
   ) {
@@ -63,17 +65,11 @@ export class EventDetailComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  get isenrollFlow() {
+    return this.eventData.resourceType && this.enrollFlowItems.includes(this.eventData.resourceType)
+  }
 
-    this.eventEnrollService.eventEnrollEvent.subscribe((data: any) => {
-      if (data) {
-        if (this.eventData && this.eventData.registrationLink) {
-          const videoId = this.eventData.registrationLink.split('?')[0].split('/').pop()
-          this.id = videoId
-        }
-        this.showYouTubeVideoFlag = true
-      }
-    })
+  ngOnInit() {
     this.route.params.subscribe(params => {
       this.eventId = params.eventId
       // if (this.fetchNewData) {
@@ -112,7 +108,25 @@ export class EventDetailComponent implements OnInit {
       if (eventDate < today && eventendDate < today) {
         this.pastEvent = true
       }
+      if(this.isenrollFlow) {
+        this.getUserIsEnrolled()
+      }
     })
+  }
+
+  getUserIsEnrolled() {
+    let userId = ''
+    if (this.configSvc.userProfile) {
+      userId = this.configSvc.userProfile.userId || ''
+    }
+    if(this.eventData && userId) {
+      this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.eventData.batchId).subscribe((data: any) => {
+        console.log('data --- ', data)
+        if(data && data.result && data.result.events && data.result.events.length > 0 ) {
+          this.enrolledEvent = data.result.events.find( (d:any ) => d.eventid === this.eventData.identifier)
+        }
+      })
+    }
   }
 
   customDateFormat(date: any, time: any) {
