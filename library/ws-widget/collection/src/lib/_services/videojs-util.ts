@@ -384,6 +384,9 @@ export function youtubeInitializer(
       autoplay: 0,
       modestbranding: 0,
       showInfo: 0,
+      fs: 0,
+      rel: 0,
+      start: 120,
     },
     events: {
       onStateChange: (event: any) => {
@@ -396,16 +399,26 @@ export function youtubeInitializer(
     ? generateEventDispatcherHelper(passThroughData, dispatcher, widgetSubType)
     : () => undefined
   let heartBeatSubscription: Subscription
+  let timeSpentInterval: Subscription
   let currentTimeInterval: Subscription
   let loaded = false
   let readyToRaise = false
   let currTime = 0
+  let timespentTimer = 0
   const onPlayerStateChange = (event: any) => {
+    /* tslint:disable */
+    console.log('event', event, (<any>window).YT.PlayerState.PLAYING)
+    /* tslint:enable */
     switch (event.data) {
       case (<any>window).YT.PlayerState.PLAYING:
         if (!loaded) {
+
           eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
           heartBeatSubscription = interval(2 * 60000).subscribe(_ => {
+            /* tslint:disable */
+            console.log('heartbeat')
+            /* tslint:enable */
+            passThroughData['timeSpent'] = timespentTimer
             eventDispatcher(WsEvents.EnumTelemetrySubType.HeartBeat, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
           })
           loaded = true
@@ -421,6 +434,10 @@ export function youtubeInitializer(
           }
           currTime = player.getCurrentTime()
         })
+
+        timeSpentInterval = interval(1000).subscribe(() => {
+          timespentTimer = timespentTimer + 1
+        })
         break
       case (<any>window).YT.PlayerState.PAUSED:
         if (loaded) {
@@ -428,6 +445,7 @@ export function youtubeInitializer(
           loaded = false
           heartBeatSubscription.unsubscribe()
           currentTimeInterval.unsubscribe()
+          timeSpentInterval.unsubscribe()
         }
         currTime = player.getCurrentTime()
         break
@@ -437,6 +455,7 @@ export function youtubeInitializer(
           loaded = false
           heartBeatSubscription.unsubscribe()
           currentTimeInterval.unsubscribe()
+          timeSpentInterval.unsubscribe()
         }
         break
     }
@@ -445,6 +464,9 @@ export function youtubeInitializer(
     saveContinueLearning(widgetData, saveCLearning, currTime)
     if (heartBeatSubscription) {
       heartBeatSubscription.unsubscribe()
+    }
+    if (timeSpentInterval) {
+      timeSpentInterval.unsubscribe()
     }
     if (currentTimeInterval) {
       currentTimeInterval.unsubscribe()
