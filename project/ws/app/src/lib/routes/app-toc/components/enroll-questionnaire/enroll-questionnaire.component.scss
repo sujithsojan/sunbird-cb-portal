@@ -81,3 +81,7 @@
     width: 18px;
     height: 18px;
 }
+
+.save-button:disabled {
+    opacity: 0.6!important;
+}
