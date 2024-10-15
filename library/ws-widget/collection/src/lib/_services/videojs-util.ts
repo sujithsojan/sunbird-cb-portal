@@ -405,8 +405,8 @@ export function youtubeInitializer(
   let readyToRaise = false
   let currTime = 0
   let timespentTimer = 1
-  let lastAccessTime = 0
-  if(passThroughData['lastAccessTime'] === undefined) {
+  const lastAccessTime = 0
+  if (passThroughData['lastAccessTime'] === undefined) {
     passThroughData['lastAccessTime'] = 0
   }
   const onPlayerStateChange = (event: any) => {
@@ -438,18 +438,20 @@ export function youtubeInitializer(
             readyToRaise = false
           }
           currTime = player.getCurrentTime()
-          
-          
+
         })
+        /* tslint:disable */
         console.log(player.getCurrentTime(), passThroughData['lastAccessTime'], currTime)
-               
+        /* tslint:enable */
           timeSpentInterval = interval(1000).subscribe(() => {
-            if(player.getCurrentTime() > passThroughData['lastAccessTime']) {  
+            if (player.getCurrentTime() > passThroughData['lastAccessTime']) {
               timespentTimer = timespentTimer + 1
             }
-          }) 
+          })
+          /* tslint:disable */
         console.log('timespentTimer', timespentTimer)
-        
+        /* tslint:enable */
+
         break
       case (<any>window).YT.PlayerState.PAUSED:
         if (loaded) {
