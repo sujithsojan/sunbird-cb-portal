@@ -404,7 +404,11 @@ export function youtubeInitializer(
   let loaded = false
   let readyToRaise = false
   let currTime = 0
-  let timespentTimer = 0
+  let timespentTimer = 1
+  let lastAccessTime = 0
+  if(passThroughData['lastAccessTime'] === undefined) {
+    passThroughData['lastAccessTime'] = 0
+  }
   const onPlayerStateChange = (event: any) => {
     /* tslint:disable */
     console.log('event', event, (<any>window).YT.PlayerState.PLAYING)
@@ -414,10 +418,11 @@ export function youtubeInitializer(
         if (!loaded) {
 
           eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
-          heartBeatSubscription = interval(2 * 60000).subscribe(_ => {
+          heartBeatSubscription = interval(1 * 60000).subscribe(_ => {
             /* tslint:disable */
             console.log('heartbeat')
             /* tslint:enable */
+            passThroughData['lastAccessTime'] = currTime
             passThroughData['timeSpent'] = timespentTimer
             eventDispatcher(WsEvents.EnumTelemetrySubType.HeartBeat, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
           })
@@ -433,11 +438,18 @@ export function youtubeInitializer(
             readyToRaise = false
           }
           currTime = player.getCurrentTime()
+          
+          
         })
-
-        timeSpentInterval = interval(1000).subscribe(() => {
-          timespentTimer = timespentTimer + 1
-        })
+        console.log(player.getCurrentTime(), passThroughData['lastAccessTime'], currTime)
+               
+          timeSpentInterval = interval(1000).subscribe(() => {
+            if(player.getCurrentTime() > passThroughData['lastAccessTime']) {  
+              timespentTimer = timespentTimer + 1
+            }
+          }) 
+        console.log('timespentTimer', timespentTimer)
+        
         break
       case (<any>window).YT.PlayerState.PAUSED:
         if (loaded) {

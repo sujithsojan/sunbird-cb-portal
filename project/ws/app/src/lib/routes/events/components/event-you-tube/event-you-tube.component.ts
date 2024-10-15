@@ -7,7 +7,7 @@ import  'videojs-youtube'
 // videoJsInitializer
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
 import { NsContent } from '@sunbird-cb/utils-v2'
-import { EventEnrollService } from './../../services/event-enroll.service'
+import { EventService } from './../../services/events.service'
 // interface IYTOptions extends videoJs.PlayerOptions {
 //   youtube: {
 //     ytControls: 0 | 1 | 2
@@ -52,14 +52,14 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
   private player: videoJs.Player | null = null
   private dispose: (() => void) | null = null
-  constructor(private route: ActivatedRoute, private eventEnrollService: EventEnrollService) {
+  constructor(private route: ActivatedRoute, private eventService: EventService) {
   }
 
   ngOnInit(): void {
     /* tslint:disable */
-    console.log('eventData', this.eventEnrollService.eventData)
+    console.log('eventData', this.eventService.eventData)
     /* tslint:enabel */
-    this.eventData = this.eventEnrollService.eventData
+    this.eventData = this.eventService.eventData
     this.route.params.subscribe(params => {
       this.videoId = params.videoId
 
@@ -130,27 +130,30 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       // }
       const dataobj: any = JSON.parse(data.data)
       const completionPercentage: any = (dataobj.progress / data.dateAccessed) * 100
-      const req  = {
-        'userId': '',
-        'events': [
-            {
-                'eventId': this.eventData.identifier,
-                'batchId': '',
-                'status': completionPercentage > 50 ? 2 : 1,
-                'lastAccessTime': data.dateAccessed,
-                'progressdetails': {
-                    'max_size': this.eventData.duration,
-                    'current': [
-                      dataobj.progress,
-                    ],
-                    'timeSpent': '',
-                    'mimeType': 'application/html',
-                },
-                'completionPercentage': completionPercentage,
-            },
-        ],
-    }
-      this.eventEnrollService.saveEventProgressUpdate(req).toPromise().catch()
+      if(this.eventData) {
+        const req  = {
+          'userId': '',
+          'events': [
+              {
+                  'eventId': this.eventData.identifier,
+                  'batchId': '',
+                  'status': completionPercentage > 50 ? 2 : 1,
+                  'lastAccessTime': data.dateAccessed,
+                  'progressdetails': {
+                      'max_size': this.eventData.duration,
+                      'current': [
+                        dataobj.progress,
+                      ],
+                      'timeSpent': '',
+                      'mimeType': 'application/html',
+                  },
+                  'completionPercentage': completionPercentage,
+              },
+          ],
+      }
+        this.eventService.saveEventProgressUpdate(req).toPromise().catch()
+      }
+     
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       /* tslint:disable */

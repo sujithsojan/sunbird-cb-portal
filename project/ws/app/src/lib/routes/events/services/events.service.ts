@@ -7,6 +7,7 @@ const API_END_POINTS = {
   EVENT_READ: `/apis/proxies/v8/event/v4/read`,
   GET_EVENTS: '/apis/proxies/v8/sunbirdigot/search',
   ENROLL_EVENT: '/apis/proxies/v8/event/batch/enroll',
+  SAVE_EVENT_PROGRESS_UPDATE: 'api/event/v1/state/update',
   CONTENT_STATE_UPDATE: (eventId: string) => `/apis/proxies/v8/event-progres/${eventId}`,
   ALL_EVENT_ENROLL_LIST: (userId: string) => `/apis/proxies/v8/v1/user/events/list/${userId}`,
   IS_ENROLLED: (userId: string, eventId: string, batchId?: string) => 
@@ -17,6 +18,7 @@ const API_END_POINTS = {
   providedIn: 'root',
 })
 export class EventService {
+  eventData: any
   eventEnrollEvent = new Subject()
   constructor(private http: HttpClient) { }
 
@@ -47,5 +49,9 @@ export class EventService {
 
   contentStateUpdate(req: any) {
     return this.http.patch<any>(`${API_END_POINTS.CONTENT_STATE_UPDATE}`, req)
+  }
+
+  saveEventProgressUpdate(req: any) {
+    return this.http.post<any>(`${API_END_POINTS.SAVE_EVENT_PROGRESS_UPDATE}`, req)
   }
 }
