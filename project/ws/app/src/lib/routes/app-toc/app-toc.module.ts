@@ -256,7 +256,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
     TocKpiValuesModule,
     KarmaPointsModule,
     TipsForLearnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     AppTocResolverService,
