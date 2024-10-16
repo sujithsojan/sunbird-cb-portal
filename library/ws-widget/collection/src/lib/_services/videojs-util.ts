@@ -374,6 +374,9 @@ export function youtubeInitializer(
   mimeType: NsContent.EMimeTypes,
   screenHeight: string,
 ): { dispose: () => void } {
+  /* tslint:disable */
+  console.log('passThroughData--', passThroughData)
+  /* tslint:enable */
   const yHeight = screenHeight
   const player = new (<any>window).YT.Player(elem, {
     videoId: youtubeId,
@@ -384,9 +387,8 @@ export function youtubeInitializer(
       autoplay: 0,
       modestbranding: 0,
       showInfo: 0,
-      fs: 0,
       rel: 0,
-      start: 120,
+      start: passThroughData && passThroughData['resumeFrom'] ? parseInt(passThroughData['resumeFrom'], 10) : 0,
     },
     events: {
       onStateChange: (event: any) => {
@@ -404,8 +406,8 @@ export function youtubeInitializer(
   let loaded = false
   let readyToRaise = false
   let currTime = 0
-  let timespentTimer = 1
-  // const lastAccessTime = 0
+  let timespentTimer = passThroughData && passThroughData['resumeFrom'] ? passThroughData['resumeFrom'] : 1
+  // const lastAccessTime = 0/* tslint:disable */
   if (passThroughData['lastAccessTime'] === undefined) {
     passThroughData['lastAccessTime'] = 0
   }
@@ -418,12 +420,13 @@ export function youtubeInitializer(
         if (!loaded) {
 
           eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
-          heartBeatSubscription = interval(1 * 60000).subscribe(_ => {
+          heartBeatSubscription = interval(60 * 1000).subscribe(_ => {
             /* tslint:disable */
             console.log('heartbeat')
             /* tslint:enable */
             passThroughData['lastAccessTime'] = currTime
             passThroughData['timeSpent'] = timespentTimer
+            passThroughData['playerDuration'] = player.getDuration()
             eventDispatcher(WsEvents.EnumTelemetrySubType.HeartBeat, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
           })
           loaded = true
@@ -444,9 +447,10 @@ export function youtubeInitializer(
         console.log(player.getCurrentTime(), passThroughData['lastAccessTime'], currTime)
         /* tslint:enable */
           timeSpentInterval = interval(1000).subscribe(() => {
-            if (player.getCurrentTime() > passThroughData['lastAccessTime']) {
+            // if (player.getCurrentTime() > passThroughData['lastAccessTime']) {
               timespentTimer = timespentTimer + 1
-            }
+              passThroughData['timeSpent'] = timespentTimer
+            // }
           })
           /* tslint:disable */
         console.log('timespentTimer', timespentTimer)

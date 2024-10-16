@@ -148,11 +148,11 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           this.getKPData('Complete')
         }
 
-        if(this.condition.pastEvent) {
-          if(this.condition.enrolledEvent.completionPercentage < 2) {
+        if (this.condition.pastEvent) {
+          if (this.condition.enrolledEvent.completionPercentage < 2) {
             this.getKPData('')
           }
-          if(this.condition.enrolledEvent.status === 2) {
+          if (this.condition.enrolledEvent.status === 2) {
             this.getKPData('completed')
           }
         }

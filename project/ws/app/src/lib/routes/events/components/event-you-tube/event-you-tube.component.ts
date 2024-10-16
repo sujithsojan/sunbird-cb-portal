@@ -6,7 +6,7 @@ import  'videojs-youtube'
 /* tslint:enable */
 // videoJsInitializer
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
-import { NsContent } from '@sunbird-cb/utils-v2'
+import { NsContent, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { EventService } from './../../services/events.service'
 // interface IYTOptions extends videoJs.PlayerOptions {
 //   youtube: {
@@ -52,14 +52,14 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
   private player: videoJs.Player | null = null
   private dispose: (() => void) | null = null
-  constructor(private route: ActivatedRoute, private eventService: EventService) {
+  constructor(private route: ActivatedRoute, private eventService: EventService, private configSvc: ConfigurationsService) {
   }
 
   ngOnInit(): void {
     /* tslint:disable */
-    console.log('eventData', this.eventService.eventData)
+    console.log('eventData', this.route.snapshot.data.content.data)
     /* tslint:enabel */
-    this.eventData = this.eventService.eventData
+    this.eventData = this.route.snapshot.data['content'].data
     this.route.params.subscribe(params => {
       this.videoId = params.videoId
 
@@ -68,8 +68,32 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       // }
       // this.data = this.route.snapshot.data.topic.data
     })
+    this.eventStateRead() 
+
+    
   }
 
+  eventStateRead() {
+    
+    let req = {
+      eventId:  this.eventData.identifier,
+      batchId: this.getBatchId()
+    }
+    this.eventService.eventStateRead(req).subscribe((data)=>{
+      if(data && data.result && data.result.events && data.result.events.length) {
+        let resumeFrom = JSON.parse(data.result.events[0]['progressdetails'])['stateMetaData']
+        resumeFrom = resumeFrom ? Number(resumeFrom) : 0
+        this.initializePlayer(resumeFrom)
+      } else {
+        this.initializePlayer('')
+
+      }
+      /* tslint:disable */
+      console.log('req event state read', data )
+      /* tslint:enable */
+
+    })
+  }
   ngAfterViewInit() {
     // let playerOptions = {
     //         autoplay: false,
@@ -80,9 +104,26 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     //         sources: [{type: 'video/youtube',src: 'https://www.youtube.com/watch?v=OqfyN7c71HE'}]
     //     }
     //     videoJs(`youtubeTag`, playerOptions, () => {console.log('pronto')});
-    const dispatcher: telemetryEventDispatcherFunction = event => {
+
+    // this.initializePlayer('')
+    // this.player = new (<any>window).YT.Player
+    /* tslint:disable */
+    console.log('initObj', this.dispose)
+    /* tslint:enable */
+  }
+
+  initializePlayer(resumeFrom: any) {
+    let timeSpent = resumeFrom ? resumeFrom : 0
+    let playerDuration = 0
+    const dispatcher: telemetryEventDispatcherFunction = (event: any) => {
       /* tslint:disable */
-      console.log(event)
+      console.log(event['data'])
+      if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
+        timeSpent = event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']
+      }
+      if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
+        playerDuration =  event['data']['passThroughData']['playerDuration']
+      }
       /* tslint:enable */
       // if (this.widgetData.identifier) {
       //   this.eventSvc.dispatchEvent(event)
@@ -91,67 +132,53 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const saveCLearning: saveContinueLearningFunction = data => {
       /* tslint:disable */
       console.log(data)
-      /* tslint:enable */
-      // if (this.widgetData.identifier) {
-      //   if (this.activatedRoute.snapshot.queryParams.collectionType &&
-      //     this.activatedRoute.snapshot.queryParams.collectionType.toLowerCase() === 'playlist') {
-      //     const continueLearningData = {
-      //       contextPathId: this.activatedRoute.snapshot.queryParams.collectionId ?
-      //         this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier,
-      //       resourceId: data.resourceId,
-      //       contextType: 'playlist',
-      //       dateAccessed: Date.now(),
-      //       data: JSON.stringify({
-      //         progress: data.progress,
-      //         timestamp: Date.now(),
-      //         contextFullPath: [this.activatedRoute.snapshot.queryParams.collectionId, data.resourceId],
-      //       }),
-      //     }
-      //     this.contentSvc
-      //       .saveContinueLearning(continueLearningData)
-      //       .toPromise()
-      //       .catch()
-      //   } else {
-      //     const continueLearningData = {
-      //       contextPathId: this.activatedRoute.snapshot.queryParams.collectionId ?
-      //         this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier,
-      //       resourceId: data.resourceId,
-      //       dateAccessed: Date.now(),
-      //       data: JSON.stringify({
-      //         progress: data.progress,
-      //         timestamp: Date.now(),
-      //       }),
-      //     }
-      //     this.contentSvc
-      //       .saveContinueLearning(continueLearningData)
-      //       .toPromise()
-      //       .catch()
-      //   }
-      // }
       const dataobj: any = JSON.parse(data.data)
-      const completionPercentage: any = (dataobj.progress / data.dateAccessed) * 100
+      let batchId = this.getBatchId()
+      let completionPercentage:any = 0
+      let timeStamp  = ''
+      let timeStampString:any  = ''
+      let lastTimeAccessed = ''
+      let userId = ''
+      if (this.configSvc.userProfile) {
+        userId = this.configSvc.userProfile.userId || ''
+      }
+      if(dataobj && dataobj.progress) {
+        completionPercentage = (dataobj.progress / playerDuration) * 100
+      }
+      if(dataobj && dataobj.timeStamp) {
+          timeStamp = dataobj.timestamp
+          timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
+          lastTimeAccessed  = timeStampString[0]+':00+0000'
+      }
+      
+      
+    
       if (this.eventData) {
         const req  = {
-          'userId': '',
+          "request": {
+          'userId': userId,
           'events': [
               {
                   'eventId': this.eventData.identifier,
-                  'batchId': '',
-                  'status': completionPercentage > 50 ? 2 : 1,
-                  'lastAccessTime': data.dateAccessed,
+                  'batchId': batchId,
+                  'status':  completionPercentage > 50 ? 1 : 1,
+                  'lastAccessTime': lastTimeAccessed, //data.dateAccessed
                   'progressdetails': {
-                      'max_size': this.eventData.duration,
-                      'current': [
-                        dataobj.progress,
+                      'max_size': playerDuration, //complete video duration
+                      'current': [ // current state
+                        dataobj.progress.toString(),
                       ],
-                      'timeSpent': '',
+                      'duration': timeSpent, //watch time
                       'mimeType': 'application/html',
+                      "stateMetaData": dataobj.progress.toString() //last state
                   },
-                  'completionPercentage': completionPercentage,
+                  'completionPercentage': parseFloat(completionPercentage).toFixed(2),
               },
           ],
+        }
       }
-        this.eventService.saveEventProgressUpdate(req).toPromise().catch()
+      console.log('req',req)
+      this.eventService.saveEventProgressUpdate(req).subscribe(()=>{})
       }
 
     }
@@ -170,7 +197,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       dispatcher,
       saveCLearning,
       fireRProgress,
-      {}, // passThrough Data,
+      { resumeFrom }, // passThrough Data,
       '',
       true, // enable telemetry,
       {}, // widget data
@@ -178,10 +205,17 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       '600px', // height
     )
     this.dispose = initObj.dispose
-    // this.player = new (<any>window).YT.Player
-    /* tslint:disable */
-    console.log('initObj', this.dispose)
-    /* tslint:enable */
+  }
+
+  getBatchId() {
+    let batchId = ''
+      if (this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
+      if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
+        batchId = this.eventData.batches[0].batchId || ''
+      }
+    return batchId
   }
 
   ngOnDestroy() {
