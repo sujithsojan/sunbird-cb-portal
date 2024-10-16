@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { EventService } from '../../services/events.service'
+import { MatSnackBar } from '@angular/material'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
@@ -41,6 +42,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
   // badges!: NSProfileDataV2.IBadgeResponse
   // currentEvent!: any
   constructor(
+    private matSnackBar: MatSnackBar,
     private route: ActivatedRoute,
     private configSvc: ConfigurationsService,
     private events: EventServiceGlobal,
@@ -250,8 +252,9 @@ export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
           this.enrollBtnLoading = false
 
         },
-                                               (_error: any) => {
+                                               (err: any) => {
           this.enrollBtnLoading = false
+          this.openSnackBar(err.error.params.errmsg || 'Something went wrong! please try again later.')
         }
       )
     }
@@ -285,5 +288,11 @@ export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
         this.navigateToSamePagewithBatchId(this.batchId)
       }
     }
+  }
+
+
+
+  public openSnackBar(message: string) {
+    this.matSnackBar.open(message)
   }
 }
