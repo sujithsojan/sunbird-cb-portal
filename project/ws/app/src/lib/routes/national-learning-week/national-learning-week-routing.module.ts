@@ -10,7 +10,7 @@ const routes: Routes = [
         component: NationalLearningWeekMicrositeComponent,
         data: {
             module: 'National Learning Week',
-            pageId: 'app/learn/national-learning-week',
+            pageId: 'app/learn/karmayogi-saptah',
         },
         resolve: {
             formData: NationalLearningWeekFormService,
