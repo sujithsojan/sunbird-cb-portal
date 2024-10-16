@@ -390,7 +390,7 @@ export class InsightSideBarComponent implements OnInit {
       }
     )
 
-    this.router.navigateByUrl('app/learn/national-learning-week')
+    this.router.navigateByUrl('app/learn/karmayogi-saptah')
   }
 
   private openSnackbar(primaryMsg: string, duration: number = 5000) {
