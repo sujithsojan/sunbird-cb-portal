@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core'
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 import { takeUntil } from 'rxjs/operators'
@@ -9,9 +10,10 @@ import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { ProfileV2Service } from '../../../profile-v2/services/profile-v2.servive'
 import { OtpService } from '../../../user-profile/services/otp.services'
+import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
 /* tslint:disable */
 import _ from 'lodash'
-import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
+
 
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/

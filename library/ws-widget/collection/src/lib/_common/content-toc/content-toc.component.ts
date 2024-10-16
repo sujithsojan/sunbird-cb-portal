@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core'
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
 import { NsContent, UtilityService } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 
 import { LoadCheckService } from '@ws/app/src/lib/routes/app-toc/services/load-check.service'
+import { MatTabGroup, MatTabChangeEvent } from '@angular/material/tabs'
 
 @Component({
   selector: 'ws-widget-content-toc',
@@ -28,7 +28,7 @@ export class ContentTocComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() pathSet: any
   @Input() fromViewer = false
   @Input() hierarchyMapData: any = {}
-  @ViewChild('stickyMenu', { static: false }) tabElement!: MatTabGroup
+  @ViewChild('stickyMenu') tabElement!: MatTabGroup
   @Input() condition: any
   @Input() kparray: any
   @Input() selectedBatchData: any

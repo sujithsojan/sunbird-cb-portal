@@ -9,7 +9,6 @@ import {
   ViewChild, ViewChildren,
   Renderer2,
 } from '@angular/core'
-import { MatDialog, MatSidenav, MatSnackBar, MatSnackBarConfig } from '@angular/material'
 import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { NSPractice } from './practice.model'
@@ -29,6 +28,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
 import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSidenav } from '@angular/material/sidenav'
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -77,10 +79,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     primaryCategory: NsContent.EPrimaryCategory.PRACTICE_RESOURCE,
   }
   @ViewChildren('questionsReference') questionsReference: QueryList<QuestionComponent> | null = null
-  @ViewChild('sidenav', { static: false }) sideNav: MatSidenav | null = null
-  @ViewChild('submitModal', { static: false }) submitModal: ElementRef | null = null
-  @ViewChild('itemTooltip', { static: false }) itemTooltip: ElementRef | null = null
-  @ViewChild('tooltipTrigger', { static: false }) tooltipTrigger: ElementRef | null = null
+  @ViewChild('sidenav') sideNav: MatSidenav | null = null
+  @ViewChild('submitModal') submitModal: ElementRef | null = null
+  @ViewChild('itemTooltip') itemTooltip: ElementRef | null = null
+  @ViewChild('tooltipTrigger') tooltipTrigger: ElementRef | null = null
   resourceName: string | null = this.viewerDataSvc.resource ? this.viewerDataSvc.resource.name : ''
   currentQuestionIndex = 0
   currentTheme = ''
