@@ -41,7 +41,7 @@ const routes: Routes = [
         data: {
           pageId: 'home/:eventId',
           module: 'Events',
-        }
+        },
       },
       {
         path: 'player/:eventId',

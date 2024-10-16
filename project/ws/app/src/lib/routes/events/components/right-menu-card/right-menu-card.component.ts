@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core'
+import { Component, OnDestroy, OnInit, Input, OnChanges } from '@angular/core'
 import moment from 'moment'
 import { ConfigurationsService, EventService as EventServiceGlobal, WsEvents } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
@@ -16,7 +16,7 @@ import { EventService } from '../../services/events.service'
   host: { class: 'flex flex-1' },
   /* tslint:enable */
 })
-export class RightMenuCardComponent implements OnInit, OnDestroy {
+export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
   @Input() eventData: any
   @Input() isenrollFlow: any
   @Input() enrollFlowItems: any
@@ -214,12 +214,12 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   }
 
   navigateToSamePagewithBatchId(batchId: string) {
-    if(batchId) {
+    if (batchId) {
       this.router.navigate(
         [],
         {
           relativeTo: this.route,
-          queryParams: { batchId: batchId },
+          queryParams: { batchId },
           queryParamsHandling: 'merge',
         })
     }
@@ -237,10 +237,9 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
         },
       }
       // console.log('req ::', req)
-
-      this.eventSvc.enrollEvent(req).subscribe(
-        (res) => {
-          if(res.responseCode === 'OK' || res.result.response === 'SUCCESS') {
+      /* tslint:disable */
+      this.eventSvc.enrollEvent(req).subscribe(res => {
+          if (res.responseCode === 'OK' || res.result.response === 'SUCCESS') {
 
           }
           if (this.batchId) {
@@ -251,7 +250,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
           this.enrollBtnLoading = false
 
         },
-        (_error: any) => {
+                                               (_error: any) => {
           this.enrollBtnLoading = false
         }
       )
@@ -273,15 +272,15 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   loadEnrolledEventData() {
     this.isEnrolled = this.enrolledEvent ? true : false
     if (this.enrolledEvent && this.enrolledEvent.batchDetails) {
-      if(Array.isArray(this.enrolledEvent.batchDetails) && this.enrolledEvent.batchDetails.length > 0){
+      if (Array.isArray(this.enrolledEvent.batchDetails) && this.enrolledEvent.batchDetails.length > 0) {
         this.batchId = this.enrolledEvent.batchDetails[0].batchId || ''
         this.navigateToSamePagewithBatchId(this.batchId)
       }
     } else {
-      if(this.eventData && typeof this.eventData.batches === 'string') {
+      if (this.eventData && typeof this.eventData.batches === 'string') {
         this.eventData.batches = JSON.parse(this.eventData.batches)
       }
-      if(Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0){
+      if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
         this.batchId = this.eventData.batches[0].batchId || ''
         this.navigateToSamePagewithBatchId(this.batchId)
       }

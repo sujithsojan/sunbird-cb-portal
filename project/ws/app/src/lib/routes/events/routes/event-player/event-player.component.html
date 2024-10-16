@@ -25,16 +25,26 @@
               <div class="margin-bottom-xs" *ngIf="eventData?.resourceType === 'Webinar'">
                 <button mat-raised-button type="button" class="ws-mat-primary-background"><mat-icon>play_circle_filled</mat-icon> {{ 'event.typoWebinar' | translate }}</button>
               </div>
-              <div class="margin-bottom-xs" *ngIf="eventData?.resourceType === 'Karmayogi Saptah'">
+              <!-- <div class="margin-bottom-xs" *ngIf="eventData?.resourceType === 'Karmayogi Saptah'">
                 <button mat-raised-button type="button" class="ws-mat-primary-background"><mat-icon>play_circle_filled</mat-icon> {{ 'event.karmayogiSaptah' | translate }}</button>
-              </div>
-              <div class="flex flex-col flex-auto mat-body-1">
+              </div> -->
+              <div class="flex flex-row tag-div rounded-2xl gap-1 items-center p-2"><mat-icon
+                class="ws-mat-orange-text mat-icon notranslate material-icons mat-icon-no-color" role="img"
+                aria-hidden="true">video_library</mat-icon>
+              <div class="text-xs font-bold text-white leading-3 ng-star-inserted">{{ 'event.karmayogiSaptah' | translate }}</div>
+            </div>
+              <div class="flex flex-col flex-auto mat-body-1 mt-2">
                 <p class="flex margin-bottom-m word-break" role="link" tabindex="0" i18n-aria-label *ngIf="eventData?.instructions">
                   {{eventData?.instructions}}
                 </p>
-                <p class="flex mat-error" role="link" tabindex="0" i18n-aria-label *ngIf="currentEvent">
+                <!-- <p class="flex mat-error" role="link" tabindex="0" i18n-aria-label *ngIf="currentEvent">
                   {{eventData?.status}}
-                </p>
+                  
+                </p> -->
+                <div *ngIf="eventData?.resourceType === 'Karmayogi Saptah' && currentEvent">
+                  <button mat-raised-button type="button"
+                    class="ws-mat-red-background"><mat-icon>play_circle_filled</mat-icon> Live </button>
+                </div>
               </div>
             </div>
           </div>

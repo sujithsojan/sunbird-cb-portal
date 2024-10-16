@@ -39,7 +39,7 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
     this.condition = changes.condition && changes.condition.currentValue || null
 
     if (!this.condition) { return }
-    if(!this.condition && !this.condition.event) {
+    if (!this.condition && !this.condition.event) {
       // For TOC karma points
       if (!this.condition.isPostAssessment && (this.condition.content && this.condition.content.hasOwnProperty('completionPercentage')
         && !this.condition.content.completionPercentage
@@ -48,7 +48,7 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
            if (this.condition.isAcbpClaim) {
              this.getKPData('ACBP')
            }
-   
+
            if (this.condition.content.primaryCategory === this.condition.primaryCategory.COURSE) {
              if (!this.condition.isAcbpClaim && !this.condition.monthlyCapExceed) {
                this.getKPData('Resume')
@@ -63,12 +63,12 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           this.getKPData('ACBP CLAIM')
           this.btnCategory = 'claim'
         }
-  
+
         if (this.condition.content.primaryCategory === this.condition.primaryCategory.COURSE) {
           if (this.condition && !this.condition.isAcbpCourse && !this.condition.monthlyCapExceed) {
             this.getKPData('Start again')
           }
-  
+
           if (!this.condition.isAcbpCourse && this.condition.monthlyCapExceed && !this.condition.isCompletedThisMonth) {
             this.getKPData('Start again')
           }
@@ -80,14 +80,14 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
         && this.condition.showTakeAssessment.post_assessment) {
         this.getKPData('Take Assessment')
       }
-  
+
       if (this.condition && (this.condition.content
         && this.condition.content.primaryCategory) !== this.condition.primaryCategory.RESOURCE
         && !this.condition.enrollBtnLoading) {
         if (this.condition.isAcbpCourse) {
           this.getKPData('ACBP')
         }
-  
+
         if (!this.condition.isAcbpCourse && !this.condition.monthlyCapExceed &&
           this.condition.userEnrollmentList && !this.condition.userEnrollmentList.length) {
           this.getKPData('Enroll')
@@ -98,11 +98,11 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
         && (this.condition.content && this.condition.content.hasOwnProperty('completionPercentage')
       && !this.condition.content.completionPercentage
       || (this.condition.content && this.condition.content.completionPercentage < 100))) {
-  
+
           if (this.condition.isAcbpClaim) {
             this.getKPData('ACBP')
           }
-  
+
           if (this.condition.content.primaryCategory === this.condition.primaryCategory.COURSE) {
             if (!this.condition.isAcbpClaim && !this.condition.monthlyCapExceed) {
               this.getKPData('Resume')
@@ -116,12 +116,12 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
             this.getKPData('ACBP CLAIM')
             this.btnCategory = 'claim'
           }
-    
+
           if (this.condition.content.primaryCategory === this.condition.primaryCategory.COURSE) {
             if (!this.condition.isAcbpCourse && !this.condition.monthlyCapExceed) {
               this.getKPData('Start again')
             }
-    
+
             if (!this.condition.isAcbpCourse && this.condition.monthlyCapExceed && !this.condition.isCompletedThisMonth) {
               this.getKPData('Start again')
             }
@@ -131,34 +131,33 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           && this.condition.showTakeAssessment.post_assessment) {
           this.getKPData('Take Assessment')
         }
-    
+
         if (this.condition && this.condition.resumeData) {
           if (!this.condition.userRating) {
             this.getKPData('Rate this course')
           }
-    
+
           if (this.condition.userRating) {
             this.getKPData('Edit rating')
           }
         }
     } else {
       // For event karma points
-      if(this.condition && this.condition.event) {
-        if(!this.condition.isEnrolled) {
+      if (this.condition && this.condition.event) {
+        if (!this.condition.isEnrolled) {
           this.getKPData('Enroll')
         }
-  
-        if(this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage < 100) {
+
+        if (this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage < 100) {
           this.getKPData('Start')
         }
-  
-        if(this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage === 100) {
+
+        if (this.condition.isEnrolled && this.condition.enrolledEvent && this.condition.enrolledEvent.completionPercentage === 100) {
           this.getKPData('complete')
         }
       }
     }
   }
-
 
   getKPData(btnType: string): void {
     this.data.forEach((item: any) => {
