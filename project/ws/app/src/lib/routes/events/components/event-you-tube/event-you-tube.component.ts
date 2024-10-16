@@ -88,8 +88,10 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initializePlayer('')
 
       }
+      /* tslint:disable */
       console.log('req event state read', data )
-      
+      /* tslint:enable */
+
     })
   }
   ngAfterViewInit() {
@@ -102,8 +104,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     //         sources: [{type: 'video/youtube',src: 'https://www.youtube.com/watch?v=OqfyN7c71HE'}]
     //     }
     //     videoJs(`youtubeTag`, playerOptions, () => {console.log('pronto')});
-   
-    
+
     // this.initializePlayer('')
     // this.player = new (<any>window).YT.Player
     /* tslint:disable */
@@ -133,16 +134,25 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(data)
       const dataobj: any = JSON.parse(data.data)
       let batchId = this.getBatchId()
-
-      
+      let completionPercentage:any = 0
+      let timeStamp  = ''
+      let timeStampString:any  = ''
+      let lastTimeAccessed = ''
       let userId = ''
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId || ''
       }
-      const completionPercentage: any = (dataobj.progress / playerDuration) * 100
-      let timeStamp = dataobj.timestamp
-      let timeStampString:any = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
-      let lastTimeAccessed = timeStampString[0]+':00+0000'
+      if(dataobj && dataobj.progress) {
+        completionPercentage = (dataobj.progress / playerDuration) * 100
+      }
+      if(dataobj && dataobj.timeStamp) {
+          timeStamp = dataobj.timestamp
+          timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
+          lastTimeAccessed  = timeStampString[0]+':00+0000'
+      }
+      
+      
+    
       if (this.eventData) {
         const req  = {
           "request": {

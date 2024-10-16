@@ -15,15 +15,20 @@ export class EventResolve
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IResolveResponse<NsContent.IContent>> | null {
+    /* tslint:disable */
     console.log('route', route, state.url)
+    /* tslint:enable */
     const urlStr = state.url.split('/')
     let eventId = ''
+    /* tslint:disable */
     for (let i = 0; i < urlStr.length; i++) {
       if (urlStr[i].includes('do_')) {
         eventId = urlStr[i]
       }
     }
+    /* tslint:disable */
     console.log('eventId', eventId)
+    /* tslint:enable */
     return (
       this.eventService.getEventData(eventId
       )

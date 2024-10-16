@@ -374,7 +374,9 @@ export function youtubeInitializer(
   mimeType: NsContent.EMimeTypes,
   screenHeight: string,
 ): { dispose: () => void } {
+  /* tslint:disable */
   console.log('passThroughData--', passThroughData)
+  /* tslint:enable */
   const yHeight = screenHeight
   const player = new (<any>window).YT.Player(elem, {
     videoId: youtubeId,
@@ -386,7 +388,7 @@ export function youtubeInitializer(
       modestbranding: 0,
       showInfo: 0,
       rel: 0,
-      start: passThroughData && passThroughData['resumeFrom'] ? parseInt(passThroughData['resumeFrom']) : 0,
+      start: passThroughData && passThroughData['resumeFrom'] ? parseInt(passThroughData['resumeFrom'], 10) : 0,
     },
     events: {
       onStateChange: (event: any) => {
@@ -405,7 +407,7 @@ export function youtubeInitializer(
   let readyToRaise = false
   let currTime = 0
   let timespentTimer = passThroughData && passThroughData['resumeFrom'] ? passThroughData['resumeFrom'] : 1
-  // const lastAccessTime = 0
+  // const lastAccessTime = 0/* tslint:disable */
   if (passThroughData['lastAccessTime'] === undefined) {
     passThroughData['lastAccessTime'] = 0
   }
