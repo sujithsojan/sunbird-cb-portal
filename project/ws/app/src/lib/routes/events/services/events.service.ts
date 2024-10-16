@@ -7,11 +7,13 @@ const API_END_POINTS = {
   EVENT_READ: `/apis/proxies/v8/event/v4/read`,
   GET_EVENTS: '/apis/proxies/v8/sunbirdigot/search',
   ENROLL_EVENT: '/apis/proxies/v8/event/batch/enroll',
-  SAVE_EVENT_PROGRESS_UPDATE: 'api/event/v1/state/update',
+  SAVE_EVENT_PROGRESS_UPDATE: 'apis/proxies/v8/eventprogress/v1/event/state/update',
+  CONTENT_STATE_UPDATE_READ: 'apis/proxies/v8/user/event/state/read',
   CONTENT_STATE_UPDATE: (eventId: string) => `/apis/proxies/v8/event-progres/${eventId}`,
   ALL_EVENT_ENROLL_LIST: (userId: string) => `/apis/proxies/v8/v1/user/events/list/${userId}`,
   IS_ENROLLED: (userId: string, eventId: string, batchId?: string) =>
     `/apis/proxies/v8/user/event/read/${userId}?eventId=${eventId}&batchId=${batchId}`,
+
 }
 
 @Injectable({
@@ -52,6 +54,12 @@ export class EventService {
   }
 
   saveEventProgressUpdate(req: any) {
-    return this.http.post<any>(`${API_END_POINTS.SAVE_EVENT_PROGRESS_UPDATE}`, req)
+    return this.http.patch<any>(`${API_END_POINTS.SAVE_EVENT_PROGRESS_UPDATE}`, req)
+  }
+
+  eventStateRead(req:any) {
+    let batchId = req.batchId
+    let eventId = req.eventId
+    return this.http.post<any>(`${API_END_POINTS.CONTENT_STATE_UPDATE_READ}?batchId=${batchId}&eventId=${eventId}`,req)
   }
 }

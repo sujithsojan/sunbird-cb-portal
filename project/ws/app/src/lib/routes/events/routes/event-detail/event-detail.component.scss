@@ -530,3 +530,13 @@ button.ws-mat-primary-background {
   border-radius: 16px !important;
   line-height: 32px !important;
 }
+
+@media screen and (min-width: 820px) and (max-width: 1232px) {
+  .section-container {
+    max-width: calc(100vw - 100px) !important;
+  }
+  .info-section {
+    width: 384px;
+    min-width: 45%;
+  }
+}

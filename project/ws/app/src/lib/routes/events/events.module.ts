@@ -46,6 +46,7 @@ import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf
 import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { EventYouTubeComponent } from './components/event-you-tube/event-you-tube.component'
+import { EventResolve } from './services/event-resolver.resolve'
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { EventYouTubeComponent } from './components/event-you-tube/event-you-tub
     InitResolver,
     EventService,
     ViewerResolve,
+    EventResolve,
   ],
 })
 export class EventsModule { }
