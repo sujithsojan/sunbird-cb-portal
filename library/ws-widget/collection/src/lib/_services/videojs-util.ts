@@ -405,7 +405,7 @@ export function youtubeInitializer(
   let readyToRaise = false
   let currTime = 0
   let timespentTimer = 1
-  const lastAccessTime = 0
+  // const lastAccessTime = 0
   if (passThroughData['lastAccessTime'] === undefined) {
     passThroughData['lastAccessTime'] = 0
   }
