@@ -40,6 +40,7 @@ export class EventDetailComponent implements OnInit {
   skeletonLoader = false
   enrolledEvent: any
   batchId = ''
+  isEnrolled = false
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
