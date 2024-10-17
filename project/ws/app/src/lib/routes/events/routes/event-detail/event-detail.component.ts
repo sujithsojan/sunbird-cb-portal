@@ -233,6 +233,10 @@ export class EventDetailComponent implements OnInit {
       //   })
       // }
     }
+
+    translateLabels(label: string, type: any) {
+      return this.langtranslations.translateActualLabel(label, type, '')
+    }
   
 
 }
