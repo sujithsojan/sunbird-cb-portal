@@ -52,6 +52,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() eventData: any
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
+  progressInterval:any
   private player: videoJs.Player | null = null
   private dispose: (() => void) | null = null
   constructor(private route: ActivatedRoute, private eventService: EventService, private configSvc: ConfigurationsService) {
@@ -143,12 +144,22 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const dispatcher: telemetryEventDispatcherFunction = (event: any) => {
       /* tslint:disable */
       console.log(event['data'])
+    
       if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
         timeSpent = event['data']['passThroughData']['timeSpent']
         console.log('timeSpent % 60 === 0 ', timeSpent, ':: ', timeSpent % 60 === 0)
         // if(timeSpent % 60 === 0){
         //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
         // }
+
+        let eventDateTime = this.eventData.startDate + ' '+this.eventData.startTime
+        let eventDateTimeStamp = new Date(eventDateTime).getTime()
+        let currentDateTimeStamp = new Date().getTime()
+        if(currentDateTimeStamp >= eventDateTimeStamp) {
+          this.progressInterval =setInterval(()=>{
+            this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+          },1000)
+        }
       }
       /* tslint:disable */
       if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
@@ -278,6 +289,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     /* tslint:disable */
     console.log(this.player)
     /* tslint:enable */
+    clearInterval(this.progressInterval)
     if (this.player) {
       this.player.dispose()
     }
