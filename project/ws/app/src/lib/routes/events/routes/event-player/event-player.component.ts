@@ -110,15 +110,26 @@ export class EventPlayerComponent implements OnInit {
     }
     if (this.eventData && userId) {
       this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.batchId).subscribe((data: any) => {
-        /* tslint:disable */
-        console.log('data --- ', data)
         if (data && data.result && data.result.events && data.result.events.length > 0) {
          this.isEnrolled = true
+        this.navigateToSamePagewithEnroll()
         } else {
           this.isEnrolled = false
           this.router.navigateByUrl(`app/event-hub/home/${this.eventData.identifier}?batchId=${this.batchId}`)
         }
       })
+    }
+  }
+
+  navigateToSamePagewithEnroll() {
+    if (this.isEnrolled) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { isEnrolled: this.isEnrolled },
+          queryParamsHandling: 'merge',
+        })
     }
   }
 

@@ -53,6 +53,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
   progressInterval: any
+  intervalStarted = false
+  isEnrolled = false
+  resumeEventStatus = 0
   private player: videoJs.Player | null = null
   private dispose: (() => void) | null = null
   constructor(private route: ActivatedRoute, private eventService: EventService, private configSvc: ConfigurationsService) {
@@ -71,6 +74,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       //   this.getTIDData()
       // }
       // this.data = this.route.snapshot.data.topic.data
+    })
+    this.route.queryParams.subscribe(params => {
+      this.isEnrolled = params['isEnrolled']
     })
     // const isToday = this.compareDate(eventDate, eventendDate, this.eventData)
     // if (isToday) {
@@ -100,8 +106,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.eventService.eventStateRead(req).subscribe((data)=>{
       if(data && data.result && data.result.events && data.result.events.length) {
         let resumeFrom = JSON.parse(data.result.events[0]['progressdetails'])['stateMetaData']
+        this.resumeEventStatus = data.result.events[0]['status']
         resumeFrom = resumeFrom ? Number(resumeFrom) : 0
-        if(!this.currentEvent) {
+        if(!this.currentEvent && !this.isEnrolled) {
           resumeFrom = 0
         }
         this.initializePlayer(resumeFrom)
@@ -158,9 +165,8 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
             let eventDateTimeStamp = new Date(eventDateTime).getTime()
             let currentDateTimeStamp = new Date().getTime()
             if(currentDateTimeStamp >= eventDateTimeStamp) {
-              this.progressInterval = setInterval(()=>{
-                this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
-              },1000*60)
+                this.startInterval(timeSpent, lastTimeAccessed)
+                this.intervalStarted = true
             }
           }
         }
@@ -222,6 +228,17 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dispose = initObj.dispose
   }
 
+  startInterval(timeSpent: any,lastTimeAccessed: any) {
+    if(!this.intervalStarted) {
+      this.progressInterval = setInterval(()=>{
+        if(this.progressInterval) {
+          clearInterval(this.progressInterval)
+        }
+        this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+      },1000*60)
+    }
+    }
+
   getBatchId() {
     let batchId = ''
       if (this.eventData && typeof this.eventData.batches === 'string') {
@@ -275,10 +292,15 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         ],
       },
     }
-    /* tslint:disable */
-    console.log('req', req)
-    /* tslint:enable */
-      // this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    if(this.resumeEventStatus !== 2) {
+      /* tslint:disable */
+      console.log('req', req)
+      /* tslint:enable */
+        this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    } else {
+      /* tslint:disable */
+      console.log('Already completed ', req)
+    }
     }
   }
 
@@ -295,6 +317,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.player)
     /* tslint:enable */
     clearInterval(this.progressInterval)
+    this.intervalStarted = false
     if (this.player) {
       this.player.dispose()
     }

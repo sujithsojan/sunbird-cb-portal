@@ -109,6 +109,10 @@ export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  get progressVal() {
+    return this.enrolledEvent && this.enrolledEvent.status ===2 ? 100 : this.enrolledEvent.completionPercentage
+  }
+
   ngOnChanges() {
     this.loadEnrolledEventData()
     // console.log(this.enrolledEvent)
