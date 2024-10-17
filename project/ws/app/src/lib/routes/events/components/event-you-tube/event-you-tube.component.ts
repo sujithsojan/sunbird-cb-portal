@@ -257,9 +257,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     /* tslint:disable */
     console.log('req', req)
     /* tslint:enable */
-    // if (this.currentEvent) {
-    //   this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
-    // }
+    if (this.currentEvent) {
+      this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    }
     }
   }
 
