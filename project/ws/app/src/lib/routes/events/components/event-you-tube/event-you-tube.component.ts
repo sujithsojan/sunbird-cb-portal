@@ -52,7 +52,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() eventData: any
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
-  progressInterval:any
+  progressInterval: any
   private player: videoJs.Player | null = null
   private dispose: (() => void) | null = null
   constructor(private route: ActivatedRoute, private eventService: EventService, private configSvc: ConfigurationsService) {
