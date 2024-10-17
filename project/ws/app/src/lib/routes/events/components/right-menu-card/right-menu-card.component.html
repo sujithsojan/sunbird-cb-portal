@@ -33,14 +33,9 @@
           </ng-container>
           <ng-container>
             <div class="ml-4 mt-2 mr-6 mb-2 view-more  view-all" *ngIf="pastEvent">
-              <p mat-button class="flex-1 margin-top-xs margin-bottom-xs view-recording" *ngIf="isSpvEvent">
                 <a class="action-button"  [href]="getLink()" target="_blank" (click)="raiseTelemetry('view-recording')">
                   <span i18n>{{ 'eventDetailsRightCard.viewRecording' | translate }}</span>
                 </a>
-              </p>
-              <p mat-button class="flex-1 margin-top-xs margin-bottom-xs event-completed" *ngIf="!isSpvEvent">
-                <span i18n>{{ 'eventDetailsRightCard.eventIsCompleted' | translate }}</span>
-              </p>
             </div>
           </ng-container>
         </ng-container>
