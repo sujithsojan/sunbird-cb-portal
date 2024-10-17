@@ -90,8 +90,9 @@ export class EventPlayerComponent implements OnInit {
       }
       if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
         this.batchId = this.eventData.batches[0].batchId || ''
+        this.getUserIsEnrolled()
       }
-      this.getUserIsEnrolled()
+      
     })
   }
 
