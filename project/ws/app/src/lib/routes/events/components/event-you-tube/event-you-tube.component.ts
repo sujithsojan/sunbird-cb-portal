@@ -132,14 +132,13 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initializePlayer(resumeFrom: any) {
-    let timeSpent = resumeFrom ? resumeFrom : 0  
-    
-      
+    let timeSpent = resumeFrom ? resumeFrom : 0
+
       let timeStamp  = ''
-      let timeStampString:any  = ''
+      let timeStampString: any  = ''
       let lastTimeAccessed = ''
      let progress = ''
-     
+
     const dispatcher: telemetryEventDispatcherFunction = (event: any) => {
       /* tslint:disable */
       console.log(event['data'])
@@ -219,46 +218,47 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     return `${date} ${hour}${min}`
   }
 
-  saveProgressUpdate(progress:any,timeSpent:any, lastTimeAccessed:any) {
-    console.log('data--',)
+  saveProgressUpdate(progress: any, timeSpent: any, lastTimeAccessed: any) {
        let userId = ''
-       let completionPercentage:any = 0
-       let batchId = this.getBatchId()
+       let completionPercentage: any = 0
+       const batchId = this.getBatchId()
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId || ''
       }
-      if(timeSpent ) {
-        completionPercentage = (timeSpent / (this.eventData.duration*60)) * 100
+      if (timeSpent) {
+        completionPercentage = (timeSpent / (this.eventData.duration * 60)) * 100
       }
-      
+
     if (this.eventData) {
       const req  = {
-        "request": {
+        'request': {
         'userId': userId,
         'events': [
             {
                 'eventId': this.eventData.identifier,
                 'batchId': batchId,
                 'status':  completionPercentage > 50 ? 2 : 1,
-                'lastAccessTime': lastTimeAccessed, //data.dateAccessed
+                'lastAccessTime': lastTimeAccessed, // data.dateAccessed
                 'progressdetails': {
-                    'max_size': this.eventData.duration*60, //complete video duration
+                    'max_size': this.eventData.duration * 60, // complete video duration
                     'current': [ // current state
-                      progress
+                      progress,
                     ],
-                    'duration': timeSpent, //watch time
+                    'duration': timeSpent, // watch time
                     'mimeType': 'application/html',
-                    "stateMetaData": timeSpent //last state
+                    'stateMetaData': timeSpent, // last state
                 },
                 'completionPercentage': completionPercentage ? Number(parseFloat(completionPercentage).toFixed(2)) : 0.0,
             },
         ],
-      }
+      },
     }
-    console.log('req',req)
-    // if(this.currentEvent) {
-    //   this.eventService.saveEventProgressUpdate(req).subscribe(()=>{})
-    // }
+    /* tslint:disable */
+    console.log('req', req)
+    /* tslint:enable */
+    if (this.currentEvent) {
+      this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    }
     }
   }
 
