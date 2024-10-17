@@ -10,6 +10,7 @@ import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
+//import { CertificateDialogComponent } from './../../../../../../../../../library/ws-widget/collection/src/lib/_common/certificate-dialog/certificate-dialog.component'
 /* tslint:enable */
 
 @Component({
@@ -41,6 +42,7 @@ export class EventDetailComponent implements OnInit {
   enrolledEvent: any
   batchId = ''
   isEnrolled = false
+  downloadCertificateBool = false
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -204,5 +206,33 @@ export class EventDetailComponent implements OnInit {
     // pauseVideo() {
     //   this.player.pauseVideo()
     // }
+
+    handleOpenCertificateDialog() {
+      // this.downloadCertificateBool = true
+      // const certId = this.content && this.content.certificateObj.certId
+      // if (this.content && this.content.certificateObj && !this.content.certificateObj.certData) {
+      //   this.contentSvc.downloadCert(certId).subscribe(response => {
+      //     if (this.content) {
+      //       this.downloadCertificateBool = false
+      //       this.content['certificateObj']['certData'] = response.result.printUri
+      //       this.dialog.open(CertificateDialogComponent, {
+      //         width: '1200px',
+      //         data: { cet: response.result.printUri, certId: this.content && this.content.certificateObj.certId },
+      //       })
+      //     }
+      //   },                                             (error: any) => {
+      //     this.downloadCertificateBool = false
+      //     this.loggerService.error('CERTIFICATE FETCH ERROR >', error)
+      //     this.matSnackBar.open('Unable to View Certificate, due to some error!')
+      //   })
+      // } else {
+      //   this.downloadCertificateBool = false
+      //   this.dialog.open(CertificateDialogComponent, {
+      //     width: '1200px',
+      //     data: { cet: this.content && this.content.certificateObj.certData, certId: this.content && this.content.certificateObj.certId },
+      //   })
+      // }
+    }
+  
 
 }

@@ -420,7 +420,7 @@ export function youtubeInitializer(
         if (!loaded) {
 
           eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
-          heartBeatSubscription = interval(60 * 1000).subscribe(_ => {
+          heartBeatSubscription = interval(1 * 1000).subscribe(_ => {
             /* tslint:disable */
             console.log('heartbeat')
             /* tslint:enable */

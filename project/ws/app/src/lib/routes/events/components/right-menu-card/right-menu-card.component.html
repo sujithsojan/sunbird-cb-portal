@@ -11,25 +11,30 @@
         <ng-container *ngIf="!enrollBtnLoading">
           <!--Not enrolled -->
           <ng-container *ngIf="!isEnrolled && (futureEvent || currentEvent)">
-            <div class="ml-4 mt-2 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="batchId">
+            <div class="ml-4 mt-2 mr-6 mb-2 view-more view-all" *ngIf="batchId">
               <a mat-button class="flex-1 action-button" target="_blank" (click)="enrolltoEvent()">
                 <span i18n>{{ 'eventDetailsRightCard.enroll' | translate }}</span>
               </a>
             </div>
-            <p class="text-center" *ngIf="!batchId">{{'eventDetailsRightCard.noBatchErrormsg' | translate }}</p>
+            <p class="text-center pt-4" *ngIf="!batchId">{{'eventDetailsRightCard.noBatchErrormsg' | translate }}</p>             
           </ng-container>
           <!--enrolled -->
           <ng-container *ngIf="isEnrolled">
-            <div class="ml-4 mr-6 mb-2 mt-2 view-more ws-mat-accent-text view-all " *ngIf="currentEvent">
+            <div class="ml-4 mr-6 mb-2 mt-2 view-more  view-all " *ngIf="currentEvent">
               <a mat-button class="flex-1 action-button" target="_blank" (click)="navigateToPLayer();raiseTelemetry('join-event')">
                 <span i18n>{{ 'eventDetailsRightCard.joinEvent' | translate }}</span>
               </a>
             </div>
+            <div class="ml-4 mr-6 mb-2 mt-2 view-more ws-mat-accent-text view-all" *ngIf="futureEvent">
+              <p mat-button class="flex-1  margin-top-xs margin-bottom-xs action-button">
+                <span i18n>{{ 'eventDetailsRightCard.eventIsYetToStart' | translate }}</span>
+              </p>
+            </div>
           </ng-container>
           <ng-container>
-            <div class="ml-4 mt-2 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="pastEvent">
-              <p mat-button class="flex-1 margin-top-xs margin-bottom-xs" *ngIf="isSpvEvent">
-                <a class="flex-1 action-button"  [href]="getLink()" target="_blank" (click)="raiseTelemetry('view-recording')">
+            <div class="ml-4 mt-2 mr-6 mb-2 view-more  view-all" *ngIf="pastEvent">
+              <p mat-button class="flex-1 margin-top-xs margin-bottom-xs view-recording" *ngIf="isSpvEvent">
+                <a class="action-button"  [href]="getLink()" target="_blank" (click)="raiseTelemetry('view-recording')">
                   <span i18n>{{ 'eventDetailsRightCard.viewRecording' | translate }}</span>
                 </a>
               </p>
@@ -37,12 +42,6 @@
                 <span i18n>{{ 'eventDetailsRightCard.eventIsCompleted' | translate }}</span>
               </p>
             </div>
-
-            <!-- <div class="ml-4 mr-6 mb-2 mt-2 view-more ws-mat-accent-text view-all" *ngIf="futureEvent">
-              <p mat-button class="flex-1  margin-top-xs margin-bottom-xs action-button">
-                <span i18n>{{ 'eventDetailsRightCard.eventIsYetToStart' | translate }}</span>
-              </p>
-            </div> -->
           </ng-container>
         </ng-container>
         <ng-container *ngIf="enrollBtnLoading">
@@ -52,8 +51,8 @@
       </ng-container>
       <!-- keeping the old flow as it is -->
       <ng-container *ngIf="!isenrollFlow">
-        <div class="ml-4 mt-2 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="pastEvent">
-          <p mat-button class="flex-1 margin-top-xs margin-bottom-xs action-button" *ngIf="isSpvEvent">
+        <div class="ml-4 mt-2 mr-6 mb-2 view-more view-all" *ngIf="pastEvent">
+          <p mat-button class="margin-top-xs margin-bottom-xs action-button view-recording" *ngIf="isSpvEvent">
             <a class="flex-1"  [href]="getLink()" target="_blank" (click)="raiseTelemetry('view-recording')">
               <span i18n>{{ 'eventDetailsRightCard.viewRecording' | translate }}</span>
             </a>
@@ -62,12 +61,12 @@
             <span i18n>{{ 'eventDetailsRightCard.eventIsCompleted' | translate }}</span>
           </p>
         </div>
-        <div class="ml-4 mr-6 mb-2 mt-2 view-more ws-mat-accent-text view-all" *ngIf="currentEvent">
+        <div class="ml-4 mr-6 mb-2 mt-2 view-more view-all" *ngIf="currentEvent">
           <a mat-button class="flex-1 action-button" target="_blank" (click)="navigateToPLayer();raiseTelemetry('join-event')">
             <span i18n>{{ 'eventDetailsRightCard.joinEvent' | translate }}</span>
           </a>
         </div>
-        <div class="ml-4 mr-6 mb-2 mt-2 view-more ws-mat-accent-text view-all" *ngIf="futureEvent">
+        <div class="ml-4 mr-6 mb-2 mt-2 view-more view-all" *ngIf="futureEvent">
           <p mat-button class="flex-1 margin-top-xs margin-bottom-xs">
             <span i18n>{{ 'eventDetailsRightCard.eventIsYetToStart' | translate }}</span>
           </p>
