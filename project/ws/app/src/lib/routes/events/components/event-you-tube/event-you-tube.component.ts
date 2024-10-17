@@ -158,9 +158,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
             let eventDateTimeStamp = new Date(eventDateTime).getTime()
             let currentDateTimeStamp = new Date().getTime()
             if(currentDateTimeStamp >= eventDateTimeStamp) {
-              this.progressInterval =setInterval(()=>{
+              this.progressInterval = setInterval(()=>{
                 this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
-              },1000)
+              },1000*60)
             }
           }
         }
