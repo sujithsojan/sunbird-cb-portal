@@ -230,8 +230,8 @@ export class EventsComponent implements OnInit {
   addCustomDateAndTime (eventData: any) {
     const eventDate = this.eventService.customDateFormat(eventData.event.startDate, eventData.event.startTime)
     const eventendDate = this.eventService.customDateFormat(eventData.event.endDate, eventData.event.endTime)
-    eventData['eventCustomStartDate']= eventDate
-    eventData['eventCustomEndDate']= eventendDate
+    eventData['eventCustomStartDate'] = eventDate
+    eventData['eventCustomEndDate'] = eventendDate
   }
 
   filter(key: string | 'timestamp' | 'best' | 'saved') {
@@ -278,7 +278,7 @@ export class EventsComponent implements OnInit {
       })
 
       karmayogiSaptahEvents = this.sortEvents(karmayogiSaptahEvents)
-      
+
     }
 
     if (key) {
@@ -303,7 +303,7 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  sortEvents(eventData: any){
+  sortEvents(eventData: any) {
     return eventData.sort((a: any, b: any) => {
       const firstDate: any = new Date(a.eventCustomStartDate)
       const secondDate: any = new Date(b.eventCustomStartDate)
