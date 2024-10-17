@@ -9,7 +9,6 @@ import { EventDetailResolve } from './resolvers/event-detail-resolve'
 import { EventPlayerComponent } from './routes/event-player/event-player.component'
 import { EventPdfPlayerComponent } from './components/event-pdf-player/event-pdf-player.component'
 import { EventYouTubeComponent } from './components/event-you-tube/event-you-tube.component'
-import { EventResolve } from './services/event-resolver.resolve'
 
 const routes: Routes = [
   {
@@ -42,7 +41,7 @@ const routes: Routes = [
         data: {
           pageId: 'home/:eventId',
           module: 'Events',
-        },
+        }
       },
       {
         path: 'player/:eventId',
@@ -69,7 +68,7 @@ const routes: Routes = [
               pageId: 'youtube',
             },
             resolve: {
-              content: EventResolve,
+              content: ViewerResolve,
             },
           },
         ],
