@@ -217,7 +217,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       true, // enable telemetry,
       {}, // widget data
       NsContent.EMimeTypes.YOUTUBE, // type
-      '600px', // height
+      '500px', // height
     )
     this.dispose = initObj.dispose
   }
