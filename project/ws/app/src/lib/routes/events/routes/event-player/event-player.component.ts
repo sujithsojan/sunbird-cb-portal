@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 /* tslint:disable */
 import _ from 'lodash'
 import moment from 'moment'
 import { EventService } from '../../services/events.service'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-event-player',
@@ -22,12 +22,16 @@ export class EventPlayerComponent implements OnInit {
   currentEvent = false
   pastEvent = false
   videoId = ''
+  batchId = ''
+  isEnrolled = false
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
+    private configSvc: ConfigurationsService,
+    private router: Router
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
   ) {
@@ -46,6 +50,7 @@ export class EventPlayerComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.route.params.subscribe(params => {
       
       this.eventId = params.eventId
@@ -56,6 +61,7 @@ export class EventPlayerComponent implements OnInit {
       // this.data = this.route.snapshot.data.topic.data
     })
     this.eventSvc.getEventData(this.eventId).subscribe((data: any) => {
+      
       this.eventData = data.result.event
       const creatordata = this.eventData.creatorDetails
       const str = creatordata.replace(/\\/g, '')
@@ -82,8 +88,33 @@ export class EventPlayerComponent implements OnInit {
       if (eventDate < today && eventendDate < today) {
         this.pastEvent = true
       }
+      if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
+        this.batchId = this.eventData.batches[0].batchId || ''
+      }
+      this.getUserIsEnrolled()
     })
   }
+
+  getUserIsEnrolled() {
+    let userId = ''
+    if (this.configSvc.userProfile) {
+      userId = this.configSvc.userProfile.userId || ''
+    }
+    if (this.eventData && userId) {
+      this.eventSvc.getIsEnrolled(userId, this.eventData.identifier, this.batchId).subscribe((data: any) => {
+        /* tslint:disable */
+        console.log('data --- ', data)
+        if (data && data.result && data.result.events && data.result.events.length > 0) {
+         this.isEnrolled = true
+        } else {
+          this.isEnrolled = false
+         this.router.navigateByUrl(`app/event-hub/home/${this.eventData.identifier}?batchId=${this.batchId}`)
+        }
+      })
+    }
+  }
+
+  
 
   customDateFormat(date: any, time: any) {
     const stime = time.split('+')[0]
