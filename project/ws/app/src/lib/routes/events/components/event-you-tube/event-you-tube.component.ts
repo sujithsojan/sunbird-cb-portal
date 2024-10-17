@@ -147,6 +147,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     
       if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
         timeSpent = event['data']['passThroughData']['timeSpent']
+        /* tslint:disable */
         console.log('timeSpent % 60 === 0 ', timeSpent, ':: ', timeSpent % 60 === 0)
         // if(timeSpent % 60 === 0){
         //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
