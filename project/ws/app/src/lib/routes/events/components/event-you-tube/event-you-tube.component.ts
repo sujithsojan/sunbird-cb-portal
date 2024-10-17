@@ -8,6 +8,7 @@ import  'videojs-youtube'
 import { fireRealTimeProgressFunction, saveContinueLearningFunction, telemetryEventDispatcherFunction,  youtubeInitializer } from '../../../../../../../../../library/ws-widget/collection/src/lib/_services/videojs-util'
 import { NsContent, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { EventService } from './../../services/events.service'
+import moment from 'moment'
 // interface IYTOptions extends videoJs.PlayerOptions {
 //   youtube: {
 //     ytControls: 0 | 1 | 2
@@ -47,6 +48,7 @@ import { EventService } from './../../services/events.service'
   styleUrls: ['./event-you-tube.component.scss'],
 })
 export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
+  currentEvent = false
   @Input() eventData: any
   @Input() videoId: any
   @ViewChild('youtubeTag', { static: false }) youtubeTag!: ElementRef
@@ -68,6 +70,20 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       // }
       // this.data = this.route.snapshot.data.topic.data
     })
+    // const isToday = this.compareDate(eventDate, eventendDate, this.eventData)
+    // if (isToday) {
+    //   this.currentEvent = true
+    // }
+    const sDate = this.customDateFormat(this.eventData.startDate, this.eventData.startTime)
+    const eDate = this.customDateFormat(this.eventData.endDate, this.eventData.endTime)
+    const msDate = Math.floor(moment(sDate).valueOf() / 1000)
+    const meDate = Math.floor(moment(eDate).valueOf() / 1000)
+    const cDate = Math.floor(moment(new Date()).valueOf() / 1000)
+    if (cDate >= msDate && cDate <= meDate) {
+      this.currentEvent = true
+    } else {
+      this.currentEvent = false
+    }
     this.eventStateRead() 
 
     
@@ -83,6 +99,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       if(data && data.result && data.result.events && data.result.events.length) {
         let resumeFrom = JSON.parse(data.result.events[0]['progressdetails'])['stateMetaData']
         resumeFrom = resumeFrom ? Number(resumeFrom) : 0
+        if(!this.currentEvent) {
+          resumeFrom = 0
+        }
         this.initializePlayer(resumeFrom)
       } else {
         this.initializePlayer('')
@@ -119,7 +138,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       /* tslint:disable */
       console.log(event['data'])
       if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
-        timeSpent = event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']
+        timeSpent = event['data']['passThroughData']['timeSpent']
       }
       if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
         playerDuration =  event['data']['passThroughData']['playerDuration']
@@ -142,10 +161,10 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId || ''
       }
-      if(dataobj && dataobj.progress) {
+      if(dataobj && dataobj.progress && playerDuration) {
         completionPercentage = (dataobj.progress / playerDuration) * 100
       }
-      if(dataobj && dataobj.timeStamp) {
+      if(dataobj && dataobj.timestamp) {
           timeStamp = dataobj.timestamp
           timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
           lastTimeAccessed  = timeStampString[0]+':00+0000'
@@ -161,7 +180,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
               {
                   'eventId': this.eventData.identifier,
                   'batchId': batchId,
-                  'status':  completionPercentage > 50 ? 1 : 1,
+                  'status':  completionPercentage > 50 ? 2 : 1,
                   'lastAccessTime': lastTimeAccessed, //data.dateAccessed
                   'progressdetails': {
                       'max_size': playerDuration, //complete video duration
@@ -172,13 +191,15 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
                       'mimeType': 'application/html',
                       "stateMetaData": dataobj.progress.toString() //last state
                   },
-                  'completionPercentage': parseFloat(completionPercentage).toFixed(2),
+                  'completionPercentage': completionPercentage ? Number(parseFloat(completionPercentage).toFixed(2)) : 0.0,
               },
           ],
         }
       }
       console.log('req',req)
-      this.eventService.saveEventProgressUpdate(req).subscribe(()=>{})
+      if(this.currentEvent) {
+        this.eventService.saveEventProgressUpdate(req).subscribe(()=>{})
+      }
       }
 
     }
@@ -216,6 +237,13 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         batchId = this.eventData.batches[0].batchId || ''
       }
     return batchId
+  }
+
+  customDateFormat(date: any, time: any) {
+    const stime = time.split('+')[0]
+    const hour = stime.substr(0, 2)
+    const min = stime.substr(2, 3)
+    return `${date} ${hour}${min}`
   }
 
   ngOnDestroy() {

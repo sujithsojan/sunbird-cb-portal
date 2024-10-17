@@ -148,14 +148,19 @@ button.ws-mat-primary-background {
   border-radius: 64px;
   padding: 8px 16px;
   border: none;
-  width: auto;
+  width: 100%;
   cursor: pointer;
   background-color: #1b4ca1 !important;
 }
 
+.view-recording {
+  display: flex;
+  width: 92%;
+  align-items: flex-start;
+}
 .event-completed {
-  border: 1px solid rgb(27, 76, 161);
-  padding:8px;
+  // border: 1px solid rgb(27, 76, 161);
+  // padding:8px;
 }
 
 @media screen and (min-width: 820px) and (max-width: 1232px) {
