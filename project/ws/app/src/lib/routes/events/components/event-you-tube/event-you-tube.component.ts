@@ -147,9 +147,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         timeSpent = event['data']['passThroughData']['timeSpent']
       }
       /* tslint:disable */
-      if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
-        this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
-      }
+      // if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
+      //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+      // }
       // if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
       //   playerDuration =  event['data']['passThroughData']['playerDuration']
       // }
