@@ -242,7 +242,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy, OnChanges {
       /* tslint:disable */
       this.eventSvc.enrollEvent(req).subscribe(res => {
           if (res.responseCode === 'OK' || res.result.response === 'SUCCESS') {
-
+            this.openSnackBar('Enrolled Successfully')
           }
           if (this.batchId) {
             // this.navigateToPlayerPage(batchId)
