@@ -146,9 +146,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         timeSpent = event['data']['passThroughData']['timeSpent']
       }
       /* tslint:disable */
-      // if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
-      //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
-      // }
+      if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
+        this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+      }
       // if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
       //   playerDuration =  event['data']['passThroughData']['playerDuration']
       // }
@@ -160,6 +160,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const saveCLearning: saveContinueLearningFunction = data => {
       /* tslint:disable */
       console.log(data, timeSpent)
+
       const dataobj: any = JSON.parse(data.data)
       if(dataobj && dataobj.timestamp) {
         timeStamp = dataobj.timestamp
@@ -256,9 +257,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     /* tslint:disable */
     console.log('req', req)
     /* tslint:enable */
-    if (this.currentEvent) {
-      this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
-    }
+    // if (this.currentEvent) {
+    //   this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    // }
     }
   }
 
