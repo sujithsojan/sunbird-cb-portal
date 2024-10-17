@@ -62,6 +62,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('eventData', this.route.snapshot.data.content.data)
     /* tslint:enabel */
     this.eventData = this.route.snapshot.data['content'].data
+    console.log('this.eventData:::', this.eventData );
     this.route.params.subscribe(params => {
       this.videoId = params.videoId
 
@@ -144,6 +145,10 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(event['data'])
       if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
         timeSpent = event['data']['passThroughData']['timeSpent']
+        console.log('timeSpent % 60 === 0 ', timeSpent, ':: ', timeSpent % 60 === 0)
+        // if(timeSpent % 60 === 0){
+        //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+        // }
       }
       /* tslint:disable */
       if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
@@ -257,9 +262,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     /* tslint:disable */
     console.log('req', req)
     /* tslint:enable */
-    if (this.currentEvent) {
-      this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
-    }
+      // this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
     }
   }
 

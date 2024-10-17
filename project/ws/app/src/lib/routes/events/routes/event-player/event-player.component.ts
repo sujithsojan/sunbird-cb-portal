@@ -88,8 +88,15 @@ export class EventPlayerComponent implements OnInit {
       if (eventDate < today && eventendDate < today) {
         this.pastEvent = true
       }
+      if (this.eventData && typeof this.eventData.batches === 'string') {
+        this.eventData.batches = JSON.parse(this.eventData.batches)
+      }
       if (Array.isArray(this.eventData.batches) && this.eventData.batches.length > 0) {
         this.batchId = this.eventData.batches[0].batchId || ''
+      }
+      if(!this.batchId){
+        this.router.navigateByUrl(`app/event-hub/home/${this.eventData.identifier}?batchId=${this.batchId}`)
+      } else {
         this.getUserIsEnrolled()
       }
       
@@ -109,7 +116,7 @@ export class EventPlayerComponent implements OnInit {
          this.isEnrolled = true
         } else {
           this.isEnrolled = false
-         this.router.navigateByUrl(`app/event-hub/home/${this.eventData.identifier}?batchId=${this.batchId}`)
+          this.router.navigateByUrl(`app/event-hub/home/${this.eventData.identifier}?batchId=${this.batchId}`)
         }
       })
     }
