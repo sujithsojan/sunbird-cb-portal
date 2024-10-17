@@ -151,15 +151,19 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
         // if(timeSpent % 60 === 0){
         //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
         // }
-
-        let eventDateTime = this.eventData.startDate + ' '+this.eventData.startTime
-        let eventDateTimeStamp = new Date(eventDateTime).getTime()
-        let currentDateTimeStamp = new Date().getTime()
-        if(currentDateTimeStamp >= eventDateTimeStamp) {
-          this.progressInterval =setInterval(()=>{
-            this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
-          },1000)
+        if(this.eventData) {
+          if (this.eventData.startDate && this.eventData.startTime) {
+            let eventDateTime = this.eventData.startDate + ' '+this.eventData.startTime
+            let eventDateTimeStamp = new Date(eventDateTime).getTime()
+            let currentDateTimeStamp = new Date().getTime()
+            if(currentDateTimeStamp >= eventDateTimeStamp) {
+              this.progressInterval =setInterval(()=>{
+                this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+              },1000)
+            }
+          }
         }
+        
       }
       /* tslint:disable */
       if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
