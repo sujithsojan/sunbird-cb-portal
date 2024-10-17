@@ -142,6 +142,7 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           }
         }
     } else {
+      debugger
       // For event karma points
       if (this.condition && this.condition.isEnrolled) {
         if (this.condition.currentEvent) {
@@ -149,7 +150,7 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
         }
 
         if (this.condition.pastEvent) {
-          if (this.condition.enrolledEvent.completionPercentage < 2) {
+          if (this.condition.enrolledEvent.status < 2) {
             this.getKPData('')
           }
           if (this.condition.enrolledEvent.status === 2) {
