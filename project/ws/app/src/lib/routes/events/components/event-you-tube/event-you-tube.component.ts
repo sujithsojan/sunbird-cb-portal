@@ -133,16 +133,25 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initializePlayer(resumeFrom: any) {
     let timeSpent = resumeFrom ? resumeFrom : 0
-    let playerDuration = 0
+
+      let timeStamp  = ''
+      let timeStampString: any  = ''
+      let lastTimeAccessed = ''
+     let progress = ''
+
     const dispatcher: telemetryEventDispatcherFunction = (event: any) => {
       /* tslint:disable */
       console.log(event['data'])
       if(event['data']['passThroughData'] && event['data']['passThroughData']['timeSpent']) {
         timeSpent = event['data']['passThroughData']['timeSpent']
       }
-      if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
-        playerDuration =  event['data']['passThroughData']['playerDuration']
-      }
+      /* tslint:disable */
+      // if(event['data'] && event['data']['playerStatus'] === 'ENDED') {
+      //   this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
+      // }
+      // if(event['data']['passThroughData'] && event['data']['passThroughData']['playerDuration']) {
+      //   playerDuration =  event['data']['passThroughData']['playerDuration']
+      // }
       /* tslint:enable */
       // if (this.widgetData.identifier) {
       //   this.eventSvc.dispatchEvent(event)
@@ -150,57 +159,20 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     const saveCLearning: saveContinueLearningFunction = data => {
       /* tslint:disable */
-      console.log(data)
+      console.log(data, timeSpent)
       const dataobj: any = JSON.parse(data.data)
-      let batchId = this.getBatchId()
-      let completionPercentage:any = 0
-      let timeStamp  = ''
-      let timeStampString:any  = ''
-      let lastTimeAccessed = ''
-      let userId = ''
-      if (this.configSvc.userProfile) {
-        userId = this.configSvc.userProfile.userId || ''
-      }
-      if(dataobj && dataobj.progress && playerDuration) {
-        completionPercentage = (dataobj.progress / playerDuration) * 100
-      }
       if(dataobj && dataobj.timestamp) {
-          timeStamp = dataobj.timestamp
-          timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
-          lastTimeAccessed  = timeStampString[0]+':00+0000'
+        timeStamp = dataobj.timestamp
+        timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
+        lastTimeAccessed  = timeStampString[0]+':00+0000'
+        progress = dataobj.progress.toString()
       }
+      
+      this.saveProgressUpdate(progress,timeSpent, lastTimeAccessed)
       
       
     
-      if (this.eventData) {
-        const req  = {
-          "request": {
-          'userId': userId,
-          'events': [
-              {
-                  'eventId': this.eventData.identifier,
-                  'batchId': batchId,
-                  'status':  completionPercentage > 50 ? 2 : 1,
-                  'lastAccessTime': lastTimeAccessed, //data.dateAccessed
-                  'progressdetails': {
-                      'max_size': playerDuration, //complete video duration
-                      'current': [ // current state
-                        dataobj.progress.toString(),
-                      ],
-                      'duration': timeSpent, //watch time
-                      'mimeType': 'application/html',
-                      "stateMetaData": dataobj.progress.toString() //last state
-                  },
-                  'completionPercentage': completionPercentage ? Number(parseFloat(completionPercentage).toFixed(2)) : 0.0,
-              },
-          ],
-        }
-      }
-      console.log('req',req)
-      if(this.currentEvent) {
-        this.eventService.saveEventProgressUpdate(req).subscribe(()=>{})
-      }
-      }
+     
 
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
@@ -245,6 +217,58 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const min = stime.substr(2, 3)
     return `${date} ${hour}${min}`
   }
+
+  saveProgressUpdate(progress: any, timeSpent: any, lastTimeAccessed: any) {
+       let userId = ''
+       let completionPercentage: any = 0
+       const batchId = this.getBatchId()
+      if (this.configSvc.userProfile) {
+        userId = this.configSvc.userProfile.userId || ''
+      }
+      if (timeSpent) {
+        completionPercentage = (timeSpent / (this.eventData.duration * 60)) * 100
+      }
+
+    if (this.eventData) {
+      const req  = {
+        'request': {
+        'userId': userId,
+        'events': [
+            {
+                'eventId': this.eventData.identifier,
+                'batchId': batchId,
+                'status':  completionPercentage > 50 ? 2 : 1,
+                'lastAccessTime': lastTimeAccessed, // data.dateAccessed
+                'progressdetails': {
+                    'max_size': this.eventData.duration * 60, // complete video duration
+                    'current': [ // current state
+                      progress,
+                    ],
+                    'duration': timeSpent, // watch time
+                    'mimeType': 'application/html',
+                    'stateMetaData': timeSpent, // last state
+                },
+                'completionPercentage': completionPercentage ? Number(parseFloat(completionPercentage).toFixed(2)) : 0.0,
+            },
+        ],
+      },
+    }
+    /* tslint:disable */
+    console.log('req', req)
+    /* tslint:enable */
+    if (this.currentEvent) {
+      this.eventService.saveEventProgressUpdate(req).subscribe(() => {})
+    }
+    }
+  }
+
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeUnloadHandler() {
+  //   console.log('on unload')
+  //   this.ngOnDestroy()
+  // // event.preventDefault();
+  // // any other code / dialog logic
+  // }
 
   ngOnDestroy() {
     /* tslint:disable */

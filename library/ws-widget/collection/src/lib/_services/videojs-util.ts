@@ -426,7 +426,7 @@ export function youtubeInitializer(
             /* tslint:enable */
             passThroughData['lastAccessTime'] = currTime
             passThroughData['timeSpent'] = timespentTimer
-            passThroughData['playerDuration'] = player.getDuration()
+            // passThroughData['playerDuration'] = player.getDuration()
             eventDispatcher(WsEvents.EnumTelemetrySubType.HeartBeat, widgetData, WsEvents.EnumTelemetryMediaActivity.PLAYED, mimeType)
           })
           loaded = true

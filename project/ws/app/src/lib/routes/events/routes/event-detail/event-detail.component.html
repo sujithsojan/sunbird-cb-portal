@@ -9,10 +9,10 @@
                 [height]="'24px'"></ws-widget-skeleton-loader>
             </ng-container>
             <ng-container *ngIf="!skeletonLoader">
-              <div class="text-sm font-semibold cursor-pointer truncate-3">{{ content?.name }}</div>
-              <div class="text-xs font-light" *ngIf="content?.completedOn">{{ 'apptocsinglepage.completedCourse' |
-                translate }} {{ content?.completedOn ?
-                (content?.completedOn | date: 'd MMM, y') : 'NA' }}</div>
+              <div class="text-sm font-semibold cursor-pointer truncate-3">{{ eventData?.name }}</div>
+              <div class="text-xs font-light" *ngIf="enrolledEvent?.completedOn">{{ 'apptocsinglepage.completedCourse' |
+                translate }} {{ enrolledEvent?.completedOn ?
+                (enrolledEvent?.completedOn | date: 'd MMM, y') : 'NA' }}</div>
             </ng-container>
           </div>
           <div class="flex justify-center download-section">
@@ -33,7 +33,7 @@
               [height]="'148px'"></ws-widget-skeleton-loader>
           </ng-container>
           <ng-container *ngIf="!skeletonLoader">
-            <div class="certificate_box" *ngIf="!content?.certificateObj?.certId">
+            <div class="certificate_box" *ngIf="!enrolledEvent?.certificateObj?.certId">
               <img *ngIf="!fromMarketPlace" src="/assets/icons/toc/no-certificate.svg" alt="No certificate image" />
               <img *ngIf="fromMarketPlace" src="/assets/icons/toc/no-certificate-market-place.svg"
                 alt="No certificate image" />
@@ -47,7 +47,7 @@
                 </div>
               </div>
             </div>
-            <ng-container *ngIf="content?.certificateObj?.certId">
+            <ng-container *ngIf="enrolledEvent?.certificateObj?.certId">
               <div class="img-container">
                 <img class="celebration-animation" src="assets/images/animation/leaderboard_animation.gif" />
                 <img *ngIf="!fromMarketPlace" class="ceritificate-image" [src]="'/assets/icons/toc/no-certificate.svg'"
@@ -179,8 +179,8 @@
       <mat-tab label="{{ 'apptocsinglepage.about' | translate }}">
         <ng-container>
           <!-- *ngIf="(content?.completionStatus === 2 || content?.certificateObj?.certId) && !fromMarketPlace" -->
-          <ng-container *ngIf="isenrollFlow && isEnrolled">
-            <div class="certificate-container" *ngIf="!skeletonLoader">
+          <ng-container >
+            <div class="certificate-container" *ngIf="!skeletonLoader && enrolledEvent?.status > 1">
               <div class="flex flex-row earned-certificate-container">
                 <div class="ribbon"></div>
                 <div class="certificate-background">
@@ -194,7 +194,7 @@
               </div>
             </div>
 
-            <div class="mobile-certificate-container" *ngIf="!skeletonLoader">
+            <div class="mobile-certificate-container" *ngIf="!skeletonLoader  && enrolledEvent?.status > 1">
               <div class="earned-certificate-container">
                 <div class="flex flex-row">
                   <div class="ribbon"></div>
