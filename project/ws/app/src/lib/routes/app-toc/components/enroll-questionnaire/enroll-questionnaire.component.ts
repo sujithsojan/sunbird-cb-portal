@@ -83,6 +83,7 @@ export class EnrollQuestionnaireComponent implements OnInit {
   showPinCode = false
   showCadreDetails = false
   updateProfile = false
+  pendingFileds: any
   constructor(
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<EnrollQuestionnaireComponent>,
@@ -92,19 +93,9 @@ export class EnrollQuestionnaireComponent implements OnInit {
     private otpService: OtpService,
     private npsSvc: NPSGridService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { console.log("data ", data)
-    console.log("configSrc ", this.configSrc)
+  ) { 
+
     this.batchDetails = this.data.batchData
-    this.getUserDetails()
-    
-
-    this.otpForm = new FormGroup({
-      otp: new FormControl('', Validators.required)
-    })
-
-    
-    //this.customForm = this.batchDetails.batchAttributes.bpEnrolMandatoryProfileFields ? true : false
-    
     this.userDetailsForm = new FormGroup({
       group: new FormControl(''),
       designation: new FormControl(''),
@@ -122,6 +113,11 @@ export class EnrollQuestionnaireComponent implements OnInit {
       cadreName: new FormControl(''),
       cadreBatch: new FormControl(''),
       cadreControllingAuthority: new FormControl(''),
+    })
+    this.getUserDetails()
+    this.getPendingDetails()
+    this.otpForm = new FormGroup({
+      otp: new FormControl('', Validators.required)
     })
 
     if (this.userDetailsForm.get('mobile')) {
@@ -406,11 +402,22 @@ export class EnrollQuestionnaireComponent implements OnInit {
   
   }
 
+  getPendingDetails() {
+    this.userProfileService.listApprovalPendingFields().subscribe((resp: any) => {
+      this.pendingFileds = resp.result.data
+      if (this.pendingFileds && this.pendingFileds[0] && this.pendingFileds[0].group) {
+        this.userDetailsForm.setValue({group: this.pendingFileds[0].group})
+      }
+      if (this.pendingFileds && this.pendingFileds[0] && this.pendingFileds[0].designation) {
+        this.userDetailsForm.setValue({designation: this.pendingFileds[0].designation})
+      }
+    })
+  }
+
   getUserDetails(){
     this.profileV2Svc.fetchProfile(this.configSrc.unMappedUser.identifier).subscribe((resp: any) => {
       if (resp && resp.result && resp.result.response) {
         this.userProfileObject = resp.result.response
-        console.log(" userProfileObject ", this.userProfileObject)
         this.defineFormAttributes()
       }      
     })
@@ -688,7 +695,10 @@ export class EnrollQuestionnaireComponent implements OnInit {
     this.npsSvc.submitBpFormWithProfileDetails(surevyPayload).subscribe((resp: any) => {
       if (resp && resp.statusInfo && resp.statusInfo.statusCode === 200) {
         this.customForm = false
-      }      
+      }
+      if (resp && resp.statusCode && resp.statusCode !== 200) {
+        this.snackBar.open(resp.errorMessage)
+      }
     }, error => {
       /* tslint:disable */
       console.log(error)
