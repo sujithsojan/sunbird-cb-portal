@@ -130,14 +130,14 @@ export class EventDetailComponent implements OnInit {
       }
     })
     this.discussWidgetData = (this.route.parent && this.route.parent.snapshot.data.pageData.data.discussWidgetData) || []
-    if(this.discussWidgetData) {
-      if (this.eventData && this.eventData.identifier ) {
+    if (this.discussWidgetData) {
+      if (this.eventData && this.eventData.identifier) {
         this.discussWidgetData.newCommentSection.commentTreeData.entityId = this.eventData.identifier
-        if(this.discussWidgetData.commentsList.repliesSection && this.discussWidgetData.commentsList.repliesSection.newCommentReply) {
+        if (this.discussWidgetData.commentsList.repliesSection && this.discussWidgetData.commentsList.repliesSection.newCommentReply) {
           this.discussWidgetData.commentsList.repliesSection.newCommentReply.commentTreeData.entityId = this.eventData.identifier
         }
       }
-      this.discussWidgetData = {...this.discussWidgetData}
+      this.discussWidgetData = { ...this.discussWidgetData }
     }
   }
 
