@@ -8,6 +8,7 @@ import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/dis
 import { TranslateService } from '@ngx-translate/core'
 import { MatSnackBar } from '@angular/material'
 import moment from 'moment'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 const DEFAULT_WEEKLY_DURATION = 300
 const DEFAULT_DISCUSS_DURATION = 600
@@ -86,6 +87,7 @@ export class InsightSideBarComponent implements OnInit {
   canShowNlwCard = false
   totlaDays = 0
   daysCompleted = 0
+  currentLang: any = ''
   constructor(
     private homePageSvc: HomePageService,
     private configSvc: ConfigurationsService,
@@ -94,12 +96,21 @@ export class InsightSideBarComponent implements OnInit {
     private translate: TranslateService,
     private events: EventService,
     private snackBar: MatSnackBar,
-    private router: Router) {
+    private router: Router,
+    private langtranslations: MultilingualTranslationsService) {
       if (localStorage.getItem('websiteLanguage')) {
         this.translate.setDefaultLang('en')
         const lang = localStorage.getItem('websiteLanguage')!
         this.translate.use(lang)
       }
+      this.langtranslations.languageSelectedObservable.subscribe(() => {
+        if (localStorage.getItem('websiteLanguage')) {
+          this.translate.setDefaultLang('en')
+          const lang = localStorage.getItem('websiteLanguage')!
+          this.translate.use(lang)
+          this.currentLang = lang
+        }
+      })
     }
 
   ngOnInit() {
