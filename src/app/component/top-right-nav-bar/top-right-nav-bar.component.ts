@@ -64,7 +64,6 @@ export class TopRightNavBarComponent implements OnInit, OnChanges {
           const lang = localStorage.getItem('websiteLanguage')!
           this.translate.use(lang)
           this.selectedLanguage = lang
-          console.log(window.location.href, '-------123456')
         }
       })
   }

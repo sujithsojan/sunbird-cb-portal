@@ -1,14 +1,13 @@
 import { AUTO_STYLE, animate, state, transition, trigger, style } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
 import { HomePageService } from 'src/app/services/home-page.service'
-import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, EventService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MatSnackBar } from '@angular/material'
 import moment from 'moment'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 const DEFAULT_WEEKLY_DURATION = 300
 const DEFAULT_DISCUSS_DURATION = 600
