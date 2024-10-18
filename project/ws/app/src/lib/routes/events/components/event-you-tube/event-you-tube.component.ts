@@ -82,9 +82,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.currentEvent = true
     // }
     const sDate = this.customDateFormat(this.eventData.startDate, this.eventData.startTime)
-    const eDate = this.customDateFormat(this.eventData.endDate, this.eventData.endTime)
+    // const eDate = this.customDateFormat(this.eventData.endDate, this.eventData.endTime)
     const msDate = Math.floor(moment(sDate).valueOf() / 1000)
-    const meDate = Math.floor(moment(eDate).valueOf() / 1000)
+    // const meDate = Math.floor(moment(eDate).valueOf() / 1000)
     const cDate = Math.floor(moment(new Date()).valueOf() / 1000)
     if (cDate >= msDate) {
       this.currentEvent = true
@@ -145,7 +145,9 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
       let timeStamp  = ''
       let timeStampString: any  = ''
       let lastTimeAccessed = ''
-     let progress = ''
+      /* tslint:disable */
+    //  let progress : any= ''
+    /* tslint:enable */
 
     const dispatcher: telemetryEventDispatcherFunction = (event: any) => {
       /* tslint:disable */
@@ -192,7 +194,7 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const saveCLearning: saveContinueLearningFunction = data => {
       /* tslint:disable */
       console.log(data, timeSpent)
-
+      let progress = ''
       const dataobj: any = JSON.parse(data.data)
       if(dataobj && dataobj.timestamp) {
         timeStamp = dataobj.timestamp
