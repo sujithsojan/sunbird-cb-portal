@@ -142,7 +142,6 @@ export class KarmaPointsComponent implements OnInit, OnChanges {
           }
         }
     } else {
-      debugger
       // For event karma points
       if (this.condition && this.condition.isEnrolled) {
         if (this.condition.currentEvent) {

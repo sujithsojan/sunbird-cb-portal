@@ -387,7 +387,7 @@ export function youtubeInitializer(
       autoplay: 0,
       modestbranding: 0,
       showInfo: 0,
-      fs:1,
+      fs: 1,
       rel: 0,
       start: passThroughData && passThroughData['resumeFrom'] ? parseInt(passThroughData['resumeFrom'], 10) : 0,
     },
