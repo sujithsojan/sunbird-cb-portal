@@ -178,7 +178,7 @@
   <ng-container>
     <!-- *ngIf="(content?.completionStatus === 2 || content?.certificateObj?.certId) && !fromMarketPlace" -->
     <ng-container >
-      <div class="certificate-container" *ngIf="!skeletonLoader && enrolledEvent?.status > 1">
+      <div class="certificate-container" *ngIf="!skeletonLoader && (enrolledEvent?.status > 1 && pastEvent)">
         <div class="flex flex-row earned-certificate-container">
           <div class="ribbon"></div>
           <div class="certificate-background">
@@ -192,7 +192,7 @@
         </div>
       </div>
 
-      <div class="mobile-certificate-container" *ngIf="!skeletonLoader  && enrolledEvent?.status > 1">
+      <div class="mobile-certificate-container" *ngIf="!skeletonLoader  && (enrolledEvent?.status > 1 && pastEvent)">
         <div class="earned-certificate-container">
           <div class="flex flex-row">
             <div class="ribbon"></div>

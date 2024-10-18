@@ -194,13 +194,13 @@ export class EventYouTubeComponent implements OnInit, AfterViewInit, OnDestroy {
     const saveCLearning: saveContinueLearningFunction = data => {
       /* tslint:disable */
       console.log(data, timeSpent)
-      let progress = ''
       const dataobj: any = JSON.parse(data.data)
       if(dataobj && dataobj.timestamp) {
+        // let progress = ''
         timeStamp = dataobj.timestamp
         timeStampString = new Date(timeStamp).toISOString().replace('T',' ').replace('Z',' ').split('.')
         lastTimeAccessed  = timeStampString[0]+':00+0000'
-        progress = dataobj.progress.toString()
+        // progress = dataobj.progress.toString()
       }
       if(this.currentEvent) {
         this.saveProgressUpdate(this.eventData.duration,timeSpent,lastTimeAccessed)
