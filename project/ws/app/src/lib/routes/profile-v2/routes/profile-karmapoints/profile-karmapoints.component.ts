@@ -73,7 +73,7 @@ export class ProfileKarmapointsComponent implements OnInit {
     if (row && row.addinfo && row.context_type === 'Course') {
       const info = JSON.parse(row.addinfo)
       return info.COURSENAME ? info.COURSENAME : 'No course'
-    }  if (row && row.addinfo && row.context_type === 'Event') {
+    }  if (row && row.addinfo && row.context_type.toLowerCase() === 'event') {
       const info = JSON.parse(row.addinfo)
       return info.EVENTNAME ? info.EVENTNAME : 'No event'
     }
