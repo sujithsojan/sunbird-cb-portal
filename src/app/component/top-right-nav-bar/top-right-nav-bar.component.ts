@@ -38,7 +38,7 @@ import { DialogBoxComponent as ZohoDialogComponent } from '@ws/app/src/lib/route
 export class TopRightNavBarComponent implements OnInit, OnChanges {
   @Input() item: any
   @Input() rightNavConfig: any
-  @Input() showLangDropdown: boolean = true
+  @Input() showLangDropdown = true
   dialogRef: any
   selectedLanguage = 'en'
   multiLang: any = []
@@ -64,7 +64,7 @@ export class TopRightNavBarComponent implements OnInit, OnChanges {
           const lang = localStorage.getItem('websiteLanguage')!
           this.translate.use(lang)
           this.selectedLanguage = lang
-          console.log( window.location.href,'-------123456')
+          console.log(window.location.href, '-------123456')
         }
       })
   }

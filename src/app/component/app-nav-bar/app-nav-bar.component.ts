@@ -59,7 +59,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
   isHubEnable!: boolean
   previousUrl = ''
   disableMenu = false
-  showLangDropdown: boolean = true
+  showLangDropdown = true
   constructor(
     private domSanitizer: DomSanitizer,
     private configSvc: ConfigurationsService,
@@ -86,9 +86,9 @@ export class AppNavBarComponent implements OnInit, OnChanges {
         this.cancelTour()
         this.bindUrl(event.url.replace('/app/competencies/', ''))
       }
-      this.showLangDropdown = window.location.href.includes('/karmayogi-saptah')?
-      false: true
-      
+      this.showLangDropdown = window.location.href.includes('/karmayogi-saptah') ?
+      false : true
+
     })
 
     if (localStorage.getItem('websiteLanguage')) {

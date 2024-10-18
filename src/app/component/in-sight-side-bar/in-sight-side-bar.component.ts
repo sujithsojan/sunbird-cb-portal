@@ -97,7 +97,7 @@ export class InsightSideBarComponent implements OnInit {
     private events: EventService,
     private snackBar: MatSnackBar,
     private router: Router,
-  private langtranslations: MultilingualTranslationsService) {
+    private langtranslations: MultilingualTranslationsService) {
       if (localStorage.getItem('websiteLanguage')) {
         this.translate.setDefaultLang('en')
         const lang = localStorage.getItem('websiteLanguage')!
@@ -108,7 +108,7 @@ export class InsightSideBarComponent implements OnInit {
           this.translate.setDefaultLang('en')
           const lang = localStorage.getItem('websiteLanguage')!
           this.translate.use(lang)
-          this.currentLang = lang;
+          this.currentLang = lang
         }
       })
     }
