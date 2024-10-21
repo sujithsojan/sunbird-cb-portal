@@ -301,12 +301,12 @@ const routes: Routes = [
     },
   },
   {
-    path: 'app/learn/national-learning-week',
+    path: 'app/learn/karmayogi-saptah',
     loadChildren: () =>
       import('./routes/route-national-learning-week.module').then(u => u.RouteNationalLearningWeekModule),
     canActivate: [GeneralGuard],
     data: {
-      // pageId: 'app/learn/national-learning-week',
+      // pageId: 'app/learn/karmayogi-saptah',
       module: 'National Learning Week',
     },
     resolve: {
