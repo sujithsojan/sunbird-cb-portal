@@ -44,6 +44,7 @@ import { MatSelectModule } from '@angular/material/select'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatTableModule } from '@angular/material/table'
 import { MatTooltipModule } from '@angular/material/tooltip'
+import { ReactiveFormsModule } from '@angular/forms'
 @NgModule({
   declarations: [
     FillInTheBlankComponent,
@@ -71,6 +72,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     PipeDurationTransformModule,
     PipeLimitToModule,
     MatCardModule,
