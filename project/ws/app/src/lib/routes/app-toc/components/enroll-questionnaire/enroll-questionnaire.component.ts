@@ -403,13 +403,20 @@ export class EnrollQuestionnaireComponent implements OnInit {
   }
 
   getPendingDetails() {
-    this.userProfileService.listApprovalPendingFields().subscribe((resp: any) => {
-      this.pendingFileds = resp.result.data
-      if (this.pendingFileds && this.pendingFileds[0] && this.pendingFileds[0].group) {
-        this.userDetailsForm.setValue({group: this.pendingFileds[0].group})
-      }
-      if (this.pendingFileds && this.pendingFileds[0] && this.pendingFileds[0].designation) {
-        this.userDetailsForm.setValue({designation: this.pendingFileds[0].designation})
+    this.profileV2Svc.fetchApprovalDetails().subscribe((resp: any) => {
+      if (resp && resp.result && resp.result.data) {
+        this.pendingFileds = resp.result.data
+        if (this.pendingFileds.length > 0) {
+          this.pendingFileds.forEach((user: any) => {
+            if (user['group']) {
+              this.userDetailsForm.patchValue({group: user['group']})
+            }
+            if (user['designation']) {
+              this.userDetailsForm.patchValue({designation: user['designation']})
+            }
+            console.log("userDetailsForm ", this.userDetailsForm)
+          })
+        }
       }
     })
   }
@@ -697,6 +704,7 @@ export class EnrollQuestionnaireComponent implements OnInit {
         this.customForm = false
       }
       if (resp && resp.statusCode && resp.statusCode !== 200) {
+        this.customForm = false
         this.snackBar.open(resp.errorMessage)
       }
     }, error => {
