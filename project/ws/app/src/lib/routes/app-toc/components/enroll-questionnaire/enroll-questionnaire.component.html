@@ -6,7 +6,7 @@
     <div *ngIf="customForm">
       <h1> {{data?.courseName}} </h1>
       <div class="w-full">
-        <form [formGroup]="userDetailsForm">
+        <form [formGroup]="userDetailsForm" class="userDetailsForm">
             <div class="w-full" *ngIf="showGroup">
                 <div class="mat-subheading-2 margin-0 required"
                   i18n="Title label|Label which explains the user to enter title">

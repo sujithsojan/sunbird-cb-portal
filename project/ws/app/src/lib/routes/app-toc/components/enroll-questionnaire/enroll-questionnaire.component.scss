@@ -18,6 +18,10 @@
       }
 }
 
+::ng-deep.userDetailsForm .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5rem 0 0.8rem 0;
+}
+
 ::ng-deep.course-survey .lib-container-2 {
     height: auto;
     min-height: unset !important;
