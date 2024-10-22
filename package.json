@@ -54,6 +54,7 @@
     "@sunbird-cb/resolver-v2": "0.0.0-watch",
     "@sunbird-cb/utils-v2": "0.0.19-ang-9-12",
     "@sunbird-cb/discussion-v2": "0.0.3-ang-9-12",
+    "igot-cb-tour-guide": "1.0.3-ang-9-12",
     "@angular/localize": "^18.2.4",
     "@types/file-saver": "^2.0.1",
     "@types/uuid": "^8.3.1",
