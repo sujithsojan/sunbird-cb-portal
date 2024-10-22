@@ -130,7 +130,7 @@
     "@types/node": "^12.11.1",
     "@types/pdfjs-dist": "2.1.0",
     "@types/quill": "^2.0.2",
-    "@types/video.js": "7.6.0",
+    "@types/video.js": "7.3.58",
     "@types/vis": "^4.21.19",
     "@types/zip.js": "2.0.28",
     "angular-cli-alias": "^1.0.9",
