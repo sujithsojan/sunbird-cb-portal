@@ -268,7 +268,7 @@ export class AppTourComponent {
 
   onCongrats(): void {
     this.showCompletePopup = false
-    localStorage.setItem('tourGuide',JSON.stringify({'disable': true}) )
+    localStorage.setItem('tourGuide', JSON.stringify({ 'disable': true }))
     this.configSvc.updateTourGuideMethod(true)
   }
 
@@ -282,7 +282,7 @@ export class AppTourComponent {
   }
 
   nextCb(currentStep: number, stepObject: any) {
-    if (stepObject.title == 'My Profile') {
+    if (stepObject.title === 'My Profile') {
       this.hideCloseBtn = true
     }
     // tslint:disable-next-line
